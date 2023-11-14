@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "C:/Users/Diego/Desktop/Student Management System/StudentManagementSystem.exe"
-  "C:/Users/Diego/Desktop/Student Management System/StudentManagementSystem.exe.manifest"
-  "C:/Users/Diego/Desktop/Student Management System/StudentManagementSystem.pdb"
+  "C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/StudentManagementSystem.exe"
+  "C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/StudentManagementSystem.exe.manifest"
+  "C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/StudentManagementSystem.pdb"
   "CMakeFiles/StudentManagementSystem.dir/assignment.cc.obj"
   "CMakeFiles/StudentManagementSystem.dir/assignment.cc.obj.d"
   "CMakeFiles/StudentManagementSystem.dir/class.cc.obj"

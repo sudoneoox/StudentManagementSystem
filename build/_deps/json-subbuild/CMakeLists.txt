@@ -19,17 +19,17 @@ project(json-populate NONE)
 # Pass through things we've already detected in the main project to avoid
 # paying the cost of redetecting them again in ExternalProject_Add()
 set(GIT_EXECUTABLE [==[C:/Program Files/Git/cmd/git.exe]==])
-set(GIT_VERSION_STRING [==[2.31.1.windows.1]==])
+set(GIT_VERSION_STRING [==[2.42.0.windows.2]==])
 set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
-  [==[C:/Program Files/Git/cmd/git.exe;2.31.1.windows.1]==]
+  [==[C:/Program Files/Git/cmd/git.exe;2.42.0.windows.2]==]
 )
 
 
 include(ExternalProject)
 ExternalProject_Add(json-populate
                      "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/nlohmann/json.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "v3.10.5"
-                    SOURCE_DIR          "C:/Users/Diego/Desktop/Student Management System/build/_deps/json-src"
-                    BINARY_DIR          "C:/Users/Diego/Desktop/Student Management System/build/_deps/json-build"
+                    SOURCE_DIR          "C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/_deps/json-src"
+                    BINARY_DIR          "C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/_deps/json-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

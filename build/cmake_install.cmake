@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Diego/Desktop/Student Management System
+# Install script for directory: C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,12 +34,12 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "C:/cygwin64/bin/objdump.exe")
+  set(CMAKE_OBJDUMP "C:/msys64/mingw64/bin/objdump.exe")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/Diego/Desktop/Student Management System/build/_deps/json-build/cmake_install.cmake")
+  include("C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/_deps/json-build/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Diego/Desktop/Student Management System/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

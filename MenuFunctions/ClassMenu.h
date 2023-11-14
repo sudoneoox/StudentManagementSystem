@@ -24,7 +24,7 @@ void ClassMenu(map<string, Class *> &allClasses)
             cout << "Enter the class ID: ";
             cin >> classID;
             allClasses.insert(pair<string, Class *>(classID, new Class(className, classID)));
-            addDataToJsonFileFromClass("Data\class.json", allClasses[classID]);
+            addDataToJsonFileFromClass("./Data/class.json", allClasses[classID]);
             PrintMenuOption("Class Menu", "classMenuOptions");
         }
 

@@ -21,27 +21,19 @@
 using namespace std;
 using json = nlohmann::json;
 
-void PrintMenuOption(string name, string menu);
-map<string, Class *> createClassObjectsFromJsonFile(string &filename);
-
 int main()
 {
-    string StudentJSON = "Data\student.json";
-    string ClassJSON = "Data\class.json";
-
+    string StudentJSON, ClassJSON, TeacherJSON;
     vector<Student> students;
     vector<Teacher> teachers;
     map<string, Class *> allClasses;
-    if (!isJsonFileEmpty(ClassJSON))
-    {
-        cout << "class data not empty\n";
-        allClasses = createClassObjectsFromJsonFile(ClassJSON);
-    }
-    if (!isJsonFileEmpty(StudentJSON))
-    {
-        cout << "student data not empty\n";
-        students = crateStudentObjectsFromJsonFile(StudentJSON);
-    }
+
+    !isJsonFileEmpty(StudentJSON) ? StudentJSON = "./Data/student.json" : StudentJSON = "./Data/defaultStudent.json";
+    !isJsonFileEmpty(ClassJSON) ? ClassJSON = "./Data/class.json" : ClassJSON = "./Data/defaultClass.json";
+    !isJsonFileEmpty(TeacherJSON) ? TeacherJSON = "./Data/teacher.json" : TeacherJSON = "./Data/defaultTeacher.json";
+
+    crateStudentObjectsFromJsonFile(StudentJSON);
+    createClassObjectsFromJsonFile(ClassJSON);
 
     char input;
     PrintMenuOption("Student Management System", "mainMenuOptions");
@@ -81,7 +73,7 @@ int main()
         }
         else
         {
-            cout << "Invalid input Please Try Again\n ";
+            cout << "Invalid option Please Try Again\n ";
             PrintMenuOption("Student Management System", "mainMenuOptions");
         }
     }
