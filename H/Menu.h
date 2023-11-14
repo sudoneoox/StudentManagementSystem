@@ -23,11 +23,15 @@ void PrintMenuOption(string name, string menu)
     }
     else if (menu == "teacherMenuOptions")
     {
-        options = {"Add Teacher", "Display Teacher", "Update Teacher Info", "Get Attendance"};
+        options = {
+            "Add Teacher",
+            "Display Teacher",
+            "Update Teacher Info",
+            "Get Attendance"};
     }
     else if (menu == "classMenuOptions")
     {
-        options = {"Add Class", "Display Classes", "Generate Attendance Report", "Show Class GPA"};
+        options = {"Add Class", "Generate Attendance Report", "Show Class GPA", "Add Student To Class"};
     }
     else if (menu == "mainMenuOptions")
     {

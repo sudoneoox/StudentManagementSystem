@@ -16,7 +16,7 @@ void addDataToJsonFile(const string &filePath, Student &s)
     ofstream outfile(filePath);
     if (outfile.is_open())
     {
-        outfile << existingJsonData.dump(4); // write json data to file
+        outfile << existingJsonData.dump(4); // write json data to file .dump() function pretty prints the json data
         outfile.close();
     }
     else
@@ -24,7 +24,8 @@ void addDataToJsonFile(const string &filePath, Student &s)
         cout << "Error opening file" << endl;
     }
 }
-void addDataToJsonFileFromClass(const string &filePath, Class *c)
+
+void addDataToJsonFileFromClass(const string &filePath, Class *c) // function to add data to json file from class object
 {
 
     createJsonFile(filePath); // create json file if it doesn't exist
@@ -49,7 +50,7 @@ void addDataToJsonFileFromClass(const string &filePath, Class *c)
     }
 }
 
-void createJsonFile(const string &filePath)
+void createJsonFile(const string &filePath) // function to create json file if it doesn't exist
 {
     ofstream outfile(filePath, ios::out | ios::app);
     if (!outfile.is_open())
@@ -65,11 +66,11 @@ void createJsonFile(const string &filePath)
     outfile.close();
 }
 
-json loadDataFromFile(const string &filename)
+json loadDataFromFile(const string &filename) // function to load data from json file
 {
     ifstream file(filename);
     json data;
-    if (file.peek() != ifstream::traits_type::eof())
+    if (file.peek() != ifstream::traits_type::eof()) // check if json file is empty
     {
         try
         {
@@ -103,7 +104,7 @@ void to_json(json &j, Student s) // convert student object to json object
     j["attendanceRecord"] = s.GetAllAttendanceRecords();
 }
 
-void to_jsonFromClass(json &j, Class *c)
+void to_jsonFromClass(json &j, Class *c) // convert class object to json object
 {
     j = json{
         {"name", c->getName()},
@@ -131,10 +132,10 @@ void from_json(const json &j, Student &s)
     s.setName(name);
     s.setEmail(email);
 
-    // If Student has other properties like ID or classesEnrolled, handle them similarly
+    // TODO add other properties
 }
 
-bool isJsonFileEmpty(string &filename)
+bool isJsonFileEmpty(string &filename) // function to check if json file is empty
 {
     ifstream file(filename);
     json data;
@@ -156,7 +157,7 @@ bool isJsonFileEmpty(string &filename)
     return data.empty();
 }
 
-vector<Student> crateStudentObjectsFromJsonFile(string &filename)
+vector<Student> crateStudentObjectsFromJsonFile(string &filename) // function to create student objects from json file
 {
     vector<Student> students;
     json studentData = loadDataFromFile(filename);
@@ -176,7 +177,7 @@ vector<Student> crateStudentObjectsFromJsonFile(string &filename)
     return students;
 }
 
-map<string, Class *> createClassObjectsFromJsonFile(string &filename)
+map<string, Class *> createClassObjectsFromJsonFile(string &filename) // function to create class objects from json file
 {
     map<string, Class *> allClasses;
     json classData = loadDataFromFile(filename);

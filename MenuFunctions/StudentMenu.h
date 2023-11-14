@@ -31,7 +31,7 @@ void studentMenu(Student &student)
             cout << "You will now be marked present for today's date "
                  << currentDate() << '\n';
             student.MarkAttendance(currentDate(), "PRESENT");
-            addDataToJsonFile("./Data/student.json", student);
+            addDataToJsonFile("Data\student.json", student);
             PrintMenuOption("Student Menu", "studentMenuOptions");
         }
         else if (input == '3')
@@ -46,9 +46,9 @@ void studentMenu(Student &student)
         }
     }
 }
-string currentDate()
+
+string currentDate() // function to get the current date in the format of month/day/year thank you stack exchange
 {
-    // get current date
     auto now = chrono::system_clock::now();
 
     time_t now_c = chrono::system_clock::to_time_t(now); // convert to c time
@@ -59,21 +59,32 @@ string currentDate()
     dateStream << put_time(&now_tm, "%m/%d/%Y"); // format month/day/year
     return dateStream.str();
 }
-bool validationCheck(vector<Student> students, int &idx)
+
+bool validationCheck(vector<Student> students, int &idx) // function to check if the student ID is valid returns idx of student if true
 {
-    cout << "Enter your StudentID: ";
-    string ID;
-    cin >> ID;
-    idx = 0;
-    for (int i = 0; i < students.size(); i++)
+    while (true)
     {
-        if (students.at(i).getID() == ID)
+        cout << "Enter your StudentID or 0 to go back: ";
+        string ID;
+        cin >> ID;
+
+        if (ID == "0")
         {
-            idx = i;
-            return true;
+            return false; // Return false if user enters 0, indicating to go back
         }
+
+        for (int i = 0; i < students.size(); i++)
+        {
+            if (students.at(i).getID() == ID)
+            {
+                idx = i;     // Set index if ID is found
+                return true; // ID is valid, return true
+            }
+        }
+
+        cout << "Invalid ID Try Again or Enter 0 to go back to the portal\n";
+        // The loop will continue, prompting the user again
     }
-    return false;
 }
 
 #endif // !STUDENTMENU_H

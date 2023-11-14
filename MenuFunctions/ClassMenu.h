@@ -8,6 +8,7 @@
 
 using namespace std;
 void addDataToJsonFile(string &filename, Class *c);
+void displayAllClasses(map<string, Class *> &allClasses);
 
 void ClassMenu(map<string, Class *> &allClasses)
 {
@@ -24,18 +25,37 @@ void ClassMenu(map<string, Class *> &allClasses)
             cout << "Enter the class ID: ";
             cin >> classID;
             allClasses.insert(pair<string, Class *>(classID, new Class(className, classID)));
-            addDataToJsonFileFromClass("./Data/class.json", allClasses[classID]);
+            addDataToJsonFileFromClass("Data\class.json", allClasses[classID]);
             PrintMenuOption("Class Menu", "classMenuOptions");
         }
 
         else if (input == '2')
         {
-            cout << "Displaying all classes\n";
-            for (auto &c : allClasses)
-            {
-                cout << "Class Name: " << c.second->getName() << endl;
-            }
+            cout << "For which class would you like to show the attendance record of? \n";
+            displayAllClasses(allClasses);
+            cout << "Enter the class ID: ";
+            string classID;
+            cin >> classID;
             PrintMenuOption("Class Menu", "classMenuOptions");
+        }
+        else if (input == '3')
+        {
+            cout << "For which class would you like to show the Cumulative GPA of? \n";
+            displayAllClasses(allClasses);
+            cout << "Enter the class ID: ";
+            string classID;
+            cin >> classID;
+            PrintMenuOption("Class Menu", "classMenuOptions");
+        }
+        else if (input == '4')
+        {
+            cout << "Adding student to class showing available classes\n";
+            displayAllClasses(allClasses);
+            string classID, studentID;
+            cout << "Enter the class ID: ";
+            cin >> classID;
+            cout << "Enter the student ID: ";
+            cin >> studentID;
         }
         else if (input == '5')
         {
@@ -43,6 +63,14 @@ void ClassMenu(map<string, Class *> &allClasses)
             PrintMenuOption("Main Menu", "mainMenuOptions");
             break;
         }
+    }
+}
+
+void displayAllClasses(map<string, Class *> &allClasses)
+{
+    for (auto &c : allClasses)
+    {
+        cout << c.second->getClassID() << ": " << c.second->getName() << endl; // this is the class object
     }
 }
 

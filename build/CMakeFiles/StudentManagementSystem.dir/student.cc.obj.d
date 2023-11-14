@@ -101,11 +101,6 @@ CMakeFiles/StudentManagementSystem.dir/student.cc.obj: \
  C:/msys64/mingw64/include/c++/13.1.0/bits/uses_allocator.h \
  C:/msys64/mingw64/include/c++/13.1.0/bits/stl_multimap.h \
  C:/msys64/mingw64/include/c++/13.1.0/bits/erase_if.h \
- C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/teacher.h \
- C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/assignment.h \
- C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/student.h \
- C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/attendanceStatus.h \
- C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/dateStruct.h \
  C:/msys64/mingw64/include/c++/13.1.0/iostream \
  C:/msys64/mingw64/include/c++/13.1.0/ostream \
  C:/msys64/mingw64/include/c++/13.1.0/ios \
@@ -152,6 +147,11 @@ CMakeFiles/StudentManagementSystem.dir/student.cc.obj: \
  C:/msys64/mingw64/include/c++/13.1.0/bits/ostream.tcc \
  C:/msys64/mingw64/include/c++/13.1.0/istream \
  C:/msys64/mingw64/include/c++/13.1.0/bits/istream.tcc \
+ C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/teacher.h \
+ C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/assignment.h \
+ C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/student.h \
+ C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/attendanceStatus.h \
+ C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/H/dateStruct.h \
  C:/msys64/mingw64/include/c++/13.1.0/fstream \
  C:/msys64/mingw64/include/c++/13.1.0/bits/codecvt.h \
  C:/msys64/mingw64/include/c++/13.1.0/x86_64-w64-mingw32/bits/basic_file.h \

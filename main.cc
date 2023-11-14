@@ -28,12 +28,12 @@ int main()
     vector<Teacher> teachers;
     map<string, Class *> allClasses;
 
-    !isJsonFileEmpty(StudentJSON) ? StudentJSON = "./Data/student.json" : StudentJSON = "./Data/defaultStudent.json";
-    !isJsonFileEmpty(ClassJSON) ? ClassJSON = "./Data/class.json" : ClassJSON = "./Data/defaultClass.json";
-    !isJsonFileEmpty(TeacherJSON) ? TeacherJSON = "./Data/teacher.json" : TeacherJSON = "./Data/defaultTeacher.json";
+    !isJsonFileEmpty(StudentJSON) ? StudentJSON = "Data\student.json" : StudentJSON = "Data\student.json";
+    !isJsonFileEmpty(ClassJSON) ? ClassJSON = "Data\class.json" : ClassJSON = "Data\class.json";
+    !isJsonFileEmpty(TeacherJSON) ? TeacherJSON = "Data\Teacher.json" : TeacherJSON = "Data\Teacher.json";
 
-    crateStudentObjectsFromJsonFile(StudentJSON);
-    createClassObjectsFromJsonFile(ClassJSON);
+    students = crateStudentObjectsFromJsonFile(StudentJSON);
+    allClasses = createClassObjectsFromJsonFile(ClassJSON);
 
     char input;
     PrintMenuOption("Student Management System", "mainMenuOptions");
@@ -50,10 +50,9 @@ int main()
                 studentMenu(students.at(idx));
                 PrintMenuOption("Student Management System", "mainMenuOptions");
             }
-            else
+            else if (!correctID)
             {
-                cout << "Invalid ID\n";
-                correctID = validationCheck(students, idx);
+                PrintMenuOption("Student Management System", "mainMenuOptions");
             }
         }
         else if (input == '2')
