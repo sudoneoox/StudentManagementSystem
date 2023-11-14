@@ -1,0 +1,30 @@
+{
+    "3": {
+        "attendanceRecord": {
+            "01/01/2020": "ABSENT",
+            "01/02/2020": "PRESENT",
+            "11/13/2023": "PRESENT"
+        },
+        "classSchedule": [
+            "Physics",
+            "203"
+        ],
+        "email": "3",
+        "name": "3"
+    },
+    "34": {
+        "attendanceRecord": {
+            "11/13/2023": "PRESENT"
+        },
+        "email": "3",
+        "name": "Wack"
+    },
+    "d": {
+        "attendanceRecord": {
+            "11/13/2023": "PRESENT"
+        },
+        "classSchedule": [],
+        "email": "d",
+        "name": "Dioeg"
+    }
+}

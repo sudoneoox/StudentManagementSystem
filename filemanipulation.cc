@@ -1,0 +1,191 @@
+#include "./H/filemanipulation.h"
+
+void addDataToJsonFile(const string &filePath, Student &s)
+{
+
+    createJsonFile(filePath); // create json file if it doesn't exist
+    ifstream infile(filePath);
+
+    json existingJsonData = loadDataFromFile(filePath); // load existing json data from file
+
+    json studentJson;
+    to_json(studentJson, s);                   // create json object from student object
+    string studentID = s.getID();              // get student ID
+    existingJsonData[studentID] = studentJson; // add student data to existing json data
+
+    ofstream outfile(filePath);
+    if (outfile.is_open())
+    {
+        outfile << existingJsonData.dump(4); // write json data to file
+        outfile.close();
+    }
+    else
+    {
+        cout << "Error opening file" << endl;
+    }
+}
+void addDataToJsonFileFromClass(const string &filePath, Class *c)
+{
+
+    createJsonFile(filePath); // create json file if it doesn't exist
+    ifstream infile(filePath);
+
+    json existingJsonData = loadDataFromFile(filePath); // load existing json data from file
+
+    json classJson;
+    to_jsonFromClass(classJson, c);        // create json object from student object
+    string classID = c->getClassID();      // get student ID
+    existingJsonData[classID] = classJson; // add student data to existing json data
+
+    ofstream outfile(filePath);
+    if (outfile.is_open())
+    {
+        outfile << existingJsonData.dump(4); // write json data to file
+        outfile.close();
+    }
+    else
+    {
+        cout << "Error opening file" << endl;
+    }
+}
+
+void createJsonFile(const string &filePath)
+{
+    ofstream outfile(filePath, ios::out | ios::app);
+    if (!outfile.is_open())
+    {
+        cout << "Error opening file" << endl;
+        return;
+    }
+    if (!outfile.tellp() == 0) // check if json file is empty
+    {
+        outfile << "{}"; // if not empty, add empty json object
+    }
+
+    outfile.close();
+}
+
+json loadDataFromFile(const string &filename)
+{
+    ifstream file(filename);
+    json data;
+    if (file.peek() != ifstream::traits_type::eof())
+    {
+        try
+        {
+            file >> data;
+        }
+        catch (const json::parse_error &e)
+        {
+            std::cout << "Parse error: " << e.what() << std::endl;
+            return json{};
+        }
+    }
+    cout << "DATA ";
+    for (auto &el : data.items())
+    {
+        cout << el.key() << '\n';
+    }
+    return data;
+}
+
+void to_json(json &j, Student s) // convert student object to json object
+{
+    j = json{
+        {"name", s.getName()},
+        {"email", s.getEmail()},
+    };
+    for (auto &cls : s.getClassSchedule())
+    {
+        j["classSchedule"].push_back(cls->getClassID());
+    }
+
+    j["attendanceRecord"] = s.GetAllAttendanceRecords();
+}
+
+void to_jsonFromClass(json &j, Class *c)
+{
+    j = json{
+        {"name", c->getName()},
+    };
+    for (auto &student : c->getStudents())
+    {
+        j["students"].push_back(student->getID());
+    }
+}
+
+void from_json(const json &j, Student &s)
+{
+    // Extract data from the JSON object and set it to the Student object
+    string name, email, ID;
+
+    if (j.contains("name"))
+    {
+        name = j.at("name").get<string>();
+    }
+    if (j.contains("email"))
+    {
+        email = j.at("email").get<string>();
+    }
+
+    s.setName(name);
+    s.setEmail(email);
+
+    // If Student has other properties like ID or classesEnrolled, handle them similarly
+}
+
+bool isJsonFileEmpty(string &filename)
+{
+    ifstream file(filename);
+    json data;
+    if (file.peek() == ifstream::traits_type::eof())
+    {
+        return true;
+    }
+
+    try
+    {
+        file >> data;
+    }
+    catch (const json::parse_error &e)
+    {
+        std::cout << "Parse error: " << e.what() << std::endl;
+        return true;
+    }
+
+    return data.empty();
+}
+
+vector<Student> crateStudentObjectsFromJsonFile(string &filename)
+{
+    vector<Student> students;
+    json studentData = loadDataFromFile(filename);
+    for (auto &student : studentData.items())
+    {
+        Student s;
+        string id = student.key();
+        string name = student.value().at("name").get<string>();
+        string email = student.value().at("email").get<string>();
+        map<string, string> attendanceRecord = student.value().at("attendanceRecord").get<map<string, string>>();
+        s.setID(id);
+        s.setName(name);
+        s.setEmail(email);
+        s.setAttendanceRecord(attendanceRecord);
+        students.push_back(s);
+    }
+    return students;
+}
+
+map<string, Class *> createClassObjectsFromJsonFile(string &filename)
+{
+    map<string, Class *> allClasses;
+    json classData = loadDataFromFile(filename);
+    for (auto &cls : classData.items())
+    {
+        string classID = cls.key();
+        string className = cls.value().at("name").get<string>();
+        Class *c = new Class(className, classID);
+        allClasses[classID] = c;
+    }
+    return allClasses;
+}

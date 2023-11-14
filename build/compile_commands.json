@@ -1,0 +1,44 @@
+[
+{
+  "directory": "C:/Users/Diego/Desktop/Student Management System/build",
+  "command": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/c++.exe\" -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 @CMakeFiles/StudentManagementSystem.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles/StudentManagementSystem.dir/main.cc.obj -c \"C:/Users/Diego/Desktop/Student Management System/main.cc\"",
+  "file": "C:/Users/Diego/Desktop/Student Management System/main.cc",
+  "output": "CMakeFiles/StudentManagementSystem.dir/main.cc.obj"
+},
+{
+  "directory": "C:/Users/Diego/Desktop/Student Management System/build",
+  "command": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/c++.exe\" -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 @CMakeFiles/StudentManagementSystem.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles/StudentManagementSystem.dir/class.cc.obj -c \"C:/Users/Diego/Desktop/Student Management System/class.cc\"",
+  "file": "C:/Users/Diego/Desktop/Student Management System/class.cc",
+  "output": "CMakeFiles/StudentManagementSystem.dir/class.cc.obj"
+},
+{
+  "directory": "C:/Users/Diego/Desktop/Student Management System/build",
+  "command": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/c++.exe\" -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 @CMakeFiles/StudentManagementSystem.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles/StudentManagementSystem.dir/assignment.cc.obj -c \"C:/Users/Diego/Desktop/Student Management System/assignment.cc\"",
+  "file": "C:/Users/Diego/Desktop/Student Management System/assignment.cc",
+  "output": "CMakeFiles/StudentManagementSystem.dir/assignment.cc.obj"
+},
+{
+  "directory": "C:/Users/Diego/Desktop/Student Management System/build",
+  "command": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/c++.exe\" -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 @CMakeFiles/StudentManagementSystem.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles/StudentManagementSystem.dir/people.cc.obj -c \"C:/Users/Diego/Desktop/Student Management System/people.cc\"",
+  "file": "C:/Users/Diego/Desktop/Student Management System/people.cc",
+  "output": "CMakeFiles/StudentManagementSystem.dir/people.cc.obj"
+},
+{
+  "directory": "C:/Users/Diego/Desktop/Student Management System/build",
+  "command": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/c++.exe\" -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 @CMakeFiles/StudentManagementSystem.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles/StudentManagementSystem.dir/student.cc.obj -c \"C:/Users/Diego/Desktop/Student Management System/student.cc\"",
+  "file": "C:/Users/Diego/Desktop/Student Management System/student.cc",
+  "output": "CMakeFiles/StudentManagementSystem.dir/student.cc.obj"
+},
+{
+  "directory": "C:/Users/Diego/Desktop/Student Management System/build",
+  "command": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/c++.exe\" -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 @CMakeFiles/StudentManagementSystem.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles/StudentManagementSystem.dir/teacher.cc.obj -c \"C:/Users/Diego/Desktop/Student Management System/teacher.cc\"",
+  "file": "C:/Users/Diego/Desktop/Student Management System/teacher.cc",
+  "output": "CMakeFiles/StudentManagementSystem.dir/teacher.cc.obj"
+},
+{
+  "directory": "C:/Users/Diego/Desktop/Student Management System/build",
+  "command": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/c++.exe\" -DJSON_DIAGNOSTICS=0 -DJSON_USE_IMPLICIT_CONVERSIONS=1 @CMakeFiles/StudentManagementSystem.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles/StudentManagementSystem.dir/filemanipulation.cc.obj -c \"C:/Users/Diego/Desktop/Student Management System/filemanipulation.cc\"",
+  "file": "C:/Users/Diego/Desktop/Student Management System/filemanipulation.cc",
+  "output": "CMakeFiles/StudentManagementSystem.dir/filemanipulation.cc.obj"
+}
+]

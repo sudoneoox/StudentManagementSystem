@@ -1,0 +1,10 @@
+
+# Ignore compiled binary files
+*.exe
+
+
+# Ignore build output
+/build
+/dist
+/.vscode
+

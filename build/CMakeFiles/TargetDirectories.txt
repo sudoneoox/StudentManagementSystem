@@ -1,0 +1,5 @@
+C:/Users/Diego/Desktop/Student Management System/build/CMakeFiles/StudentManagementSystem.dir
+C:/Users/Diego/Desktop/Student Management System/build/CMakeFiles/edit_cache.dir
+C:/Users/Diego/Desktop/Student Management System/build/CMakeFiles/rebuild_cache.dir
+C:/Users/Diego/Desktop/Student Management System/build/_deps/json-build/CMakeFiles/edit_cache.dir
+C:/Users/Diego/Desktop/Student Management System/build/_deps/json-build/CMakeFiles/rebuild_cache.dir
