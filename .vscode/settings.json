@@ -76,6 +76,8 @@
         "xmemory": "cpp",
         "xstddef": "cpp",
         "xtr1common": "cpp",
-        "charconv": "cpp"
+        "charconv": "cpp",
+        "format": "cpp",
+        "any": "cpp"
     }
 }

@@ -7,7 +7,7 @@
 #include "../H/filemanipulation.h"
 
 using namespace std;
-void addDataToJsonFile(string &filename, Class *c);
+
 void displayAllClasses(map<string, Class *> &allClasses);
 
 void ClassMenu(map<string, Class *> &allClasses)

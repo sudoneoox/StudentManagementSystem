@@ -33,6 +33,7 @@ public:
     void setName(string className);
     void setClassID(string classID);
     void setTeacher(Teacher *teacher);
+    void setStudentList(vector<Student *> studentList);
     void addStudent(Student *Student);
     string getName();
     string getClassID();

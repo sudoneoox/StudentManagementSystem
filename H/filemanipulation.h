@@ -19,6 +19,8 @@ json loadDataFromFile(const string &filename);
 void to_json(json &j, Student s);
 void to_jsonFromClass(json &j, Class *c);
 void from_json(const json &j, Student &s);
+void from_json(const json &j, Class &c);
+
 bool isJsonFileEmpty(string &filename);
 vector<Student> crateStudentObjectsFromJsonFile(string &filename);
 map<string, Class *> createClassObjectsFromJsonFile(string &filename);

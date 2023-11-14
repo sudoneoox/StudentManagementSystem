@@ -36,6 +36,14 @@ void Class::setTeacher(Teacher *teacher)
     delete teacher;
     this->teacher = teacher;
 }
+void Class::setStudentList(vector<Student *> studentList)
+{
+    for (int i = 0; i < studentList.size(); i++)
+    {
+        delete studentList.at(i);
+        this->studentList.push_back(studentList.at(i));
+    }
+}
 void Class::addStudent(Student *studentList)
 {
     this->studentList.push_back(studentList);

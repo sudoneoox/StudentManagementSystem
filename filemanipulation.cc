@@ -135,11 +135,35 @@ void from_json(const json &j, Student &s)
     // TODO add other properties
 }
 
+// void from_json(const json &j, Class &c)
+// {
+//     // extract data from class obj and set it to the class object
+//     string name, ID;
+//     vector<Student *> studentList;
+
+//     if (j.contains("name"))
+//     {
+//         name = j.at("name").get<string>();
+//     }
+//     if (j.contains("ID"))
+//     {
+//         ID = j.at("ID").get<string>();
+//     }
+//     if (j.contains("students"))
+//     {
+//         studentList = j.at("students").get<vector<Student *>>();
+//     }
+//     c.setClassID(ID);
+//     c.setName(name);
+//     c.setStudentList(studentList);
+//     c.setTeacher(nullptr);
+// }
+
 bool isJsonFileEmpty(string &filename) // function to check if json file is empty
 {
     ifstream file(filename);
     json data;
-    if (file.peek() == ifstream::traits_type::eof())
+    if (file.peek() == ifstream::traits_type::eof()) // check if json file is empty
     {
         return true;
     }
@@ -148,13 +172,13 @@ bool isJsonFileEmpty(string &filename) // function to check if json file is empt
     {
         file >> data;
     }
-    catch (const json::parse_error &e)
+    catch (const json::parse_error &e) // catch parse error if json file is not empty
     {
         std::cout << "Parse error: " << e.what() << std::endl;
         return true;
     }
 
-    return data.empty();
+    return data.empty(); // return true if json file is empty
 }
 
 vector<Student> crateStudentObjectsFromJsonFile(string &filename) // function to create student objects from json file
@@ -185,8 +209,9 @@ map<string, Class *> createClassObjectsFromJsonFile(string &filename) // functio
     {
         string classID = cls.key();
         string className = cls.value().at("name").get<string>();
+        // vector<Student *> studentList = cls.value().at("students").get<vector<Student *>>();
         Class *c = new Class(className, classID);
-        allClasses[classID] = c;
+        allClasses[classID] = c; // map<string, Class *> allClasses;
     }
     return allClasses;
 }
