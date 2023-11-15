@@ -1,4 +1,4 @@
-#include "./H/class.h"
+#include "../include/ClassDeclarations/class.h"
 #include <iostream>
 
 using namespace std;

@@ -1,4 +1,4 @@
-#include "./H/filemanipulation.h"
+#include "../include/filemanipulation.h"
 
 void addDataToJsonFile(const string &filePath, Student &s)
 {

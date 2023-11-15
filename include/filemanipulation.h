@@ -2,7 +2,7 @@
 #define FILEMANIPULATION_H
 
 #include <iostream>
-#include "./student.h"
+#include "../include/ClassDeclarations/student.h"
 #include <fstream>
 #include <string>
 #include <vector>

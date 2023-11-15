@@ -1,10 +1,10 @@
-#include "./H/assignment.h"
-#include "./H/class.h"
-#include "./H/people.h"
-#include "./H/student.h"
-#include "./H/teacher.h"
-#include "./H/Menu.h"
-#include "./H/filemanipulation.h"
+#include "../include/ClassDeclarations/assignment.h"
+#include "../include/ClassDeclarations/class.h"
+#include "../include/ClassDeclarations/people.h"
+#include "../include/ClassDeclarations/student.h"
+#include "../include/ClassDeclarations/teacher.h"
+#include "../include/filemanipulation.h"
+#include "../include/Menu.h"
 #include "./MenuFunctions/StudentMenu.h"
 #include "./MenuFunctions/TeacherMenu.h"
 #include "./MenuFunctions/ClassMenu.h"
@@ -29,9 +29,9 @@ int main()
     vector<Teacher> teachers;
     map<string, Class *> allClasses;
 
-    !isJsonFileEmpty(StudentJSON) ? StudentJSON = "Data\student.json" : StudentJSON = "Data\student.json";
-    !isJsonFileEmpty(ClassJSON) ? ClassJSON = "Data\class.json" : ClassJSON = "Data\class.json";
-    !isJsonFileEmpty(TeacherJSON) ? TeacherJSON = "Data\Teacher.json" : TeacherJSON = "Data\Teacher.json";
+    !isJsonFileEmpty(StudentJSON) ? StudentJSON = "../Data/student.json" : StudentJSON = "../Data/student.json";
+    !isJsonFileEmpty(ClassJSON) ? ClassJSON = "../Data/class.json" : ClassJSON = "../Data/class.json";
+    !isJsonFileEmpty(TeacherJSON) ? TeacherJSON = "../Data/Teacher.json" : TeacherJSON = "../Data/teacher.json";
 
     students = crateStudentObjectsFromJsonFile(StudentJSON);
     allClasses = createClassObjectsFromJsonFile(ClassJSON);

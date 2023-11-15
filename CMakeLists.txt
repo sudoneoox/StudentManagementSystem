@@ -13,19 +13,33 @@ FetchContent_MakeAvailable(json)
 
 
 # Specify the C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Add all your source files
-add_executable(StudentManagementSystem main.cc class.cc assignment.cc people.cc student.cc teacher.cc filemanipulation.cc)
+# include directory for header files
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include) 
 
-# Specify your headers directory
-target_include_directories(StudentManagementSystem PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/H)
+# include directory for json Data
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Data)
+
+# Add all your source files 
+file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/ClassDefinitions/*.cc  
+${CMAKE_CURRENT_SOURCE_DIR}/src/FileHandling/*.cc
+# ${CMAKE_CURRENT_SOURCE_DIR}/src/MenuFunctions/*.cc
+${CMAKE_CURRENT_SOURCE_DIR}/src/main.cc
+)
+
+# define the executable target
+add_executable(StudentManagementSystem ${SOURCES})
+# add_executable(StudentManagementSystem main.cc class.cc assignment.cc people.cc student.cc teacher.cc filemanipulation.cc)
+
+
+#specify the output directory for the executables (in the bin folder)
+set_target_properties(StudentManagementSystem PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
+)
 
 # Link the json library
 target_link_libraries(StudentManagementSystem PRIVATE nlohmann_json::nlohmann_json)
 
-# Set the output directory for the executable after the target is defined
-set_target_properties(StudentManagementSystem PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
+

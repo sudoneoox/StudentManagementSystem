@@ -1,10 +1,13 @@
 #ifndef CLASSMENU_H
 #define CLASSMENU_H
+
 #include <iostream>
 #include <string>
 #include <map>
-#include "../H/class.h"
-#include "../H/filemanipulation.h"
+
+#include "../../include/ClassDeclarations/class.h"
+#include "../../include/filemanipulation.h"
+#include "../../include/Menu.h"
 
 using namespace std;
 
@@ -25,7 +28,7 @@ void ClassMenu(map<string, Class *> &allClasses)
             cout << "Enter the class ID: ";
             cin >> classID;
             allClasses.insert(pair<string, Class *>(classID, new Class(className, classID)));
-            addDataToJsonFileFromClass("Data\class.json", allClasses[classID]);
+            addDataToJsonFileFromClass("../Data/class.json", allClasses[classID]);
             PrintMenuOption("Class Menu", "classMenuOptions");
         }
 

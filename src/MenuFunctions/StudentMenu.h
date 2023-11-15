@@ -1,17 +1,17 @@
 #ifndef STUDENTMENU_H
 #define STUDENTMENU_H
+
 using namespace std;
 #include <iostream>
 #include <string>
 #include <vector>
-#include "../H/student.h"
-#include "../H/filemanipulation.h"
 #include <chrono>
 
-// #include "../H/attendanceStatus.h"
-// #include "../H/dateStruct.h"
+#include "../../include/ClassDeclarations/student.h"
+#include "../../include/filemanipulation.h"
+#include "../../include/Menu.h"
+
 string currentDate();
-void studentMenu(vector<Student> &students);
 void studentMenu(Student &student);
 bool validationCheck(vector<Student> students, int &idx);
 
@@ -31,7 +31,7 @@ void studentMenu(Student &student)
             cout << "You will now be marked present for today's date "
                  << currentDate() << '\n';
             student.MarkAttendance(currentDate(), "PRESENT");
-            addDataToJsonFile("Data\student.json", student);
+            addDataToJsonFile("../Data/student.json", student);
             PrintMenuOption("Student Menu", "studentMenuOptions");
         }
         else if (input == '3')

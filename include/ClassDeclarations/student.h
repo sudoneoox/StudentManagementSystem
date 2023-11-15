@@ -4,8 +4,6 @@
 #include "./people.h"
 #include "./class.h"
 #include "./assignment.h"
-#include "./attendanceStatus.h"
-#include "./dateStruct.h"
 
 #include <chrono> // date manipulation library
 #include <string>

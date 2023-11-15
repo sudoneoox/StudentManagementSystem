@@ -9,13 +9,11 @@
 #include "./people.h"
 #include "./assignment.h"
 #include "./student.h"
-#include "./AttendanceStatus.h"
-#include "./dateStruct.h"
 
 using namespace std;
 
-class Student;
 class Class;
+class Student;
 
 class Teacher : public People
 {
@@ -26,7 +24,7 @@ public:
     vector<Class *> GetSubjectsTaught() const;
     void UpdateSubjects(vector<Class *> newSubjects);
     void EnterGrade(Assignment *assignment, Student *student, double grade);
-    map<Student *, AttendanceStatus> GenerateAttendance(DateStruct startDate, DateStruct endDate);
+    map<Student *, string> GenerateAttendance(string startDate, string endDate);
     Teacher &operator=(const Teacher &RHS);
     friend istream &operator>>(istream &IN, Teacher &teacher);
 
