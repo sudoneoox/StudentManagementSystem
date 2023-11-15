@@ -1,5 +1,0 @@
-C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/CMakeFiles/StudentManagementSystem.dir
-C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/CMakeFiles/edit_cache.dir
-C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/CMakeFiles/rebuild_cache.dir
-C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/_deps/json-build/CMakeFiles/edit_cache.dir
-C:/Users/Diego/Desktop/StudentManagementSystem/StudentManagementSystem/build/_deps/json-build/CMakeFiles/rebuild_cache.dir

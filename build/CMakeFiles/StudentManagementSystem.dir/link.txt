@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\StudentManagementSystem.dir/objects.a
-C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\StudentManagementSystem.dir/objects.a @CMakeFiles\StudentManagementSystem.dir\objects1.rsp
-C:\msys64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\StudentManagementSystem.dir/objects.a -Wl,--no-whole-archive -o C:\Users\Diego\Desktop\StudentManagementSystem\StudentManagementSystem\StudentManagementSystem.exe -Wl,--out-implib,libStudentManagementSystem.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\StudentManagementSystem.dir\linkLibs.rsp

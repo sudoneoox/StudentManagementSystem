@@ -1,0 +1,98 @@
+void createDataFile(string option = "create")
+{
+    ofstream studentData;
+    ofstream teacherData;
+    ofstream classData;
+    if (option == "create")
+    {
+        studentData.open("./Data/studentData.txt");
+        studentData << "Student Data\n";
+
+        teacherData.open("./Data/teacherData.txt");
+        teacherData << "Teacher Data\n";
+
+        classData.open("./Data/classData.txt");
+        classData << "Class Data\n";
+    }
+    else if (option == "close")
+    {
+        studentData.close();
+        teacherData.close();
+        classData.close();
+    }
+}
+
+
+void writeToDataFile(ofstream &out, string inMenu)
+{
+    if (inMenu == "student")
+    {
+        out.open("./Data/studentData.txt");
+        out << "Student Data\n";
+    }
+    else if (inMenu == "teacher")
+    {
+        out.open("./Data/teacherData.txt");
+        out << "Teacher Data\n";
+    }
+    else if (inMenu == "class")
+    {
+        out.open("./Data/classData.txt");
+        out << "Class Data\n";
+    }
+}
+
+
+
+//!new
+// void studentMenu(vector<Student> &students)
+// {
+//     char input;
+//     int idx = students.empty() ? 0 : students.size(); // if empty make it 0 else make it the size of the vector
+
+//     while (cin >> input)
+//     {
+//         if (input == '1')
+//         {
+//             students.push_back(Student());
+//             cin >> students.at(idx);
+//             cout << "Added Student to system\n";
+//             addDataToJsonFile("Data\student.json", students.at(idx));
+//             PrintMenuOption("Student Menu", "studentMenuOptions");
+//             idx++;
+//         }
+//         else if (input == '2')
+//         {
+//             cout << "Who would you like to mark attendance for? \n";
+//             for (int i = 0; i < students.size(); i++)
+//             {
+//                 cout << i + 1 << ". " << students.at(i).getName() << endl;
+//             }
+//             int studentIdx;
+//             string date, status;
+//             cin >> studentIdx;
+//             cout << "Marking Attendance for " << students.at(studentIdx - 1).getName() << "\n";
+//             cout << "Enter Date ex. 01/01/2020\n";
+//             cin >> date;
+//             cout << "Enter Status: " << endl
+//                  << "PRESENT" << endl
+//                  << "ABSENT" << endl;
+//             cin >> status;
+//             students.at(studentIdx - 1).MarkAttendance(date, status);
+//             cout << "Attendance Marked\n";
+//             PrintMenuOption("Student Menu", "studentMenuOptions");
+//         }
+//         else if (input == '3')
+//         {
+//             cout << "Displaying Information for " << students.at(idx - 1).getName() << endl;
+//             cout << students.at(idx - 1) << endl;
+//             PrintMenuOption("Student Menu", "studentMenuOptions");
+//         }
+//         else
+//         {
+//             cout << "Invalid input Please Try Again\n ";
+//             PrintMenuOption("Student Menu", "studentMenuOptions");
+//             break;
+//         }
+//     }
+// }
