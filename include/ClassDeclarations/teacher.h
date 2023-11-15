@@ -22,6 +22,7 @@ public:
     Teacher(string name, string email, string id);
     Teacher(const Teacher &other);
     vector<Class *> GetSubjectsTaught() const;
+    void addSubject(Class *subject);
     void UpdateSubjects(vector<Class *> newSubjects);
     void EnterGrade(Assignment *assignment, Student *student, double grade);
     map<Student *, string> GenerateAttendance(string startDate, string endDate);
