@@ -3,7 +3,7 @@
 *.exe
 
 
+
 # Ignore build output
 /build
-/.vscode
-.vscode
+.vscode/
