@@ -8,10 +8,12 @@
 #include "../../include/ClassDeclarations/class.h"
 #include "../../include/filemanipulation.h"
 #include "../../include/Menu.h"
+#include "../../include/ClassDeclarations/teacher.h"
 
 using namespace std;
 
 void displayAllClasses(map<string, Class *> &allClasses);
+void createTeacher(map<string, Class *> &allClasses);
 
 void ClassMenu(map<string, Class *> &allClasses)
 {
@@ -20,13 +22,14 @@ void ClassMenu(map<string, Class *> &allClasses)
     {
         if (input == '1')
         {
+            string className, classID;
             cout << "Creating a new class\n";
-            string className;
-            string classID;
             cout << "Enter the name of the class: ";
             cin >> className;
             cout << "Enter the class ID: ";
             cin >> classID;
+            // cout << "Create a Teacher for the class\n";
+            // createTeacher(allClasses);
             allClasses.insert(pair<string, Class *>(classID, new Class(className, classID)));
             addDataToJsonFileFromClass("../Data/class.json", allClasses[classID]);
             PrintMenuOption("Class Menu", "classMenuOptions");
@@ -67,6 +70,23 @@ void ClassMenu(map<string, Class *> &allClasses)
             break;
         }
     }
+}
+
+void createTeacher(map<string, Class *> &allClasses)
+{
+    string name, email, id;
+    cout << "Enter the name of the teacher: ";
+    cin >> name;
+    cout << "Enter the email of the teacher:";
+    cin >> email;
+    cout << "Enter the ID of the teacher: ";
+    cin >> id;
+    Teacher *t = new Teacher(name, email, id);
+    cout << "Added Teacher";
+    string classID;
+    cin >> classID;
+    allClasses[classID]->setTeacher(t);
+    addDataToJsonFileFromClass("../Data/class.json", allClasses[classID]);
 }
 
 void displayAllClasses(map<string, Class *> &allClasses)

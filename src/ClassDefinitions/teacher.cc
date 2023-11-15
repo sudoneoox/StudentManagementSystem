@@ -9,6 +9,12 @@ Teacher::Teacher()
     this->ID = "";
     vector<Class *> subjectsTaught;
 };
+
+void Teacher::addSubject(Class *subject)
+{
+    subjectsTaught.push_back(subject);
+};
+
 Teacher::Teacher(string name, string email, string id)
 {
     this->name = name;

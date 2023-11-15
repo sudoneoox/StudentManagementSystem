@@ -1,14 +1,17 @@
 {
-    "1301": {
-        "name": "Physics"
+    "C001": {
+        "ID": "C001",
+        "name": "Math 101",
+        "students": []
     },
-    "1405": {
-        "name": "Geology"
-    },
-    "2414": {
-        "name": "Calculus"
+    "C002": {
+        "ID": "C002",
+        "name": "Science 102",
+        "students": []
     },
     "d": {
-        "name": "d"
+        "ID": "d",
+        "name": "d",
+        "students": []
     }
 }

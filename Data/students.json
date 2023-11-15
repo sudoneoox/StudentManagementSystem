@@ -1,0 +1,14 @@
+{
+    "1000": {
+        "attendanceRecord": {},
+        "classSchedule": [],
+        "email": "drcorona@cougarnet.uh.edu",
+        "name": "Diego"
+    },
+    "1001": {
+        "attendanceRecord": {},
+        "classSchedule": [],
+        "email": "janedoe@cougarnet.uh.edu",
+        "name": "Jane"
+    }
+}

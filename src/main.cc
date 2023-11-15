@@ -5,13 +5,12 @@
 #include "../include/ClassDeclarations/teacher.h"
 #include "../include/filemanipulation.h"
 #include "../include/Menu.h"
+
 #include "./MenuFunctions/StudentMenu.h"
 #include "./MenuFunctions/TeacherMenu.h"
 #include "./MenuFunctions/ClassMenu.h"
 
 #include <iostream>
-#include <unordered_map>
-#include <iomanip>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -22,19 +21,16 @@
 using namespace std;
 using json = nlohmann::json;
 
+vector<Student> students;
+vector<Teacher> teachers;
+map<string, Class *> allClasses;
+
 int main()
 {
-    string StudentJSON, ClassJSON, TeacherJSON;
-    vector<Student> students;
-    vector<Teacher> teachers;
-    map<string, Class *> allClasses;
 
-    !isJsonFileEmpty(StudentJSON) ? StudentJSON = "../Data/student.json" : StudentJSON = "../Data/student.json";
-    !isJsonFileEmpty(ClassJSON) ? ClassJSON = "../Data/class.json" : ClassJSON = "../Data/class.json";
-    !isJsonFileEmpty(TeacherJSON) ? TeacherJSON = "../Data/Teacher.json" : TeacherJSON = "../Data/teacher.json";
-
-    students = crateStudentObjectsFromJsonFile(StudentJSON);
-    allClasses = createClassObjectsFromJsonFile(ClassJSON);
+    PreloadData("student", "../Data/students.json");
+    PreloadData("teacher", "../Data/teachers.json");
+    PreloadData("class", "../Data/class.json");
 
     char input;
     PrintMenuOption("Student Management System", "mainMenuOptions");

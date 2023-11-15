@@ -1,0 +1,14 @@
+{
+    "2000": {
+        "ID": "2000",
+        "email": "teacher@cougarnet.uh.edu",
+        "name": "Dr. Corona",
+        "subjectsTaught": []
+    },
+    "2001": {
+        "ID": "2001",
+        "email": "doe@uh.edu",
+        "name": "Dr. Doe",
+        "subjectsTaught": []
+    }
+}

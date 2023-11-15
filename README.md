@@ -9,10 +9,15 @@ FINAL PROJECT
 
 
 ## Building The Project
+save CMakeLists.txt it should create a build folder if it doesnt do this in the terminal
+
 mkdir build
 cd build
 cmake ..
 cmake --build .
 
+
+
 ## USAGE (RUN APPLICATION)
-../StudentManagementSystem
+.exe is in the bin folder to run it open it in a folder and double click it or run this in the terminal
+..\bin\StudentManagementSystem.exe
