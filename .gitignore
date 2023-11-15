@@ -4,6 +4,6 @@
 
 
 # Ignore build output
-./build
+/build
 /.vscode
 
