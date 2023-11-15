@@ -1,4 +1,4 @@
-#include "./H/teacher.h"
+#include "../include/ClassDeclarations/teacher.h"
 
 using namespace std;
 
@@ -35,7 +35,7 @@ void Teacher::EnterGrade(Assignment *assignment, Student *student, double grade)
 {
     cout << "still need to complete";
 };
-map<Student *, AttendanceStatus> GenerateAttendance(DateStruct startDate, DateStruct endDate){
+map<Student *, string> GenerateAttendance(string startDate, string endDate){
 
 };
 

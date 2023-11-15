@@ -3,8 +3,10 @@
 
 using namespace std;
 #include <iostream>
-#include "../H/teacher.h"
-#include "../H/filemanipulation.h"
+
+#include "../include/ClassDeclarations/teacher.h"
+#include "../include/filemanipulation.h"
+#include "../../include/Menu.h"
 
 void TeacherMenu();
 

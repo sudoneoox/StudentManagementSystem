@@ -1,4 +1,4 @@
-#include "./H/student.h"
+#include "../include/ClassDeclarations/student.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ Student::Student(string name, string email, string id)
     this->email = email;
     this->ID = id;
     vector<Class *> classSchedule;
-    map<DateStruct, AttendanceStatus> attendanceRecord;
+    map<string, string> attendanceRecord;
     map<Assignment *, double> assignmentGrades;
 }
 
