@@ -44,9 +44,9 @@ void Class::setStudentList(vector<Student *> studentList)
         this->studentList.push_back(studentList.at(i));
     }
 }
-void Class::addStudent(Student *studentList)
+void Class::addStudent(Student *student)
 {
-    this->studentList.push_back(studentList);
+    this->studentList.push_back(student);
 }
 string Class::getID()
 {

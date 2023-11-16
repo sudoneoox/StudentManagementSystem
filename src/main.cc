@@ -32,10 +32,6 @@ int main()
     PreloadData("teacher", "../Data/teachers.json");
     PreloadData("class", "../Data/class.json");
 
-    cout << students.size() << "in main\n"
-         << endl;
-    cout << teachers.size() << endl;
-
     char input;
     PrintMenuOption("Student Management System", "mainMenuOptions");
     while (cin >> input)
@@ -43,7 +39,6 @@ int main()
         if (input == '1')
         {
             int idx;
-            cout << students.at(0);
             bool correctID = validationCheck(students, idx);
             if (correctID)
             {
