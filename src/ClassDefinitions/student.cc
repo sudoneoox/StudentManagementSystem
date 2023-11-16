@@ -45,15 +45,18 @@ map<string, string> Student::GetAllAttendanceRecords()
 
 void Student::MarkAttendance(string date, string status)
 {
-    map<string, string>::iterator iter;
-    iter = this->attendanceRecord.find(date);
-    if (iter == attendanceRecord.end())
+    auto iter = attendanceRecord.find(date);
+
+    // Check if the attendance record for the date exists and the status is "present"
+    if (iter != attendanceRecord.end() && iter->second == "PRESENT")
     {
-        attendanceRecord[date] = status;
+        cout << "Attendance already marked as present for Date: " << date << endl;
     }
     else
     {
-        cout << "Attendance already inputed for Date: " << endl;
+        // Add or update the attendance record
+        cout << "updated \n";
+        attendanceRecord[date] = status;
     }
 }
 
@@ -68,7 +71,14 @@ void Student::enrollInClass(Class *newClass)
     classSchedule.push_back(newClass); // add class to student
     newClass->addStudent(this);        // add student to class
 }
-
+void Student::enrollInClasses(vector<Class *> newClasses)
+{
+    for (int i = 0; i < newClasses.size(); i++)
+    {
+        classSchedule.push_back(newClasses.at(i)); // add class to student
+        newClasses.at(i)->addStudent(this);        // add student to class
+    }
+}
 ostream &operator<<(ostream &OUT, Student &RHS)
 {
     OUT << "Student Name: " << RHS.name << endl;

@@ -1,12 +1,18 @@
 {
     "1000": {
-        "attendanceRecord": {},
+        "ID": "1000",
+        "attendanceRecord": {
+            "11/15/2023": "PRESENT"
+        },
         "classSchedule": [],
         "email": "drcorona@cougarnet.uh.edu",
         "name": "Diego"
     },
     "1001": {
-        "attendanceRecord": {},
+        "ID": "1001",
+        "attendanceRecord": {
+            "11/15/2023": "ABSENT"
+        },
         "classSchedule": [],
         "email": "janedoe@cougarnet.uh.edu",
         "name": "Jane"

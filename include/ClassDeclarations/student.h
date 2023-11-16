@@ -32,6 +32,7 @@ public:
     double getGradeForAssignment(Assignment *assignment);
     void MarkAttendance(string date, string status);
     void enrollInClass(Class *newClass);
+    void enrollInClasses(vector<Class *> newClasses);
 
     void setAttendanceRecord(map<string, string> attendanceRecord);
     vector<Class *> &getClassSchedule();

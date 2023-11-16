@@ -7,12 +7,16 @@ void to_json(json &j, Student s)
     j = {
         {"name", s.getName()},
         {"email", s.getEmail()},
+        {"ID", s.getID()},
         {"classSchedule", vector<string>()},
-        {"attendanceRecord", s.GetAllAttendanceRecords()}};
+        {"attendanceRecord", map<string, string>()}};
+    j["attendanceRecord"] = s.GetAllAttendanceRecords();
+    cout << "in to_json " << s.GetAllAttendanceRecords().at("11/15/2023") << endl;
     for (auto &cls : s.getClassSchedule())
     {
         j["classSchedule"].push_back(cls->getClassID());
     }
+    cout << j.dump(4) << endl;
 }
 
 void to_jsonFromClass(json &j, Class *c)
@@ -23,10 +27,10 @@ void to_jsonFromClass(json &j, Class *c)
         {"students", vector<string>()}};
     for (const auto &student : c->getStudents())
     {
+        cout << student->getID() << endl;
         j["students"].push_back(student->getID());
     }
 }
-
 void to_jsonFromTeacher(json &j, Teacher &t)
 {
     j = json{
@@ -47,6 +51,33 @@ void from_json(const json &j, Student &s)
 {
     s.setName(j.at("name").get<string>());
     s.setEmail(j.at("email").get<string>());
+    s.setID(j.at("ID").get<string>());
+    if (j.contains("classSchedule") && j["classSchedule"].is_array())
+    {
+        vector<Class *> classes;
+        for (const auto &classIDJson : j["classSchedule"])
+        {
+            string classID = classIDJson.get<string>();
+            auto it = allClasses.find(classID);
+            if (it != allClasses.end())
+            {
+                classes.push_back(it->second);
+            }
+        }
+        s.enrollInClasses(classes);
+    }
+    cout << "attendance record is object? " << j["attendanceRecord"].is_object() << endl;
+    if (j.contains("attendanceRecord") && j["attendanceRecord"].is_object())
+    {
+        map<string, string> attendanceRecord;
+        for (const auto &attendanceRecordJson : j["attendanceRecord"].items())
+        {
+            string date = attendanceRecordJson.key();
+            string status = attendanceRecordJson.value().get<string>();
+            attendanceRecord[date] = status;
+        }
+        s.setAttendanceRecord(attendanceRecord);
+    }
     // TODO: Add other properties and relationships
 }
 
@@ -54,7 +85,6 @@ void from_json(const json &j, Class &c)
 {
     c.setClassID(j.at("ID").get<string>());
     c.setName(j.at("name").get<string>());
-    // TODO: Add other properties and relationships
 }
 
 void from_json(const json &j, Teacher &t)
@@ -90,7 +120,8 @@ void PreloadData(string option, string filename)
             students = {
                 Student("Diego", "drcorona@cougarnet.uh.edu", "1000"),
                 Student("Jane", "janedoe@cougarnet.uh.edu", "1001")};
-
+            students.at(0).MarkAttendance("11/15/2023", "ABSENT");
+            students.at(1).MarkAttendance("11/15/2023", "ABSENT");
             for (auto &student : students)
             {
                 addDataToJsonFile(filename, student);
@@ -125,8 +156,12 @@ void PreloadData(string option, string filename)
         {
             cout << "Class data file is empty. Preloading Data with default values.\n";
             Class *mathClass = new Class("Math 101", "C001");
+            mathClass->addStudent(&students[0]);
+            mathClass->addStudent(&students[1]);
+            cout << mathClass->getStudents().size() << endl;
             Class *scienceClass = new Class("Science 102", "C002");
             allClasses = {{"C001", mathClass}, {"C002", scienceClass}};
+
             for (auto &[classID, classPtr] : allClasses)
             {
                 addDataToJsonFileFromClass(filename, classPtr);
@@ -146,6 +181,7 @@ void addDataToJsonFile(const string &filePath, Student &s)
     json existingJsonData = loadDataFromFile(filePath);
     json studentJson;
     to_json(studentJson, s);
+
     existingJsonData[s.getID()] = studentJson;
     saveJsonToFile(existingJsonData, filePath);
 }
@@ -193,7 +229,7 @@ void saveJsonToFile(const json &data, const string &filePath)
         cout << "Error opening file\n";
         return;
     }
-    outfile << setw(4) << data << endl;
+    outfile << setw(4) << data << endl; // pretty print with 4 spaces
     outfile.close();
 }
 
@@ -266,6 +302,7 @@ map<string, Class *> createClassObjectsFromJsonFile(string &filename)
 }
 
 vector<Teacher> createTeacherObjectsFromJsonFile(string &filename)
+
 {
     vector<Teacher> teachers;
     json teacherData = loadDataFromFile(filename);
@@ -277,29 +314,39 @@ vector<Teacher> createTeacherObjectsFromJsonFile(string &filename)
     }
     return teachers;
 }
-
+// !FINDERS
 Student *findStudentByID(vector<Student> &students, string &studentID)
 {
-    auto it = find_if(students.begin(), students.end(),
-                      [&studentID](Student &student)
-                      {
-                          return student.getID() == studentID;
-                      });
-    return it != students.end() ? &(*it) : nullptr;
+    for (auto it = students.begin(); it != students.end(); ++it)
+    {
+        if (it->getID() == studentID)
+        {
+            return &(*it);
+        }
+    }
+    return nullptr;
 }
 
 Teacher *findTeacherByID(vector<Teacher> &teachers, string &teacherID)
 {
-    auto it = find_if(teachers.begin(), teachers.end(),
-                      [&teacherID](Teacher &teacher)
-                      {
-                          return teacher.getID() == teacherID;
-                      });
-    return it != teachers.end() ? &(*it) : nullptr;
+    for (auto it = teachers.begin(); it != teachers.end(); ++it)
+    {
+        if (it->getID() == teacherID)
+        {
+            return &(*it);
+        }
+    }
+    return nullptr;
 }
 
 Class *findClassByID(map<string, Class *> &allClasses, string &classID)
 {
-    auto it = allClasses.find(classID);
-    return it != allClasses.end() ? it->second : nullptr;
+    for (auto &cls : allClasses)
+    {
+        if (cls.first == classID)
+        {
+            return cls.second;
+        }
+    }
+    return nullptr;
 }
