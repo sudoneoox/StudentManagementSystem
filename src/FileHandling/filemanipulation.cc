@@ -9,14 +9,13 @@ void to_json(json &j, Student s)
         {"email", s.getEmail()},
         {"ID", s.getID()},
         {"classSchedule", vector<string>()},
-        {"attendanceRecord", map<string, string>()}};
-    j["attendanceRecord"] = s.GetAllAttendanceRecords();
-    cout << "in to_json " << s.GetAllAttendanceRecords().at("11/15/2023") << endl;
+        {"attendanceRecord", s.GetAllAttendanceRecords()}};
+
     for (auto &cls : s.getClassSchedule())
     {
         j["classSchedule"].push_back(cls->getClassID());
     }
-    cout << j.dump(4) << endl;
+    cout << j.dump(4) << "intojson" << endl;
 }
 
 void to_jsonFromClass(json &j, Class *c)
@@ -24,12 +23,7 @@ void to_jsonFromClass(json &j, Class *c)
     j = {
         {"name", c->getName()},
         {"ID", c->getClassID()},
-        {"students", vector<string>()}};
-    for (const auto &student : c->getStudents())
-    {
-        cout << student->getID() << endl;
-        j["students"].push_back(student->getID());
-    }
+        {"students", vector<string>()}}; // !TODO: turn this into a map of student IDs and final grades
 }
 void to_jsonFromTeacher(json &j, Teacher &t)
 {
@@ -121,7 +115,8 @@ void PreloadData(string option, string filename)
                 Student("Diego", "drcorona@cougarnet.uh.edu", "1000"),
                 Student("Jane", "janedoe@cougarnet.uh.edu", "1001")};
             students.at(0).MarkAttendance("11/15/2023", "ABSENT");
-            students.at(1).MarkAttendance("11/15/2023", "ABSENT");
+            // students.at(1).MarkAttendance("11/15/2023", "ABSENT");
+            // students.at(0).enrollInClass(allClasses["C001"]);
             for (auto &student : students)
             {
                 addDataToJsonFile(filename, student);
@@ -156,14 +151,11 @@ void PreloadData(string option, string filename)
         {
             cout << "Class data file is empty. Preloading Data with default values.\n";
             Class *mathClass = new Class("Math 101", "C001");
-            mathClass->addStudent(&students[0]);
-            mathClass->addStudent(&students[1]);
-            cout << mathClass->getStudents().size() << endl;
             Class *scienceClass = new Class("Science 102", "C002");
             allClasses = {{"C001", mathClass}, {"C002", scienceClass}};
-
             for (auto &[classID, classPtr] : allClasses)
             {
+
                 addDataToJsonFileFromClass(filename, classPtr);
             }
         }

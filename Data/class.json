@@ -4,12 +4,15 @@
         "name": "Math 101",
         "students": [
             "1000",
-            "1001"
+            "1000"
         ]
     },
     "C002": {
         "ID": "C002",
         "name": "Science 102",
-        "students": []
+        "students": [
+            "1000",
+            "1000"
+        ]
     }
 }

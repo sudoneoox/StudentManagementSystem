@@ -62,6 +62,14 @@ void ClassMenu(map<string, Class *> &allClasses)
             cin >> classID;
             cout << "Enter the student ID: ";
             cin >> studentID;
+            Student *studentptr = findStudentByID(students, studentID);
+            allClasses[classID]->addStudent(studentptr);
+            studentptr->enrollInClass(allClasses[classID]);
+
+            addDataToJsonFileFromClass("../Data/class.json", allClasses[classID]);
+            cout << "works till here\n";
+            cout << "Added Student\n";
+            PrintMenuOption("Class Menu", "classMenuOptions");
         }
         else if (input == '5')
         {
