@@ -31,7 +31,7 @@ void studentMenu(Student &student)
             cout << "You will now be marked present for today's date "
                  << currentDate() << '\n';
             student.MarkAttendance(currentDate(), "PRESENT");
-            addDataToJsonFile("../Data/student.json", student);
+            addDataToJsonFile("../Data/students.json", student);
             PrintMenuOption("Student Menu", "studentMenuOptions");
         }
         else if (input == '3')

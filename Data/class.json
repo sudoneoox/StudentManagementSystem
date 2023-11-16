@@ -2,16 +2,14 @@
     "C001": {
         "ID": "C001",
         "name": "Math 101",
-        "students": []
+        "students": [
+            "1000",
+            "1001"
+        ]
     },
     "C002": {
         "ID": "C002",
         "name": "Science 102",
-        "students": []
-    },
-    "d": {
-        "ID": "d",
-        "name": "d",
         "students": []
     }
 }
