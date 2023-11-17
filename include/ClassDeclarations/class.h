@@ -17,9 +17,10 @@ class Class
 private:
     string className;
     string classID;
-    Teacher *teacher;
-    vector<Student *> studentList;
-    map<Student *, double> finalGrades;
+    Teacher* teacher;
+
+    map<string, Student*> studentList; // studentID, student pointer
+    map<Student*, double> finalGrades;
 
 public:
     // constructor
@@ -29,19 +30,19 @@ public:
     ~Class();
 
     Class(string name, string classID);
-    Class(const Class &otherClass);
+    Class(const Class& otherClass);
     void setName(string className);
     void setClassID(string classID);
-    void setTeacher(Teacher *teacher);
-    void setStudentList(vector<Student *> studentList);
-    void addStudent(Student *Student);
+    void setTeacher(Teacher* teacher);
+    void setStudentList(map<string, Student*> studentList);
+    void addStudent(Student* Student);
     string getName();
     string getClassID();
-    Teacher getTeacher();
+    Teacher* getTeacher();
     string getID();
-    vector<Student *> getStudents();
-    double GetFinalGrade(Student *student);
-    map<Student *, double> GetAllFinalGrades();
+    map<string, Student*> getStudents();
+    double GetFinalGrade(Student* student);
+    map<Student*, double> GetAllFinalGrades();
 };
 
 #endif // !CLASS_H

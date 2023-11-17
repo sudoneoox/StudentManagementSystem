@@ -3,70 +3,54 @@
 
 using namespace std;
 
-Class::Class()
-{
+Class::Class() {
     this->className = "";
     this->classID = "";
     this->teacher = new Teacher();
-    this->studentList;
+    this->studentList = studentList;
 }
 
 // destructor
-Class::~Class()
-{
+Class::~Class() {
     delete teacher;
-    for (int i = 0; i < studentList.size(); i++)
-    {
-        delete studentList.at(i);
-    }
 }
 
-Class::Class(string name, string classID)
-{
+Class::Class(string name, string classID) {
     this->className = name;
     this->classID = classID;
     this->teacher = teacher;
     this->studentList = studentList;
 }
-Class::Class(const Class &otherClass) {}
+Class::Class(const Class& otherClass) {}
 void Class::setName(string className) { this->className = className; }
 void Class::setClassID(string classID) { this->classID = classID; }
-void Class::setTeacher(Teacher *teacher)
-{
-    delete teacher;
+void Class::setTeacher(Teacher* teacher) {
     this->teacher = teacher;
 }
-void Class::setStudentList(vector<Student *> studentList)
-{
-    for (int i = 0; i < studentList.size(); i++)
-    {
-        delete studentList.at(i);
-        this->studentList.push_back(studentList.at(i));
-    }
+
+void Class::addStudent(Student* student) {
+    studentList.insert(pair<string, Student*>(student->getID(), student));
 }
-void Class::addStudent(Student *student)
-{
-    this->studentList.push_back(student);
+void Class::setStudentList(map<string, Student*> studentList) {
+    this->studentList = studentList;
 }
-string Class::getID()
-{
+
+
+
+string Class::getID() {
     return classID;
 }
-string Class::getName()
-{
+string Class::getName() {
     return className;
 }
-string Class::getClassID()
-{
+string Class::getClassID() {
     return classID;
 }
-Teacher Class::getTeacher()
-{
-    return *teacher;
+Teacher* Class::getTeacher() {
+    return teacher;
 }
-vector<Student *> Class::getStudents()
-{
+map<string, Student*> Class::getStudents() {
     return studentList;
 }
-double Class::GetFinalGrade(Student *student) {}
-map<Student *, double> Class::GetAllFinalGrades() {}
+double Class::GetFinalGrade(Student* student) {}
+map<Student*, double> Class::GetAllFinalGrades() {}

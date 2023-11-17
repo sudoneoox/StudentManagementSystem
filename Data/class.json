@@ -2,14 +2,23 @@
     "C001": {
         "ID": "C001",
         "name": "Math 101",
-        "students": []
+        "students": {
+            "2303693": "Diego Coronado",
+            "2303694": "Cassandra Franco"
+        },
+        "teacher": {
+            "2000": "Carlos Rincon"
+        }
     },
     "C002": {
         "ID": "C002",
         "name": "Science 102",
-        "students": [
-            "1000",
-            "1000"
-        ]
+        "students": {
+            "2303694": "Cassandra Franco",
+            "2303695": "John Wick"
+        },
+        "teacher": {
+            "2001": "Melahut Almus"
+        }
     }
 }

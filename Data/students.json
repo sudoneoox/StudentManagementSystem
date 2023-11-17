@@ -1,18 +1,32 @@
 {
-    "1000": {
-        "ID": "1000",
+    "2303693": {
+        "ID": "2303693",
         "attendanceRecord": {
-            "11/15/2023": "ABSENT"
+            "11/17/2023": "PRESENT"
         },
-        "classSchedule": [],
+        "classSchedule": {
+            "C001": "Math 101"
+        },
         "email": "drcorona@cougarnet.uh.edu",
-        "name": "Diego"
+        "name": "Diego Coronado"
     },
-    "1001": {
-        "ID": "1001",
+    "2303694": {
+        "ID": "2303694",
         "attendanceRecord": {},
-        "classSchedule": [],
-        "email": "janedoe@cougarnet.uh.edu",
-        "name": "Jane"
+        "classSchedule": {
+            "C001": "Math 101",
+            "C002": "Science 102"
+        },
+        "email": "francocm@edu.com",
+        "name": "Cassandra Franco"
+    },
+    "2303695": {
+        "ID": "2303695",
+        "attendanceRecord": {},
+        "classSchedule": {
+            "C002": "Science 102"
+        },
+        "email": "johnwick@edu.com",
+        "name": "John Wick"
     }
 }

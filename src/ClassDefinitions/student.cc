@@ -5,46 +5,42 @@ using namespace std;
 // TODO update methods after working on ASSIGNMENT CLASS
 //  CLASS Class
 
-Student::Student()
-{
+Student::Student() {
     this->name = "";
     this->email = "";
     this->ID = "";
-    vector<Class *> classSchedule;
+    map<string, Class*> classSchedule;
     map<string, string> attendanceRecord;
-    map<Assignment *, double> assignmentGrades;
+    map<Assignment*, double> assignmentGrades;
 }
 
-Student::Student(string name, string email, string id)
-{
+Student::Student(string name, string email, string id) {
     this->name = name;
     this->email = email;
     this->ID = id;
-    vector<Class *> classSchedule;
+    map<string, Class*> classSchedule;
     map<string, string> attendanceRecord;
-    map<Assignment *, double> assignmentGrades;
+    map<Assignment*, double> assignmentGrades;
 }
 
-Student::~Student()
-{
-    map<Assignment *, double>::iterator iter;
+Student::~Student() {
+    map<Assignment*, double>::iterator iter;
+    map<string, Class*>::iterator iter2;
     for (iter = assignmentGrades.begin(); iter != assignmentGrades.end(); iter++)
     {
         delete iter->first;
     }
-    for (int i = 0; i < classSchedule.size(); i++)
+    for (iter2 = classSchedule.begin(); iter2 != classSchedule.end(); iter2++)
     {
-        delete classSchedule.at(i);
+        delete iter2->second;
     }
 }
 
-map<string, string> Student::GetAllAttendanceRecords()
-{
+map<string, string> Student::GetAllAttendanceRecords() {
     return attendanceRecord;
 }
 
-void Student::MarkAttendance(string date, string status)
-{
+void Student::MarkAttendance(string date, string status) {
     auto iter = attendanceRecord.find(date);
 
     // Check if the attendance record for the date exists and the status is "present"
@@ -60,41 +56,33 @@ void Student::MarkAttendance(string date, string status)
     }
 }
 
-double Student::getGradeForAssignment(Assignment *assignment)
-{
+double Student::getGradeForAssignment(Assignment* assignment) {
     // return assignment->getGrade();
     return 3.3;
 }
 
-void Student::enrollInClass(Class *newClass)
-{
-    classSchedule.push_back(newClass); // add class to student
-    newClass->addStudent(this);        // add student to class
+void Student::enrollInClass(Class* newClass) {
+    classSchedule[newClass->getClassID()] = newClass;
 }
-void Student::enrollInClasses(vector<Class *> newClasses)
-{
-    for (int i = 0; i < newClasses.size(); i++)
+void Student::enrollInClasses(map<string, Class*> newClasses) {
+    for (auto iter = newClasses.begin(); iter != newClasses.end(); iter++)
     {
-        classSchedule.push_back(newClasses.at(i)); // add class to student
-        newClasses.at(i)->addStudent(this);        // add student to class
+        classSchedule[iter->first] = iter->second;
     }
 }
-ostream &operator<<(ostream &OUT, Student &RHS)
-{
+ostream& operator<<(ostream& OUT, Student& RHS) {
     OUT << "Student Name: " << RHS.name << endl;
     OUT << "Student Email: " << RHS.email << endl;
     OUT << "Student ID: " << RHS.ID << endl;
     OUT << "Student Class Schedule: " << endl;
-    for (int i = 0; i < RHS.classSchedule.size(); i++)
+    for (auto iter = RHS.classSchedule.begin(); iter != RHS.classSchedule.end(); iter++)
     {
-        OUT << RHS.classSchedule.at(i)->getName() << endl;
+        OUT << iter->second->getName() << endl;
     }
-
     return OUT;
 }
 
-istream &operator>>(istream &IN, Student &RHS)
-{
+istream& operator>>(istream& IN, Student& RHS) {
     cout << "Enter Student Name: ";
     IN >> RHS.name;
     cout << "Enter Student Email: ";
@@ -104,13 +92,11 @@ istream &operator>>(istream &IN, Student &RHS)
     return IN;
 }
 
-vector<Class *> &Student::getClassSchedule()
-{
+map<string, Class*>& Student::getClassSchedule() {
     return classSchedule;
 }
 
-Student &Student::operator=(const Student &RHS)
-{
+Student& Student::operator=(const Student& RHS) {
     this->name = RHS.name;
     this->email = RHS.email;
     this->ID = RHS.ID;
@@ -120,7 +106,6 @@ Student &Student::operator=(const Student &RHS)
     return *this;
 }
 
-void Student::setAttendanceRecord(map<string, string> attendanceRecord)
-{
+void Student::setAttendanceRecord(map<string, string> attendanceRecord) {
     this->attendanceRecord = attendanceRecord;
 }

@@ -12,11 +12,10 @@ using namespace std;
 #include "../../include/Menu.h"
 
 string currentDate();
-void studentMenu(Student &student);
-bool validationCheck(vector<Student> students, int &idx);
+void studentMenu(Student& student);
+bool validationCheck(vector<Student> students, int& idx);
 
-void studentMenu(Student &student)
-{
+void studentMenu(Student& student) {
     char input;
     while (cin >> input && input != '7')
     {
@@ -29,7 +28,7 @@ void studentMenu(Student &student)
         else if (input == '2')
         {
             cout << "You will now be marked present for today's date "
-                 << currentDate() << '\n';
+                << currentDate() << '\n';
             student.MarkAttendance(currentDate(), "PRESENT");
             addDataToJsonFile("../Data/students.json", student);
             PrintMenuOption("Student Menu", "studentMenuOptions");
@@ -60,7 +59,7 @@ string currentDate() // function to get the current date in the format of month/
     return dateStream.str();
 }
 
-bool validationCheck(vector<Student> students, int &idx) // function to check if the student ID is valid returns idx of student if true
+bool validationCheck(map<string, Student*> students, int& idx) // function to check if the student ID is valid returns idx of student if true
 {
     while (true)
     {
@@ -75,10 +74,10 @@ bool validationCheck(vector<Student> students, int &idx) // function to check if
 
         for (int i = 0; i < students.size(); i++)
         {
-            if (students.at(i).getID() == ID)
+            if (students[ID] != nullptr)
             {
-                idx = i;     // Set index if ID is found
-                return true; // ID is valid, return true
+                idx = i;
+                return true;  // Return true if the ID is valid
             }
         }
 
