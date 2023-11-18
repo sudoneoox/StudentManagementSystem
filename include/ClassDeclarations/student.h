@@ -33,6 +33,8 @@ public:
     void MarkAttendance(string date, string status);
     void enrollInClass(Class* newClass);
     void enrollInClasses(map<string, Class*> newClasses);
+    bool isEnrolledInClass(string classID);
+    void printClassSchedule();
 
     void setAttendanceRecord(map<string, string> attendanceRecord);
     map<string, Class*>& getClassSchedule();

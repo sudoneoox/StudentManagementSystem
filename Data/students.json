@@ -2,13 +2,13 @@
     "2303693": {
         "ID": "2303693",
         "attendanceRecord": {
-            "11/17/2023": "PRESENT"
+            "11/17/2023": "ABSENT"
         },
         "classSchedule": {
             "C001": "Math 101"
         },
         "email": "drcorona@cougarnet.uh.edu",
-        "name": "Diego Coronado"
+        "name": "Bob"
     },
     "2303694": {
         "ID": "2303694",

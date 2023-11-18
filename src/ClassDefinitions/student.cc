@@ -26,12 +26,10 @@ Student::Student(string name, string email, string id) {
 Student::~Student() {
     map<Assignment*, double>::iterator iter;
     map<string, Class*>::iterator iter2;
-    for (iter = assignmentGrades.begin(); iter != assignmentGrades.end(); iter++)
-    {
+    for (iter = assignmentGrades.begin(); iter != assignmentGrades.end(); iter++) {
         delete iter->first;
     }
-    for (iter2 = classSchedule.begin(); iter2 != classSchedule.end(); iter2++)
-    {
+    for (iter2 = classSchedule.begin(); iter2 != classSchedule.end(); iter2++) {
         delete iter2->second;
     }
 }
@@ -39,20 +37,24 @@ Student::~Student() {
 map<string, string> Student::GetAllAttendanceRecords() {
     return attendanceRecord;
 }
+void Student::printClassSchedule() {
+    cout << "Class Schedule: " << endl;
+    for (auto iter = classSchedule.begin(); iter != classSchedule.end(); iter++) {
+        cout << iter->second->getName() << endl;
+    }
+}
 
 void Student::MarkAttendance(string date, string status) {
     auto iter = attendanceRecord.find(date);
 
     // Check if the attendance record for the date exists and the status is "present"
-    if (iter != attendanceRecord.end() && iter->second == "PRESENT")
-    {
+    if (iter != attendanceRecord.end() && iter->second == "PRESENT") {
         cout << "Attendance already marked as present for Date: " << date << endl;
     }
-    else
-    {
+    else {
         // Add or update the attendance record
         cout << "updated \n";
-        attendanceRecord[date] = status;
+        attendanceRecord [date] = status;
     }
 }
 
@@ -62,12 +64,20 @@ double Student::getGradeForAssignment(Assignment* assignment) {
 }
 
 void Student::enrollInClass(Class* newClass) {
-    classSchedule[newClass->getClassID()] = newClass;
+    classSchedule [newClass->getClassID()] = newClass;
 }
 void Student::enrollInClasses(map<string, Class*> newClasses) {
-    for (auto iter = newClasses.begin(); iter != newClasses.end(); iter++)
-    {
-        classSchedule[iter->first] = iter->second;
+    for (auto iter = newClasses.begin(); iter != newClasses.end(); iter++) {
+        classSchedule [iter->first] = iter->second;
+    }
+}
+bool Student::isEnrolledInClass(string classID) {
+    auto iter = classSchedule.find(classID);
+    if (iter != classSchedule.end()) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
 ostream& operator<<(ostream& OUT, Student& RHS) {
@@ -75,8 +85,7 @@ ostream& operator<<(ostream& OUT, Student& RHS) {
     OUT << "Student Email: " << RHS.email << endl;
     OUT << "Student ID: " << RHS.ID << endl;
     OUT << "Student Class Schedule: " << endl;
-    for (auto iter = RHS.classSchedule.begin(); iter != RHS.classSchedule.end(); iter++)
-    {
+    for (auto iter = RHS.classSchedule.begin(); iter != RHS.classSchedule.end(); iter++) {
         OUT << iter->second->getName() << endl;
     }
     return OUT;

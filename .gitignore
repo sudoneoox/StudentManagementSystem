@@ -7,3 +7,5 @@
 # Ignore build output
 /build
 .vscode/
+/docs
+

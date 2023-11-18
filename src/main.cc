@@ -19,60 +19,55 @@
 #include <nlohmann/json.hpp>
 
 using namespace std;
-using json = nlohmann::json;
+using json = nlohmann::json; // exteral library for json manipulation documentation: https://github.com/nlohmann/json
 
-
+// global variables a bunch of functions use these and I didnt want to pass them as reference to every function it would make them 
+// unreadable and hard to follow
 map<string, Teacher*> allTeachers;
 map<string, Student*> allStudents;
 map<string, Class*> allClasses;
+
+// iter for global variables
+map<string, Class*>::iterator classIter;
+map<string, Student*>::iterator studentIter;
+map<string, Teacher*>::iterator teacherIter;
 
 void initClasses();
 void deleteInitData();
 
 
 int main() {
-    initClasses();
-    preloadDataJsonFile("student", "../Data/students.json");
-    preloadDataJsonFile("teacher", "../Data/teachers.json");
-    preloadDataJsonFile("class", "../Data/class.json");
+    initClasses(); // creates initial data for testing purposes jump to function for documentation
 
     char input;
     PrintMenuOption("Student Management System", "mainMenuOptions");
-    while (cin >> input)
-    {
-        if (input == '1')
-        {
+    while (cin >> input) {
+        if (input == '1') {
             int idx;
             bool correctID = validationCheck(allStudents, idx);
-            if (correctID)
-            {
-                string name = allStudents[to_string(idx)]->getName();
+            if (correctID) {
+                string name = allStudents [to_string(idx)]->getName();
                 PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
-                studentMenu(*(allStudents[to_string(idx)]));
+                studentMenu(*(allStudents [to_string(idx)]));
                 PrintMenuOption("Student Management System", "mainMenuOptions");
             }
-            else if (!correctID)
-            {
+            else if (!correctID) {
                 PrintMenuOption("Student Management System", "mainMenuOptions");
             }
         }
-        else if (input == '2')
-        {
+        else if (input == '2') {
             PrintMenuOption("Teacher Menu", "teacherMenuOptions");
             TeacherMenu();
         }
-        else if (input == '3')
-        {
+        else if (input == '3') {
             PrintMenuOption("Class Menu", "classMenuOptions");
             ClassMenu(allClasses);
         }
-        else if (input == '4')
-        {
+        else if (input == '4') {
             cout << "Exiting program\n";
             break;
         }
-        else
-        {
+        else {
             cout << "Invalid option Please Try Again\n ";
             PrintMenuOption("Student Management System", "mainMenuOptions");
         }
@@ -82,8 +77,21 @@ int main() {
 }
 
 
+/*
+Im essentially creating data for the program to use for testing purposes im linking all the data together
+with pointers this is how the program will work when it is fully implemented since the Class class is composed of a teacher and students etc.
+this is also to initiliaze data so that there is data for the preload Data function to Use
+
+this function isnt necessary or integral for the program to work
+but shows an example of how the json is going to hold the object data
+You can go to the Data/json files to see for yourself
+
+whenever the program ends it will delete all the data that was created in this function
+and whenever the program starts it will load the data from the json files to create the objects again and any objects you added through the menu
+*/
+
 void initClasses() {
-    map<string, string> currentDateAttendance = { {currentDate(), "PRESENT"} }; // {date, status} gets current date in format "MM/DD/YYYY"
+    map<string, string> currentDateAttendance = { {currentDate(), "ABSENT"} }; // {date, status} gets current date in format "MM/DD/YYYY"
 
     Student* student1 = new Student("Diego Coronado", "drcorona@cougarnet.uh.edu", "2303693"); // name, email, ID
     Student* student2 = new Student("Cassandra Franco", "francocm@edu.com", "2303694");
@@ -104,34 +112,39 @@ void initClasses() {
     allClasses = { {"C001", mathClass}, {"C002", scienceClass} };
 
     // Add teacher to class and add students to class
-    allClasses["C001"]->setTeacher(allTeachers["2000"]);
-    allClasses["C002"]->setTeacher(allTeachers["2001"]);
+    allClasses ["C001"]->setTeacher(allTeachers ["2000"]);
+    allClasses ["C002"]->setTeacher(allTeachers ["2001"]);
 
-    allClasses["C001"]->addStudent(allStudents["1000"]);
-    allClasses["C001"]->addStudent(allStudents["1001"]);
-    allClasses["C002"]->addStudent(allStudents["1002"]);
-    allClasses["C002"]->addStudent(allStudents["1001"]);
+    allClasses ["C001"]->addStudent(allStudents ["1000"]);
+    allClasses ["C001"]->addStudent(allStudents ["1001"]);
+    allClasses ["C002"]->addStudent(allStudents ["1002"]);
+    allClasses ["C002"]->addStudent(allStudents ["1001"]);
 
     // Add class to student this links them with each other through pointers
-    allStudents["1000"]->enrollInClass(allClasses["C001"]);
-    allStudents["1001"]->enrollInClass(allClasses["C001"]);
-    allStudents["1002"]->enrollInClass(allClasses["C002"]);
-    allStudents["1001"]->enrollInClass(allClasses["C002"]);
+    allStudents ["1000"]->enrollInClass(allClasses ["C001"]);
+    allStudents ["1001"]->enrollInClass(allClasses ["C001"]);
+    allStudents ["1002"]->enrollInClass(allClasses ["C002"]);
+    allStudents ["1001"]->enrollInClass(allClasses ["C002"]);
+
+    preloadDataJsonFile("student", "../Data/students.json");
+    preloadDataJsonFile("teacher", "../Data/teachers.json");
+    preloadDataJsonFile("class", "../Data/class.json");
 
 }
 
-// Deletes all the data pointers that was created in the initClasses function memory management
+/*
+Deletes all the data pointers that was created in the initClasses function when the program ends
+each object has a destructor that deletes all the pointers that it holds so
+this function is just to delete the pointers that are in the global maps
+*/
 void deleteInitData() {
-    for (auto& student : allStudents)
-    {
+    for (auto& student : allStudents) {
         delete student.second;
     }
-    for (auto& teacher : allTeachers)
-    {
+    for (auto& teacher : allTeachers) {
         delete teacher.second;
     }
-    for (auto& class_ : allClasses)
-    {
+    for (auto& class_ : allClasses) {
         delete class_.second;
     }
 }

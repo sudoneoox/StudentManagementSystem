@@ -12,6 +12,7 @@
 using namespace std;
 using json = nlohmann::json;
 
+
 // !Global
 // extern vector<Student> students;
 // extern vector<Teacher> teachers;
@@ -33,9 +34,11 @@ void to_jsonFromTeacher(json& j, Teacher& t);
 void preloadDataJsonFile(string option, string filename);
 
 //! File Manipulation Section
+
 void addDataToJsonFile(const string& filePath, Student& s);
-void addDataToJsonFileFromClass(const string& filePath, Class& c);
+void(const string& filePath, Class& c);
 void addDataToJsonFile(const string& filePath, Teacher& t);
+
 
 //! Helper Functions
 void createJsonFile(const string& filePath);
