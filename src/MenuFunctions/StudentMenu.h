@@ -8,6 +8,7 @@ using namespace std;
 #include <chrono>
 
 #include "../../include/ClassDeclarations/student.h"
+#include "../../include/ClassDeclarations/class.h"
 #include "../../include/filemanipulation.h"
 #include "../../include/Menu.h"
 

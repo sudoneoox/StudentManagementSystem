@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../include/ClassDeclarations/student.h"
+#include "../include/ClassDeclarations/class.h"
 #include <fstream>
 #include <string>
 #include <vector>
@@ -36,7 +37,7 @@ void preloadDataJsonFile(string option, string filename);
 //! File Manipulation Section
 
 void addDataToJsonFile(const string& filePath, Student& s);
-void(const string& filePath, Class& c);
+void addDataToJsonFileFromClass(const string& filePath, Class& c);
 void addDataToJsonFile(const string& filePath, Teacher& t);
 
 
