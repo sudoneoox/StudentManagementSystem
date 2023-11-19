@@ -1,4 +1,5 @@
 #include "../include/ClassDeclarations/student.h"
+#include "../include/ClassDeclarations/class.h"
 #include <cstring>
 
 using namespace std;

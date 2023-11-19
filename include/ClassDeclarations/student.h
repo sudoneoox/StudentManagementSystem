@@ -4,6 +4,7 @@
 #include "./people.h"
 #include "./class.h"
 #include "./assignment.h"
+#include "./exam.h"
 
 #include <chrono> // date manipulation library
 #include <string>
@@ -22,7 +23,8 @@ class Student : public People
 private:
     map<string, Class*> classSchedule; // classID, class pointer
     map<string, string> attendanceRecord;
-    map<string, Assignment*> assignmentGrades; // assignmentID, assignment pointer
+    map<string, Assignment*> assignmentGrades;
+    // classID to know which class it came from and, assig nment pointer
 
 public:
     Student();                                     // default constructor

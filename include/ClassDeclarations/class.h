@@ -8,6 +8,7 @@
 
 #include "./teacher.h"
 #include "./student.h"
+#include "./exam.h"
 
 class Teacher;
 class Student;
@@ -20,7 +21,7 @@ private:
     Teacher* teacher;
 
     map<string, Student*> studentList; // studentID, student pointer
-    map<Student*, double> finalGrades;
+    map<string, Exam*>  examGrades;// assignmentID, studentID, grade    
 
 public:
     // constructor
