@@ -15,6 +15,8 @@ using namespace std;
 
 void updateClassInfo(Class& c);
 void generateAttendanceReport(Class& c);
+void enterExamGrades(Class& c);
+void getOverallClassGPA(Class& c);
 
 void ClassMenu(Class& c) {
     string className = c.getName();
@@ -33,14 +35,39 @@ void ClassMenu(Class& c) {
         }
         else if (input == "2") {
             generateAttendanceReport(c);
+            PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
         }
-        else if (input == "2") {
-
+        else if (input == "3") {
+            enterExamGrades(c);
+            cout << "needs to be implemented\n";
+        }
+        else if (input == "4") {
+            getOverallClassGPA(c);
+            cout << "needs to be implemented\n";
+        }
+        else if (input == "5") {
+            cout << "Leaving Class Menu\n";
+            break;
+        }
+        else {
+            cout << "Invalid Input\n";
+            PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
         }
 
     }
+    return;
+}
+
+
+void enterExamGrades(Class& c) {
 
 }
+void getOverallClassGPA(Class& c) {
+
+}
+
+
+
 
 void generateAttendanceReport(Class& c) {
     cout << "Would you like to generate an attendance report for this class? (y/n)\n";
@@ -57,7 +84,7 @@ void generateAttendanceReport(Class& c) {
         cout << "\nAttendance Report for " << c.getName() << " from " << startDate << " to " << endDate << endl;
 
         for (auto& [studentID, studentPtr] : c.getStudents()) {
-            // cout << studentPtr->getName() << " " << studentPtr->getAttendanceReport(startDate, endDate) << endl;
+            cout << studentPtr->getName() << "\n" << studentPtr->GetAttendanceRecordRange(startDate, endDate) << endl;
         }
     }
     else {

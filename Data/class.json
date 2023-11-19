@@ -1,18 +1,19 @@
 {
     "C001": {
         "ID": "C001",
-        "name": "Carlos Newman",
+        "name": "Math 2413",
         "students": {
             "2303693": "Diego Coronado",
-            "2303694": "Cassandra Franco"
+            "2303694": "Cassandra Franco",
+            "2303695": "John Wick"
         },
         "teacher": {
-            "2000": "Coop"
+            "2000": "Carlos Rincon"
         }
     },
     "C002": {
         "ID": "C002",
-        "name": "Science 102",
+        "name": "Biology 1302",
         "students": {
             "2303693": "Diego Coronado",
             "2303694": "Cassandra Franco",
@@ -20,6 +21,28 @@
         },
         "teacher": {
             "2001": "Melahut Almus"
+        }
+    },
+    "C003": {
+        "ID": "C003",
+        "name": "English 1301",
+        "students": {
+            "2303696": "Bob Frank",
+            "2303697": "Sally Sue"
+        },
+        "teacher": {
+            "2002": "Holly Smith"
+        }
+    },
+    "C004": {
+        "ID": "C004",
+        "name": "Computer Science 1301",
+        "students": {
+            "2303697": "Sally Sue",
+            "2303698": "John Doe"
+        },
+        "teacher": {
+            "2003": "Jakavitch"
         }
     }
 }

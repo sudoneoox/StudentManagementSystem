@@ -29,7 +29,7 @@ public:
     Student(string name, string email, string id); // overloaded constructor
     ~Student();                                    // destructor for dynamic vectors
     map<string, string> GetAllAttendanceRecords(); // returns priv attr. attendance record
-    string GetAttendanceRecord(string date);       // returns priv attr. attendance record for a specific date
+    string GetAttendanceRecordRange(string startDate, string endDate);       // returns priv attr. attendance record for a specific date
     double getGradeForAssignment(Assignment* assignment);
     void MarkAttendance(string date, string status);
     void enrollInClass(Class* newClass);

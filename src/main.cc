@@ -73,8 +73,8 @@ int main() {
         }
         else if (input == '3') {
             cout << "Exiting Program\n";
-            break;
         }
+
         else {
             cout << "Invalid option Please Try Again\n ";
             PrintMenuOption("Student Management System", "mainMenuOptions");
@@ -98,42 +98,84 @@ whenever the program ends it will delete all the data that was created in this f
 and whenever the program starts it will load the data from the json files to create the objects again and any objects you added through the menu
 */
 
-void initClasses() {
+void initClasses() { //BUG fix preload data function its probably making new objects instead of iterating through global maps
     map<string, string> currentDateAttendance = { {currentDate(), "ABSENT"} }; // {date, status} gets current date in format "MM/DD/YYYY"
 
-    Student* student1 = new Student("Diego Coronado", "drcorona@cougarnet.uh.edu", "2303693"); // name, email, ID
+    // students
+    Student* student1 = new Student("Diego Coronado", "drcorona@cougarnet.uh.edu", "2303693");
     Student* student2 = new Student("Cassandra Franco", "francocm@edu.com", "2303694");
     Student* student3 = new Student("John Wick", "johnwick@edu.com", "2303695");
-    Teacher* teacher1 = new Teacher("Carlos Rincon", "rincon@edu.com", "2000"); // name, email, ID
+    Student* student4 = new Student("Bob Frank", "bobfrank@edu.com", "2303696");
+    Student* student5 = new Student("Sally Sue", "sallysue@edu.com", "2303697");
+    Student* student6 = new Student("John Doe", "johndoe@edu.com", "2303698");
+
+    // teachers
+    Teacher* teacher1 = new Teacher("Carlos Rincon", "rincon@edu.com", "2000");
     Teacher* teacher2 = new Teacher("Melahut Almus", "melahutalmus@edu.com", "2001");
-    Class* mathClass = new Class("Math 101", "C001"); // name, ID
-    cout << "in init function " << mathClass->getName() << " pointer: " << mathClass;
-    Class* scienceClass = new Class("Science 102", "C002");
+    Teacher* teacher3 = new Teacher("Holly Smith", "hsmith@edu.com", "2002");
+    Teacher* teacher4 = new Teacher("Jakavitch", "jaka@edu.com", "2003");
 
+    // classes
+    Class* mathClass = new Class("Math 2413", "C001"); // name, ID
+    Class* scienceClass = new Class("Biology 1302", "C002");
+    Class* englishClass = new Class("English 1301", "C003");
+    Class* computerScienceClass = new Class("Computer Science 1301", "C004");
+
+    //setting the attendance of the current students to absent this is just to preload the json data
     student1->setAttendanceRecord(currentDateAttendance);
+    student2->setAttendanceRecord(currentDateAttendance);
+    student3->setAttendanceRecord(currentDateAttendance);
+    student4->setAttendanceRecord(currentDateAttendance);
+    student5->setAttendanceRecord(currentDateAttendance);
+    student6->setAttendanceRecord(currentDateAttendance);
 
+    // setting the classes to their respective teacher to link them together addsubject takes the pointer to the class
     teacher1->addSubject(mathClass);
     teacher2->addSubject(scienceClass);
+    teacher3->addSubject(englishClass);
+    teacher4->addSubject(computerScienceClass);
 
     // Add all students and teacher and class ID, and pointers to their global maps holding all their data;
-    allStudents = { {"1000", student1},{"1001", student2},{"1002", student3}, };
-    allTeachers = { {"2000", teacher1},{"2001", teacher2} };
-    allClasses = { {"C001", mathClass}, {"C002", scienceClass} };
+    allStudents = { {"2303693", student1}, {"2303694", student2}, {"2303695", student3}, {"2303696", student4}, {"2303697", student5}, {"2303698", student6} };
+    allTeachers = { {"2000", teacher1}, {"2001", teacher2}, {"2002", teacher3}, {"2003", teacher4} };
+    allClasses = { {"C001", mathClass}, {"C002", scienceClass}, {"C003", englishClass}, {"C004", computerScienceClass} };
 
     // Add teacher to class and add students to class
     allClasses ["C001"]->setTeacher(allTeachers ["2000"]);
     allClasses ["C002"]->setTeacher(allTeachers ["2001"]);
+    allClasses ["C003"]->setTeacher(allTeachers ["2002"]);
+    allClasses ["C004"]->setTeacher(allTeachers ["2003"]);
 
-    allClasses ["C001"]->addStudent(allStudents ["1000"]);
-    allClasses ["C001"]->addStudent(allStudents ["1001"]);
-    allClasses ["C002"]->addStudent(allStudents ["1002"]);
-    allClasses ["C002"]->addStudent(allStudents ["1001"]);
+    allClasses ["C001"]->addStudent(allStudents ["2303693"]);
+    allClasses ["C001"]->addStudent(allStudents ["2303694"]);
+    allClasses ["C001"]->addStudent(allStudents ["2303695"]);
+
+    allClasses ["C002"]->addStudent(allStudents ["2303695"]);
+    allClasses ["C002"]->addStudent(allStudents ["2303694"]);
+    allClasses ["C002"]->addStudent(allStudents ["2303693"]);
+
+    allClasses ["C003"]->addStudent(allStudents ["2303697"]);
+    allClasses ["C003"]->addStudent(allStudents ["2303696"]);
+
+    allClasses ["C004"]->addStudent(allStudents ["2303698"]);
+    allClasses ["C004"]->addStudent(allStudents ["2303697"]);
 
     // Add class to student this links them with each other through pointers
-    allStudents ["1000"]->enrollInClass(allClasses ["C001"]);
-    allStudents ["1001"]->enrollInClass(allClasses ["C001"]);
-    allStudents ["1002"]->enrollInClass(allClasses ["C002"]);
-    allStudents ["1001"]->enrollInClass(allClasses ["C002"]);
+    allStudents ["2303693"]->enrollInClass(allClasses ["C001"]);
+    allStudents ["2303694"]->enrollInClass(allClasses ["C001"]);
+    allStudents ["2303695"]->enrollInClass(allClasses ["C001"]);
+
+
+    allStudents ["2303695"]->enrollInClass(allClasses ["C002"]);
+    allStudents ["2303694"]->enrollInClass(allClasses ["C002"]);
+    allStudents ["2303693"]->enrollInClass(allClasses ["C002"]);
+
+    allStudents ["2303697"]->enrollInClass(allClasses ["C003"]);
+    allStudents ["2303696"]->enrollInClass(allClasses ["C003"]);
+
+    allStudents ["2303698"]->enrollInClass(allClasses ["C004"]);
+    allStudents ["2303697"]->enrollInClass(allClasses ["C004"]);
+
 }
 
 /*

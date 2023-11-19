@@ -1,4 +1,5 @@
 #include "../include/ClassDeclarations/student.h"
+#include <cstring>
 
 using namespace std;
 
@@ -38,8 +39,31 @@ map<string, string> Student::GetAllAttendanceRecords() {
     return attendanceRecord;
 }
 
-string Student::GetAttendanceRecord(string date) {
-    return attendanceRecord [date];
+string Student::GetAttendanceRecordRange(string startDate, string endDate) {
+
+    string attendanceRecordRange;
+    bool started = false;
+
+    for (const auto& record : this->attendanceRecord) {
+        if (record.first == startDate) {
+            started = true;
+        }
+
+        if (started) {
+            attendanceRecordRange += record.first + ": " + record.second + "\n";
+        }
+
+        if (record.first == endDate) {
+            break;
+        }
+    }
+
+    if (!started) {
+        // If the loop never started, then the start date was not found
+        attendanceRecordRange = "No data for date range " + startDate + " to " + endDate;
+    }
+
+    return attendanceRecordRange;
 }
 
 void Student::printClassSchedule() {
