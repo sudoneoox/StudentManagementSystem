@@ -42,9 +42,10 @@ public:
     void printClassSchedule();
 
 
-    void setAssignmentGrades(map<string, Assignment*> assignmentGrades) {
-        this->assignmentGrades = assignmentGrades;
-    }
+    void setAssignmentGrades(map<string, Assignment*> assignmentGrades);
+    map<string, Assignment*> getAssignmentGrades();
+
+
     void setAttendanceRecord(map<string, string> attendanceRecord);
     map<string, Class*>& getClassSchedule();
 

@@ -13,7 +13,7 @@ Student::Student() {
     this->ID = "";
     map<string, Class*> classSchedule;
     map<string, string> attendanceRecord;
-    map<Assignment*, double> assignmentGrades;
+    map<string, Assignment*> assignmentGrades;
 }
 
 Student::Student(string name, string email, string id) {
@@ -22,11 +22,11 @@ Student::Student(string name, string email, string id) {
     this->ID = id;
     map<string, Class*> classSchedule;
     map<string, string> attendanceRecord;
-    map<Assignment*, double> assignmentGrades;
+    map<string, Assignment*> assignmentGrades;
 }
 
 Student::~Student() {
-    map<Assignment*, double>::iterator iter;
+    map<string, Assignment*>::iterator iter;
     map<string, Class*>::iterator iter2;
     for (auto iter = assignmentGrades.begin(); iter != assignmentGrades.end(); iter++) {
         delete iter->second;
@@ -86,10 +86,7 @@ void Student::MarkAttendance(string date, string status) {
     }
 }
 
-double Student::getGradeForAssignment(Assignment* assignment) {
-    // return assignment->getGrade();
-    return 3.3;
-}
+
 
 void Student::enrollInClass(Class* newClass) {
     classSchedule [newClass->getClassID()] = newClass;
@@ -154,10 +151,18 @@ Student& Student::operator=(const Student& RHS) {
     this->ID = RHS.ID;
     this->classSchedule = RHS.classSchedule;
     this->attendanceRecord = RHS.attendanceRecord;
-    // this->assignmentGrades = RHS.assignmentGrades;
+    this->assignmentGrades = RHS.assignmentGrades;
     return *this;
 }
 
 void Student::setAttendanceRecord(map<string, string> attendanceRecord) {
     this->attendanceRecord = attendanceRecord;
+}
+
+map<string, Assignment*> Student::getAssignmentGrades() {
+    return assignmentGrades;
+}
+
+void Student::setAssignmentGrades(map<string, Assignment*> assignmentGrades) {
+    this->assignmentGrades = assignmentGrades;
 }
