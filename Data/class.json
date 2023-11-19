@@ -7,9 +7,6 @@
     "C002": {
         "ID": "C002",
         "name": "Science 102",
-        "students": [
-            "1000",
-            "1000"
-        ]
+        "students": []
     }
 }
