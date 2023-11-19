@@ -2,19 +2,21 @@
     "2303693": {
         "ID": "2303693",
         "attendanceRecord": {
-            "11/17/2023": "ABSENT"
+            "000000": "tardy",
+            "11/18/2023": "ABSENT"
         },
         "classSchedule": {
-            "C001": "Math 101"
+            "C001": "Carlos Newman",
+            "C002": "Science 102"
         },
         "email": "drcorona@cougarnet.uh.edu",
-        "name": "Bob"
+        "name": "Diego Coronado"
     },
     "2303694": {
         "ID": "2303694",
         "attendanceRecord": {},
         "classSchedule": {
-            "C001": "Math 101",
+            "C001": "Carlos Newman",
             "C002": "Science 102"
         },
         "email": "francocm@edu.com",
@@ -30,3 +32,4 @@
         "name": "John Wick"
     }
 }
+{}

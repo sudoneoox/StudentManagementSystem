@@ -22,20 +22,27 @@ class Student : public People
 private:
     map<string, Class*> classSchedule; // classID, class pointer
     map<string, string> attendanceRecord;
-    map<Assignment*, double> assignmentGrades;
+    map<string, Assignment*> assignmentGrades; // assignmentID, assignment pointer
 
 public:
     Student();                                     // default constructor
     Student(string name, string email, string id); // overloaded constructor
     ~Student();                                    // destructor for dynamic vectors
     map<string, string> GetAllAttendanceRecords(); // returns priv attr. attendance record
+    string GetAttendanceRecord(string date);       // returns priv attr. attendance record for a specific date
     double getGradeForAssignment(Assignment* assignment);
     void MarkAttendance(string date, string status);
     void enrollInClass(Class* newClass);
     void enrollInClasses(map<string, Class*> newClasses);
+    void dropClass(Class* classToDrop);
+    void dropClasses(vector<Class*> classesToDrop);
     bool isEnrolledInClass(string classID);
     void printClassSchedule();
 
+
+    void setAssignmentGrades(map<string, Assignment*> assignmentGrades) {
+        this->assignmentGrades = assignmentGrades;
+    }
     void setAttendanceRecord(map<string, string> attendanceRecord);
     map<string, Class*>& getClassSchedule();
 

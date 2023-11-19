@@ -31,6 +31,9 @@ void Class::setTeacher(Teacher* teacher) {
 void Class::addStudent(Student* student) {
     studentList.insert(pair<string, Student*>(student->getID(), student));
 }
+void Class::removeStudent(Student* student) {
+    studentList.erase(student->getID());
+}
 void Class::setStudentList(map<string, Student*> studentList) {
     this->studentList = studentList;
 }

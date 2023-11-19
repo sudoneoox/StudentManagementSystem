@@ -12,12 +12,84 @@
 
 using namespace std;
 
-void displayAllClasses(map<string, Class*>& allClasses);
-void createTeacher(map<string, Class*>& allClasses);
-void addClassAndData(map<string, Class*>& allClasses);
 
-void ClassMenu(map<string, Class*>& allClasses) {
-    char input;
+void updateClassInfo(Class& c);
+void generateAttendanceReport(Class& c);
+
+void ClassMenu(Class& c) {
+    string className = c.getName();
+    string teacherName = c.getTeacher()->getName();
+    PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
+    string input;
+    while (true || cin >> input) {
+        cout << "Enter 0 to go back to the teacher menu at any time\n";
+        cin >> input;
+        if (input == "0") {
+            return;
+        }
+        else if (input == "1") {
+            updateClassInfo(c);
+            PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
+        }
+        else if (input == "2") {
+            generateAttendanceReport(c);
+        }
+        else if (input == "2") {
+
+        }
+
+    }
+
+}
+
+void generateAttendanceReport(Class& c) {
+    cout << "Would you like to generate an attendance report for this class? (y/n)\n";
+    string input;
+    cin >> input;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (input == "y" || input == "Y") {
+        cout << "Enter the Start Data (MM/DD/YYYY): ";
+        string startDate;
+        getline(cin, startDate);
+        cout << "\nEnter the End Data (MM/DD/YYYY): ";
+        string endDate;
+        getline(cin, endDate);
+        cout << "\nAttendance Report for " << c.getName() << " from " << startDate << " to " << endDate << endl;
+
+        for (auto& [studentID, studentPtr] : c.getStudents()) {
+            // cout << studentPtr->getName() << " " << studentPtr->getAttendanceReport(startDate, endDate) << endl;
+        }
+    }
+    else {
+        cout << "Not generating an attendance report\n";
+        return;
+    }
+}
+
+void updateClassInfo(Class& c) {
+    cout << "Would you like to change the name of this class? (y/n)\n";
+    string input;
+    cin >> input;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (input == "y" || input == "Y") {
+        cout << "Enter the new name of the class: ";
+        string newName;
+        getline(cin, newName);
+        c.setName(newName);
+        addDataToJsonFileFromClass("../Data/class.json", c);
+        addDataToJsonFile("../Data/teachers.json", *c.getTeacher());
+        for (auto s = c.getStudents().begin(); s != c.getStudents().end(); s++) {
+            addDataToJsonFile("../Data/students.json", *s->second);
+        }
+    }
+    else {
+        cout << "Not changing the name of the class\n";
+        return;
+    }
+}
+
+// void ClassMenu(map<string, Class*>& allClasses) {
+    // char input;
     // while (cin >> input && input != '5')
     // {
     //     if (input == '1')
@@ -68,7 +140,7 @@ void ClassMenu(map<string, Class*>& allClasses) {
     //         break;
     //     }
     // }
-}
+// }
 
 // void createTeacher(map<string, Class*>& allClasses) {
 //     string name, email, id;

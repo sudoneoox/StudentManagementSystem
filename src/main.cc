@@ -38,6 +38,9 @@ void deleteInitData();
 
 int main() {
     initClasses(); // creates initial data for testing purposes jump to function for documentation
+    preloadDataJsonFile("student", "../Data/students.json"); // loads data from json files jump to function for documentation 
+    preloadDataJsonFile("teacher", "../Data/teachers.json");
+    preloadDataJsonFile("class", "../Data/class.json");
 
     char input;
     PrintMenuOption("Student Management System", "mainMenuOptions");
@@ -56,15 +59,20 @@ int main() {
             }
         }
         else if (input == '2') {
-            PrintMenuOption("Teacher Menu", "teacherMenuOptions");
-            TeacherMenu();
+            int idx;
+            bool correctID = validationCheck(allTeachers, idx);
+            if (correctID) {
+                string name = allTeachers [to_string(idx)]->getName();
+                PrintMenuOption("Teacher Menu | " + name, "teacherMenuOptions");
+                TeacherMenu(*(allTeachers [to_string(idx)]));
+                PrintMenuOption("Student Management System", "mainMenuOptions");
+            }
+            else if (!correctID) {
+                PrintMenuOption("Student Management System", "mainMenuOptions");
+            }
         }
         else if (input == '3') {
-            PrintMenuOption("Class Menu", "classMenuOptions");
-            ClassMenu(allClasses);
-        }
-        else if (input == '4') {
-            cout << "Exiting program\n";
+            cout << "Exiting Program\n";
             break;
         }
         else {
@@ -99,6 +107,7 @@ void initClasses() {
     Teacher* teacher1 = new Teacher("Carlos Rincon", "rincon@edu.com", "2000"); // name, email, ID
     Teacher* teacher2 = new Teacher("Melahut Almus", "melahutalmus@edu.com", "2001");
     Class* mathClass = new Class("Math 101", "C001"); // name, ID
+    cout << "in init function " << mathClass->getName() << " pointer: " << mathClass;
     Class* scienceClass = new Class("Science 102", "C002");
 
     student1->setAttendanceRecord(currentDateAttendance);
@@ -125,11 +134,6 @@ void initClasses() {
     allStudents ["1001"]->enrollInClass(allClasses ["C001"]);
     allStudents ["1002"]->enrollInClass(allClasses ["C002"]);
     allStudents ["1001"]->enrollInClass(allClasses ["C002"]);
-
-    preloadDataJsonFile("student", "../Data/students.json");
-    preloadDataJsonFile("teacher", "../Data/teachers.json");
-    preloadDataJsonFile("class", "../Data/class.json");
-
 }
 
 /*

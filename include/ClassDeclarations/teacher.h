@@ -26,14 +26,17 @@ public:
     Teacher(const Teacher& other);
     ~Teacher();
     map<string, Class*> GetSubjectsTaught() const;
+    void printSubjectsTaught();
     void setSubjectsTaught(map<string, Class*> subjectsTaught);
     void addSubject(Class* subject);
     void UpdateSubjects(map<string, Class*> newSubjects);
     void EnterGrade(Assignment* assignment, Student* student, double grade);
     map<Student*, string> GenerateAttendance(string startDate, string endDate);
     Teacher& operator=(const Teacher& RHS);
+
     friend istream& operator>>(istream& IN, Teacher& teacher);
 
+    friend ostream& operator<<(ostream& OUT, Teacher& teacher);
 
 };
 

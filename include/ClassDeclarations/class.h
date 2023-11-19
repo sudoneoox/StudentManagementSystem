@@ -36,6 +36,7 @@ public:
     void setTeacher(Teacher* teacher);
     void setStudentList(map<string, Student*> studentList);
     void addStudent(Student* Student);
+    void removeStudent(Student* Student);
     string getName();
     string getClassID();
     Teacher* getTeacher();

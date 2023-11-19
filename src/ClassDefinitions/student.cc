@@ -26,8 +26,8 @@ Student::Student(string name, string email, string id) {
 Student::~Student() {
     map<Assignment*, double>::iterator iter;
     map<string, Class*>::iterator iter2;
-    for (iter = assignmentGrades.begin(); iter != assignmentGrades.end(); iter++) {
-        delete iter->first;
+    for (auto iter = assignmentGrades.begin(); iter != assignmentGrades.end(); iter++) {
+        delete iter->second;
     }
     for (iter2 = classSchedule.begin(); iter2 != classSchedule.end(); iter2++) {
         delete iter2->second;
@@ -37,8 +37,12 @@ Student::~Student() {
 map<string, string> Student::GetAllAttendanceRecords() {
     return attendanceRecord;
 }
+
+string Student::GetAttendanceRecord(string date) {
+    return attendanceRecord [date];
+}
+
 void Student::printClassSchedule() {
-    cout << "Class Schedule: " << endl;
     for (auto iter = classSchedule.begin(); iter != classSchedule.end(); iter++) {
         cout << iter->second->getName() << endl;
     }
@@ -49,11 +53,10 @@ void Student::MarkAttendance(string date, string status) {
 
     // Check if the attendance record for the date exists and the status is "present"
     if (iter != attendanceRecord.end() && iter->second == "PRESENT") {
-        cout << "Attendance already marked as present for Date: " << date << endl;
+        cout << "\nAttendance already marked as present for Date: " << date << endl;
     }
     else {
-        // Add or update the attendance record
-        cout << "updated \n";
+        // Add or update the attendance record for the date
         attendanceRecord [date] = status;
     }
 }
@@ -71,6 +74,21 @@ void Student::enrollInClasses(map<string, Class*> newClasses) {
         classSchedule [iter->first] = iter->second;
     }
 }
+void Student::dropClass(Class* classToDrop) {
+    auto iter = classSchedule.find(classToDrop->getClassID());
+    if (iter != classSchedule.end()) {
+        classSchedule.erase(iter);
+    }
+}
+void Student::dropClasses(vector<Class*> classesToDrop) {
+    for (auto iter = classesToDrop.begin(); iter != classesToDrop.end(); iter++) {
+        auto iter2 = classSchedule.find((*iter)->getClassID());
+        if (iter2 != classSchedule.end()) {
+            classSchedule.erase(iter2);
+        }
+    }
+}
+
 bool Student::isEnrolledInClass(string classID) {
     auto iter = classSchedule.find(classID);
     if (iter != classSchedule.end()) {

@@ -15,12 +15,14 @@ using namespace std;
 string currentDate();
 
 void studentMenu(Student& student);
-bool validationCheck(vector<Student> students, int& idx);
+bool validationCheck(map<string, Student*> students, int& idx);
 
-void enrollStudentToClass(Student& student);
-void updateStudentInfo(Student& student);
+// void enrollStudentToClass(Student& student);
+void enrollStudentToClass(Student& student, bool& continueLoop);
+void removeStudentFromClass(Student& student, bool& continueLoop);
+void updateSchedule(Student& student);
 
-void markPresent(Student& student);
+void markAttendance(Student& student, string date, string status);
 
 extern map<string, Student*> allStudents;
 extern map<string, Class*> allClasses;
@@ -37,15 +39,15 @@ void studentMenu(Student& student) {
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
         else if (input == '2') {
-            markPresent(student);
+            // markPresent(student);
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
         else if (input == '3') {
-            enrollStudentToClass(student);
+            updateSchedule(student);
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
         else if (input == '4') {
-            cout << "Schedule For " << student.getName() << endl;
+            cout << "Class Schedule For " << student.getName() << endl;
             student.printClassSchedule();
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
@@ -53,11 +55,8 @@ void studentMenu(Student& student) {
             cout << "still need to implement this\n";
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
+
         else if (input == '6') {
-            updateStudentInfo(student);
-            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
-        }
-        else if (input == '7') {
             cout << "Exiting Student Menu\n";
             PrintMenuOption("Main Menu", "mainMenuOptions");
             break;
@@ -66,82 +65,112 @@ void studentMenu(Student& student) {
 }
 
 
-void markPresent(Student& student) {
-    cout << "You will now be marked present for today's date "
-        << currentDate() << '\n';
-    student.MarkAttendance(currentDate(), "PRESENT");
+void markAttendance(Student& student, string date, string status) {
+    cout << "\nAttendance has been marked for " << student.getName() << " on " << date << endl;
+    student.MarkAttendance(date, status);
     addDataToJsonFile("../Data/students.json", student);
 }
 
 
-void updateStudentInfo(Student& student) { //! FIXME Stuck here either completely take out this or find a way to also update the class json
-    cout << "What would you like to update?\n";
-    cout << "1. Email\n";
-    cout << "2. Name\n";
-    cout << "3. Both\n";
-    cout << "0. Go Back\n";
-    char option;
-    cin >> option;
-    if (option == '1') {
-        cout << "Enter new email: ";
-        string email;
-        cin >> email;
-        student.setEmail(email);
-        addDataToJsonFile("../Data/students.json", student);
-    }
-    else if (option == '2') {
-        cout << "Enter new name: ";
-        string name;
-        cin >> name;
-        student.setName(name);
-    }
-    else if (option == '3') {
-        cout << "Enter new name: ";
-        string name;
-        cin >> name;
-        student.setName(name);
-        cout << "Enter new email: ";
-        string email;
-        cin >> email;
-        student.setEmail(email);
-    }
-    else if (option == '0') {
-        return;
-    }
-    else {
-        cout << "Invalid Option\n";
-    }
-    if (option == '1' || option == '2' || option == '3') {
-        addDataToJsonFile("../Data/students.json", student);
-        for (auto iter = student.getClassSchedule().begin(); iter != student.getClassSchedule().end(); iter++) {
-            addDataToJsonFileFromClass("../Data/class.json", *iter->second);
+void updateSchedule(Student& student) {
+    bool continueLoop = true;
+    while (continueLoop) {
+        char option;
+        cout << "Would you like to" << endl;
+        cout << "1. Drop a Class? " << endl;
+        cout << "2. Enroll in a Class? " << endl;
+        cout << "0. Go back to Student Menu" << endl;
+        cin >> option;
+        if (option == '0') {
+            return;
         }
-        cout << "Successfully Updated Student Info\n";
+        else if (option == '1') {
+            removeStudentFromClass((student), continueLoop);
+            continueLoop = false;
+        }
+        else if (option == '2') {
+            enrollStudentToClass((student), continueLoop);
+            continueLoop = false;
+        }
+        else {
+            cout << "Invalid Option Try again.";
+        }
+    }
+    return;
+}
+
+void removeStudentFromClass(Student& student, bool& continueLoop) {
+    while (continueLoop) {
+        cout << "\nDisplaying Your Current Classes:\n";
+        map<string, Class*> classSchedule = student.getClassSchedule();
+        if (classSchedule.size() == 0) {
+            cout << "You are not enrolled in any classes\n";
+            return;
+        }
+        for (classIter = classSchedule.begin(); classIter != classSchedule.end(); classIter++) {
+            cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
+        }
+        cout << "Enter the class ID you would like to drop or 0 to go back: ";
+        string classID;
+        cin >> classID;
+        if (classID == "0") {
+            return;
+        }
+        Class* clsPtr = findClassByID(allClasses, classID);
+        if (clsPtr == nullptr) {
+            cout << "\nInvalid Class ID\n";
+            continueLoop = true;
+        }
+        else if (!student.isEnrolledInClass(classID)) {
+            cout << "\nYou are not enrolled in this class\n";
+            continueLoop = true;
+        }
+        else {
+            student.dropClass(clsPtr);
+            clsPtr->removeStudent(&student);
+            cout << "Successfully Dropped " << clsPtr->getName() << endl;
+            addDataToJsonFile("../Data/students.json", student);
+            addDataToJsonFileFromClass("../Data/class.json", *clsPtr);
+            return;
+        }
     }
 }
 
 
-void enrollStudentToClass(Student& student) {
-    cout << "Displaying Available Classes\n";
-    for (classIter = allClasses.begin(); classIter != allClasses.end(); classIter++) {
-        cout << classIter->second->getID() << " " << classIter->second->getName() << endl;
+void enrollStudentToClass(Student& student, bool& continueLoop) {
+    while (continueLoop) {
+        cout << "\nDisplaying Available Classes\n";
+        for (classIter = allClasses.begin(); classIter != allClasses.end(); classIter++) {
+            cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
+        }
+        if (allClasses.size() == 0) {
+            cout << "There are no classes available to enroll in\n";
+            return;
+        }
+        cout << "Enter the class ID you would like to enroll in or 0 to return: ";
+        string classID;
+        cin >> classID;
+        if (classID == "0") {
+            return;
+        }
+        if (allClasses.find(classID) == allClasses.end()) {
+            cout << "\nInvalid Class ID\n";
+            continueLoop = true;
+        }
+        else if (student.isEnrolledInClass(classID)) {
+
+            cout << "\nYou are already enrolled in this class\n";
+            continueLoop = true;
+        }
+        else {
+            student.enrollInClass(allClasses [classID]);
+            allClasses [classID]->addStudent(&student);
+            cout << "Successfully Enrolled in " << allClasses [classID]->getName() << endl;
+            addDataToJsonFile("../Data/students.json", student);
+            addDataToJsonFileFromClass("../Data/class.json", *allClasses [classID]);
+            return;
+        }
     }
-    cout << "Enter the class ID you would like to enroll in: ";
-    string classID;
-    cin >> classID;
-    if (allClasses.find(classID) == allClasses.end()) {
-        cout << "Invalid Class ID\n";
-        return;
-    }
-    else if (student.isEnrolledInClass(classID)) {
-        cout << "You are already enrolled in this class\n";
-        return;
-    }
-    student.enrollInClass(allClasses [classID]);
-    allClasses [classID]->addStudent(&student);
-    cout << "Successfully Enrolled in " << allClasses [classID]->getName() << endl;
-    addDataToJsonFile("../Data/students.json", student);
-    addDataToJsonFileFromClass("../Data/class.json", *allClasses [classID]);
 }
 
 /* This function is used to get the current date and return it as a string credit: stack overflow*/

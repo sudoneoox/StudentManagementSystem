@@ -88,6 +88,7 @@ void from_json(const json& j, Student& s) {
 void from_json(const json& j, Class& c) {
     c.setClassID(j.at("ID").get<string>());
     c.setName(j.at("name").get<string>());
+    cout << endl << c.getName() << " class pointer: " << &c << endl;
     if (j.contains("teacher") && j ["teacher"].is_object()) {
         string teacherID = j ["teacher"].items().begin().key();
         string teacherName = j ["teacher"].items().begin().value().get<string>();
@@ -129,9 +130,12 @@ void from_json(const json& j, Teacher& t) {
             string className = subjectTaughtJson.value().get<string>();
             auto it = allClasses.find(classID);
             if (it != allClasses.end()) {
+                cout << endl << "in it->second: " << it->second;
+                cout << endl << "in it->second->getName(): " << it->second->getName();
                 subjectsTaught [classID] = it->second;
             }
         }
+        t.setSubjectsTaught(subjectsTaught);
     }
     else {
         cout << "no subjects taught for teacher " << t.getName() << endl;
@@ -140,6 +144,11 @@ void from_json(const json& j, Teacher& t) {
 }
 
 // !!Data Preloading function whenever the program starts
+
+/*
+this function is integral for the program to work
+its used to preload data from the json files into the maps
+*/
 void  preloadDataJsonFile(string option, string filename) {
     if (option == "student") {
         if (isJsonFileEmpty(filename)) {
@@ -151,7 +160,19 @@ void  preloadDataJsonFile(string option, string filename) {
             allStudents = createStudentObjectsFromJsonFile(filename);
         }
         else {
-            allStudents = createStudentObjectsFromJsonFile(filename);
+            json studentData = loadDataFromFile(filename);
+            for (auto& [studentID, studentJson] : studentData.items()) {
+                if (allStudents.find(studentID) == allStudents.end()) {
+                    // Student does not exist, create a new one
+                    Student* newStudent = new Student();
+                    from_json(studentJson, *newStudent);
+                    allStudents [studentID] = newStudent;
+                }
+                else {
+                    // Student exists, update its properties
+                    from_json(studentJson, *allStudents [studentID]);
+                }
+            }
         }
     }
     else if (option == "teacher") {
@@ -164,7 +185,19 @@ void  preloadDataJsonFile(string option, string filename) {
             allTeachers = createTeacherObjectsFromJsonFile(filename);
         }
         else {
-            allTeachers = createTeacherObjectsFromJsonFile(filename);
+            json teacherData = loadDataFromFile(filename);
+            for (auto& [teacherID, teacherJson] : teacherData.items()) {
+                if (allTeachers.find(teacherID) == allTeachers.end()) {
+                    // Teacher does not exist, create a new one
+                    Teacher* newTeacher = new Teacher();
+                    from_json(teacherJson, *newTeacher);
+                    allTeachers [teacherID] = newTeacher;
+                }
+                else {
+                    // Teacher exists, update its properties
+                    from_json(teacherJson, *allTeachers [teacherID]);
+                }
+            }
         }
     }
     else if (option == "class") {
@@ -177,11 +210,22 @@ void  preloadDataJsonFile(string option, string filename) {
             allClasses = createClassObjectsFromJsonFile(filename);
         }
         else {
-            allClasses = createClassObjectsFromJsonFile(filename);
+            json classData = loadDataFromFile(filename);
+            for (auto& [classID, classJson] : classData.items()) {
+                if (allClasses.find(classID) == allClasses.end()) {
+                    // Class does not exist, create a new one
+                    Class* newClass = new Class();
+                    from_json(classJson, *newClass);
+                    allClasses [classID] = newClass;
+                }
+                else {
+                    // Class exists, update its properties
+                    from_json(classJson, *allClasses [classID]);
+                }
+            }
         }
     }
 }
-
 // !!File Manipulation Functions
 
 
