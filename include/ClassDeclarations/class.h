@@ -21,11 +21,13 @@ private:
     Teacher* teacher;
 
     map<string, Student*> studentList; // studentID, student pointer
-    map<string, Exam*>  examGrades;// assignmentID, studentID, grade    
+    map<string, Exam*>  exams; // assignmentID, studentID, grade    
+    map<string, Assignment*> assignments; // assignmentID, studentID, grade
 
 public:
     // constructor
     Class();
+
 
     // destructor
     ~Class();
@@ -38,13 +40,31 @@ public:
     void setStudentList(map<string, Student*> studentList);
     void addStudent(Student* Student);
     void removeStudent(Student* Student);
+
+    void addAssignment(Assignment* assignment);
+    void addAssignment(map<string, Assignment*> assignments);
+    void addExam(map<string, Exam*> exams);
+    void addExam(Exam* exam);
+    void setStudentGradeForAssignment(string studentID, string assignmentID, double grade);
+    void setStudentGradeForExam(string studentID, string examID, double grade);
+
+    void assignGradeToStudent(Student* student, Assignment* assignment, double grade);
+    void assignGradeToStudent(Student* student, Exam* exam, double grade);
+
+    double getAssignmentGrade(string studentID, string assignmentID);
+    map<string, Assignment*> getAssignmentGrades();
+    map<string, Exam*> getExamGrades();
+    double getExamGrade(string studentID, string examID);
+
+
+
     string getName();
     string getClassID();
     Teacher* getTeacher();
     string getID();
     map<string, Student*> getStudents();
-    double GetFinalGrade(Student* student);
-    map<Student*, double> GetAllFinalGrades();
+
+
 };
 
 #endif // !CLASS_H

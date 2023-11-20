@@ -13,7 +13,6 @@ Student::Student() {
     this->ID = "";
     map<string, Class*> classSchedule;
     map<string, string> attendanceRecord;
-    map<string, Assignment*> assignmentGrades;
 }
 
 Student::Student(string name, string email, string id) {
@@ -22,18 +21,14 @@ Student::Student(string name, string email, string id) {
     this->ID = id;
     map<string, Class*> classSchedule;
     map<string, string> attendanceRecord;
-    map<string, Assignment*> assignmentGrades;
 }
 
 Student::~Student() {
-    map<string, Assignment*>::iterator iter;
-    map<string, Class*>::iterator iter2;
-    for (auto iter = assignmentGrades.begin(); iter != assignmentGrades.end(); iter++) {
+    map<string, Class*>::iterator iter;
+    for (iter = classSchedule.begin(); iter != classSchedule.end(); iter++) {
         delete iter->second;
     }
-    for (iter2 = classSchedule.begin(); iter2 != classSchedule.end(); iter2++) {
-        delete iter2->second;
-    }
+
 }
 
 map<string, string> Student::GetAllAttendanceRecords() {
@@ -151,7 +146,6 @@ Student& Student::operator=(const Student& RHS) {
     this->ID = RHS.ID;
     this->classSchedule = RHS.classSchedule;
     this->attendanceRecord = RHS.attendanceRecord;
-    this->assignmentGrades = RHS.assignmentGrades;
     return *this;
 }
 
@@ -159,10 +153,33 @@ void Student::setAttendanceRecord(map<string, string> attendanceRecord) {
     this->attendanceRecord = attendanceRecord;
 }
 
-map<string, Assignment*> Student::getAssignmentGrades() {
+double Student::getGradeForAssignment(string classID, string assignmentID) {
+    if (classSchedule.find(classID) != classSchedule.end()) {
+        return classSchedule [classID]->getAssignmentGrade(this->getID(), assignmentID);
+    }
+    return -1;
+}
+
+double Student::getGradeForExam(string classID, string examID) {
+    if (classSchedule.find(classID) != classSchedule.end()) {
+        return classSchedule [classID]->getExamGrade(this->getID(), examID);
+    }
+    return -1;
+}
+
+void Student::setGradeForAssignment(string assignmentID, double grade) {
+    assignmentGrades [assignmentID] = grade; // assignmentID, grade
+}
+
+void Student::setGradeForExam(string examID, double grade) {
+    examGrades [examID] = grade; // examID, grade
+}
+
+map<string, double> Student::getGradesForAssignment() {
     return assignmentGrades;
 }
 
-void Student::setAssignmentGrades(map<string, Assignment*> assignmentGrades) {
-    this->assignmentGrades = assignmentGrades;
+map<string, double> Student::getGradesForExam() {
+    return examGrades;
 }
+

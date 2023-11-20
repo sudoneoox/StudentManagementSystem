@@ -2,23 +2,39 @@
 #define GRADE_H
 #include <string>
 using namespace std;
+#include <map>
 
 
 class Grade
 {
 protected:
     string name;
-    string grade;
+    map<string, double> grades;
     string ID;
 public:
-    Grade() : name(""), grade(""), ID("") {};
-    Grade(string name, string grade, string ID) : name(name), grade(grade), ID(ID) {};
-    void setName(string name) { this->name = name; };
-    void setGrade(string grade) { this->grade = grade; };
-    void setID(string ID) { this->ID = ID; }
-    string getName() { return name; };
-    string getGrade() { return grade; };
-    string getID() { return ID; }
+    Grade() : name(""), ID("") {};
+    Grade(string name, string ID) : name(name), ID(ID) {};
+    void setGrade(string studentID, double grade) {
+        grades [studentID] = grade;
+    }
+    double getGrade(string studentID) {
+        auto it = grades.find(studentID);
+        if (it != grades.end()) {
+            return it->second;
+        }
+        return -1;
+    }
+    string getName() {
+        return name;
+    }
+    map<string, double> getGrades() {
+        return grades;
+    }
+    string getID() {
+        return ID;
+    }
+
+
 };
 
 

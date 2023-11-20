@@ -27,6 +27,7 @@ map<string, Teacher*> allTeachers;
 map<string, Student*> allStudents;
 map<string, Class*> allClasses;
 
+
 // iter for global variables
 map<string, Class*>::iterator classIter;
 map<string, Student*>::iterator studentIter;
@@ -98,7 +99,24 @@ whenever the program ends it will delete all the data that was created in this f
 and whenever the program starts it will load the data from the json files to create the objects again and any objects you added through the menu
 */
 
-void initClasses() { //BUG fix preload data function its probably making new objects instead of iterating through global maps
+void initClasses() { //BUG fix to json for class for exams it should look like this 
+    /*
+    {
+        "C001": {
+            "name": "Math 2413",
+            "students": ["2303693", "2303694"],
+            "assignments": {
+                "M101": {
+                    "name": "Derivatives",
+                    "grades": {
+                        "2303693": 80,
+                        "2303694": 85
+                    }
+                }
+            }
+        },
+    }
+    */
     map<string, string> currentDateAttendance = { {currentDate(), "ABSENT"} }; // {date, status} gets current date in format "MM/DD/YYYY"
 
     // students
@@ -116,10 +134,51 @@ void initClasses() { //BUG fix preload data function its probably making new obj
     Teacher* teacher4 = new Teacher("Jakavitch", "jaka@edu.com", "2003");
 
     // classes
-    Class* mathClass = new Class("Math 2413", "C001"); // name, ID
+    Class* mathClass = new Class("Math 2413", "C001"); // name, id
     Class* scienceClass = new Class("Biology 1302", "C002");
     Class* englishClass = new Class("English 1301", "C003");
     Class* computerScienceClass = new Class("Computer Science 1301", "C004");
+
+    // Create assignments and exams for each class
+    Assignment* mathAssignment = new Assignment("Derivatives", "M101"); // name, id
+    Assignment* scienceAssignment = new Assignment("Biology", "S101");
+    Assignment* englishAssignment = new Assignment("Writing", "E101");
+    Assignment* CSassignment = new Assignment("Data Structure", "CS101");
+
+    Exam* mathExam = new Exam("Calculus Exam", "ME101");
+    Exam* scienceExam = new Exam("Biology Exam", "SE101");
+    Exam* englishExam = new Exam("Literature Exam", "EE101");
+    Exam* CSexam = new Exam("Programming Exam", "CSE101");
+
+    // Linking assignments and exams to classes
+    mathClass->addAssignment(mathAssignment);
+    scienceClass->addAssignment(scienceAssignment);
+    englishClass->addAssignment(englishAssignment);
+    computerScienceClass->addAssignment(CSassignment);
+
+    mathClass->addExam(mathExam);
+    scienceClass->addExam(scienceExam);
+    englishClass->addExam(englishExam);
+    computerScienceClass->addExam(CSexam);
+
+    //TODO implement student->setGrade?
+    // Assign grades to students in each class for assignments and exams
+    mathClass->assignGradeToStudent(student1, mathAssignment, 80); // student, assignment, grade
+    mathClass->assignGradeToStudent(student2, mathAssignment, 85);
+
+    scienceClass->assignGradeToStudent(student3, scienceAssignment, 90);
+    scienceClass->assignGradeToStudent(student4, scienceAssignment, 88);
+
+    englishClass->assignGradeToStudent(student5, englishAssignment, 92);
+    englishClass->assignGradeToStudent(student6, englishAssignment, 87);
+
+    computerScienceClass->assignGradeToStudent(student1, CSassignment, 75);
+    computerScienceClass->assignGradeToStudent(student2, CSassignment, 80);
+
+    mathClass->assignGradeToStudent(student1, mathExam, 75); // student, exam, grade
+    scienceClass->assignGradeToStudent(student2, scienceExam, 85);
+    englishClass->assignGradeToStudent(student3, englishExam, 90);
+    computerScienceClass->assignGradeToStudent(student4, CSexam, 95);
 
     //setting the attendance of the current students to absent this is just to preload the json data
     student1->setAttendanceRecord(currentDateAttendance);

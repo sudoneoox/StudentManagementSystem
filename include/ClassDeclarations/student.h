@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iostream>
 
+
 using namespace std;
 class Class;
 
@@ -23,7 +24,10 @@ class Student : public People
 private:
     map<string, Class*> classSchedule; // classID, class pointer
     map<string, string> attendanceRecord;
-    map<string, Assignment*> assignmentGrades;
+
+    map<string, double> assignmentGrades; // assignmentID, grade
+    map<string, double> examGrades;       // examID, grade
+
     // classID to know which class it came from and, assig nment pointer
 
 public:
@@ -32,7 +36,6 @@ public:
     ~Student();                                    // destructor for dynamic vectors
     map<string, string> GetAllAttendanceRecords(); // returns priv attr. attendance record
     string GetAttendanceRecordRange(string startDate, string endDate);       // returns priv attr. attendance record for a specific date
-    double getGradeForAssignment(Assignment* assignment);
     void MarkAttendance(string date, string status);
     void enrollInClass(Class* newClass);
     void enrollInClasses(map<string, Class*> newClasses);
@@ -41,9 +44,12 @@ public:
     bool isEnrolledInClass(string classID);
     void printClassSchedule();
 
-
-    void setAssignmentGrades(map<string, Assignment*> assignmentGrades);
-    map<string, Assignment*> getAssignmentGrades();
+    double getGradeForAssignment(string classID, string assignmentID);
+    map<string, double> getGradesForAssignment();
+    map<string, double> getGradesForExam();
+    double getGradeForExam(string classID, string examID);
+    void setGradeForAssignment(string assignmentID, double grade);
+    void setGradeForExam(string examID, double grade);
 
 
     void setAttendanceRecord(map<string, string> attendanceRecord);

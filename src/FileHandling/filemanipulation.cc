@@ -8,22 +8,31 @@ void to_jsonFromStudent(json& j, Student& s) {
         {"email", s.getEmail()},
         {"ID", s.getID()},
         {"classSchedule", json::object()},
-        {"attendanceRecord", s.GetAllAttendanceRecords()}
+        {"attendanceRecord", s.GetAllAttendanceRecords()},
+        {"AssignmentGrades",s.getGradesForAssignment()},
+        {"ExamGrades", s.getGradesForExam()}
     };
     for (auto& classSchedule : s.getClassSchedule()) {
         // classSchedule.first is the classID and classSchedule.second is the class pointer format is {classID: className}
         j ["classSchedule"][classSchedule.first] = classSchedule.second->getName();
     }
-    // cout << j.dump(4) << "\n inside to_student json" << endl;
+
 }
 
-void to_jsonFromClass(json& j, Class& c) {
+
+
+
+// cout << j.dump(4) << "\n inside to_student json" << endl;
+
+void to_jsonFromClass(json& j, Class& c) { //FIXME tojson for assignments and exams
     // cout << "inside to_jsonFromClass\n";
     j = {
         {"name", c.getName()},
         {"ID", c.getClassID()},
         {"students",json::object()}, // {studentID: studentName}
-        {"teacher", json::object()} // {teacherID: teacherName}
+        {"teacher", json::object()}, // {teacherID: teacherName}
+        {"assignments", json::object()}, // {assignmentID: assignmentName}
+        {"exams", json::object()} // {examID: examName}
     };
     if (c.getTeacher() != nullptr) {
         j ["teacher"][c.getTeacher()->getID()] = c.getTeacher()->getName();
@@ -33,8 +42,33 @@ void to_jsonFromClass(json& j, Class& c) {
         // student.first is the studentID and student.second is the student pointer format is {studentID: studentName}
         j ["students"][student.first] = student.second->getName();
     }
-    // cout << "good here\n";
-    // cout << j.dump(4) << "\n inside to_class json" << endl;
+
+    for (auto& assignment : c.getAssignmentGrades()) {
+        auto& assignmentPtr = assignment.second;
+        json assignmentJson = {
+            {"name", assignmentPtr->getName()},
+            {"grades", json::object()}
+        };
+
+        for (auto& grade : assignmentPtr->getGrades()) {
+            assignmentJson ["grades"][grade.first] = grade.second; // {studentID: grade}
+        }
+
+        j ["assignments"][assignmentPtr->getID()] = assignmentJson;
+    }
+
+    for (auto& exam : c.getExamGrades()) {
+        auto& examPtr = exam.second;
+        json examJson = {
+            {"name", examPtr->getName()},
+            {"grades", json::object()} // {studentID: grade}
+        };
+        for (auto& grade : examPtr->getGrades()) {
+            examJson ["grades"][grade.first] = grade.second; // {studentID: grade}
+        }
+        j ["exams"][examPtr->getID()] = examJson; // {examID: examJson}
+    }
+
 }
 
 void to_jsonFromTeacher(json& j, Teacher& t) {
@@ -82,7 +116,18 @@ void from_json(const json& j, Student& s) {
         }
         s.setAttendanceRecord(attendanceRecord);
     }
-
+    if (j.contains("assignmentGrades")) {
+        auto grades = j.at("assignmentGrades").get<map<string, int>>();
+        for (const auto& pair : grades) {
+            s.setGradeForAssignment(pair.first, pair.second);
+        }
+    }
+    if (j.contains("examGrades")) {
+        auto grades = j.at("examGrades").get<map<string, int>>();
+        for (const auto& pair : grades) {
+            s.setGradeForExam(pair.first, pair.second);
+        }
+    }
 }
 
 void from_json(const json& j, Class& c) {
@@ -116,6 +161,49 @@ void from_json(const json& j, Class& c) {
     else {
         cout << "no students for class " << c.getName() << endl;
     }
+
+    if (j.contains("assignments") && j ["assignments"].is_object()) {
+        map<string, Assignment*> assignments;
+        for (const auto& assignmentJson : j ["assignments"].items()) {
+            string assignmentID = assignmentJson.key();
+            string assignmentName = assignmentJson.value().at("name").get<string>();
+            Assignment* assignmentPtr = new Assignment(assignmentName, assignmentID);
+            if (assignmentJson.value().contains("grades") && assignmentJson.value() ["grades"].is_object()) {
+                for (const auto& gradeJson : assignmentJson.value() ["grades"].items()) {
+                    string studentID = gradeJson.key();
+                    double grade = gradeJson.value().get<double>();
+                    assignmentPtr->setGrade(studentID, grade);
+                }
+            }
+            assignments [assignmentID] = assignmentPtr;
+        }
+        c.addAssignment(assignments);
+    }
+    else {
+        cout << "no assignments for class " << c.getName() << endl;
+    }
+
+    if (j.contains("exams") && j ["exams"].is_object()) {
+        map<string, Exam*> exams;
+        for (const auto& examJson : j ["exams"].items()) {
+            string examID = examJson.key();
+            string examName = examJson.value().at("name").get<string>();
+            Exam* examPtr = new Exam(examName, examID);
+            if (examJson.value().contains("grades") && examJson.value() ["grades"].is_object()) {
+                for (const auto& gradeJson : examJson.value() ["grades"].items()) {
+                    string studentID = gradeJson.key();
+                    double grade = gradeJson.value().get<double>();
+                    examPtr->setGrade(studentID, grade);
+                }
+            }
+            exams [examID] = examPtr;
+        }
+        c.addExam(exams);
+    }
+    else {
+        cout << "no exams for class " << c.getName() << endl;
+    }
+
 }
 
 void from_json(const json& j, Teacher& t) {
