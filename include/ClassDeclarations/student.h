@@ -4,6 +4,7 @@
 #include "./people.h"
 #include "./class.h"
 #include "./assignment.h"
+#include "./exam.h"
 
 #include <chrono> // date manipulation library
 #include <string>
@@ -20,27 +21,38 @@ class Class;
 class Student : public People
 {
 private:
-    vector<Class *> classSchedule; // didnt use list<T> because of the better effiency vector provide when traversing elements sequentially
+    map<string, Class*> classSchedule; // classID, class pointer
     map<string, string> attendanceRecord;
-    map<Assignment *, double> assignmentGrades;
+    map<string, Assignment*> assignmentGrades;
+    // classID to know which class it came from and, assig nment pointer
 
 public:
     Student();                                     // default constructor
     Student(string name, string email, string id); // overloaded constructor
     ~Student();                                    // destructor for dynamic vectors
     map<string, string> GetAllAttendanceRecords(); // returns priv attr. attendance record
-    double getGradeForAssignment(Assignment *assignment);
+    string GetAttendanceRecordRange(string startDate, string endDate);       // returns priv attr. attendance record for a specific date
+    double getGradeForAssignment(Assignment* assignment);
     void MarkAttendance(string date, string status);
-    void enrollInClass(Class *newClass);
-    void enrollInClasses(vector<Class *> newClasses);
+    void enrollInClass(Class* newClass);
+    void enrollInClasses(map<string, Class*> newClasses);
+    void dropClass(Class* classToDrop);
+    void dropClasses(vector<Class*> classesToDrop);
+    bool isEnrolledInClass(string classID);
+    void printClassSchedule();
+
+
+    void setAssignmentGrades(map<string, Assignment*> assignmentGrades);
+    map<string, Assignment*> getAssignmentGrades();
+
 
     void setAttendanceRecord(map<string, string> attendanceRecord);
-    vector<Class *> &getClassSchedule();
+    map<string, Class*>& getClassSchedule();
 
     // operator overloading
-    Student &operator=(const Student &RHS);
-    friend istream &operator>>(istream &IN, Student &RHS);  // input student class schedule and grades
-    friend ostream &operator<<(ostream &OUT, Student &RHS); // output current student class schedule and grades
+    Student& operator=(const Student& RHS);
+    friend istream& operator>>(istream& IN, Student& RHS);  // input student class schedule and grades
+    friend ostream& operator<<(ostream& OUT, Student& RHS); // output current student class schedule and grades
 };
 
 #endif // !STUDENT_H

@@ -5,7 +5,7 @@ using namespace std;
 
 People::People()
 {
-    this->name = "";
+    this->name =               "";
     this->email = "";
     this->ID = "";
 }

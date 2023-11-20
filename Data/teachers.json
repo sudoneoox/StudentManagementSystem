@@ -1,14 +1,34 @@
 {
     "2000": {
         "ID": "2000",
-        "email": "teacher@cougarnet.uh.edu",
-        "name": "Dr. Corona",
-        "subjectsTaught": []
+        "email": "rincon@edu.com",
+        "name": "Carlos Rincon",
+        "subjectsTaught": {
+            "C001": "Math 2413"
+        }
     },
     "2001": {
         "ID": "2001",
-        "email": "doe@uh.edu",
-        "name": "Dr. Doe",
-        "subjectsTaught": []
+        "email": "melahutalmus@edu.com",
+        "name": "Melahut Almus",
+        "subjectsTaught": {
+            "C002": "Biology 1302"
+        }
+    },
+    "2002": {
+        "ID": "2002",
+        "email": "hsmith@edu.com",
+        "name": "Holly Smith",
+        "subjectsTaught": {
+            "C003": "English 1301"
+        }
+    },
+    "2003": {
+        "ID": "2003",
+        "email": "jaka@edu.com",
+        "name": "Jakavitch",
+        "subjectsTaught": {
+            "C004": "Computer Science 1301"
+        }
     }
 }

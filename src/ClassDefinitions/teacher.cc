@@ -2,53 +2,59 @@
 
 using namespace std;
 
-Teacher::Teacher()
-{
+Teacher::Teacher() {
     this->name = "";
     this->email = "";
     this->ID = "";
-    vector<Class *> subjectsTaught;
+    map<string, Class*> subjectsTaught;
 };
 
-void Teacher::addSubject(Class *subject)
-{
-    subjectsTaught.push_back(subject);
+void Teacher::addSubject(Class* subject) {
+    subjectsTaught.insert(pair<string, Class*>(subject->getID(), subject));
+};
+void Teacher::setSubjectsTaught(map<string, Class*> subjectsTaught) {
+    this->subjectsTaught = subjectsTaught;
 };
 
-Teacher::Teacher(string name, string email, string id)
-{
+Teacher::Teacher(string name, string email, string id) {
     this->name = name;
     this->email = email;
     this->ID = id;
-    vector<Class *> subjectsTaught;
+    map<string, Class*> subjectsTaught;
 };
-Teacher::Teacher(const Teacher &other)
-{
+Teacher::Teacher(const Teacher& other) {
     this->name = other.name;
     this->email = other.email;
     this->ID = other.ID;
     this->subjectsTaught = other.subjectsTaught;
 };
-vector<Class *> Teacher::GetSubjectsTaught() const
-{
+Teacher::~Teacher() {
+    map<string, Class*>::iterator iter;
+    for (iter = subjectsTaught.begin(); iter != subjectsTaught.end(); iter++) {
+        delete iter->second;
+    }
+};
+map<string, Class*> Teacher::GetSubjectsTaught() const {
     return subjectsTaught;
 };
-void Teacher::UpdateSubjects(vector<Class *> newSubjects)
-{
+void Teacher::printSubjectsTaught() {
+    for (auto classIter = subjectsTaught.begin(); classIter != subjectsTaught.end(); classIter++) {
+        cout << classIter->second->getName() << endl;
+    }
+};
+void Teacher::UpdateSubjects(map<string, Class*> newSubjects) {
     subjectsTaught = newSubjects;
 };
-void Teacher::EnterGrade(Assignment *assignment, Student *student, double grade)
-{
+void Teacher::EnterGrade(Assignment* assignment, Student* student, double grade) {
     cout << "still need to complete";
 };
-map<Student *, string> GenerateAttendance(string startDate, string endDate){
 
+map<Student*, string> GenerateAttendance(string startDate, string endDate) {
+    cout << "still need to complete";
 };
 
-Teacher &Teacher::operator=(const Teacher &RHS)
-{
-    if (this != &RHS)
-    {
+Teacher& Teacher::operator=(const Teacher& RHS) {
+    if (this != &RHS) {
         this->name = RHS.name;
         this->email = RHS.email;
         this->ID = RHS.ID;
@@ -58,8 +64,7 @@ Teacher &Teacher::operator=(const Teacher &RHS)
     return *this;
 };
 
-istream &operator>>(istream &IN, Teacher &teacher)
-{
+istream& operator>>(istream& IN, Teacher& teacher) {
     cout << "Enter Name: ";
     IN >> teacher.name;
     cout << "Enter Email: ";
@@ -67,4 +72,15 @@ istream &operator>>(istream &IN, Teacher &teacher)
     cout << "Enter ID: ";
     IN >> teacher.ID;
     return IN;
+};
+
+ostream& operator<<(ostream& OUT, Teacher& teacher) {
+    OUT << "Name: " << teacher.name << endl;
+    OUT << "Email: " << teacher.email << endl;
+    OUT << "ID: " << teacher.ID << endl;
+    cout << "Classes Taught: " << endl;
+    for (auto classIter = teacher.subjectsTaught.begin(); classIter != teacher.subjectsTaught.end(); classIter++) {
+        OUT << "Class: " << classIter->second->getName() << endl;
+    }
+    return OUT;
 };

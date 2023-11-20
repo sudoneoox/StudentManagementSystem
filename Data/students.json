@@ -1,18 +1,72 @@
 {
-    "1000": {
-        "ID": "1000",
+    "2303693": {
+        "ID": "2303693",
         "attendanceRecord": {
-            "11/15/2023": "ABSENT"
+            "11/19/2023": "ABSENT"
         },
-        "classSchedule": [],
+        "classSchedule": {
+            "C001": "Math 2413",
+            "C002": "Biology 1302"
+        },
         "email": "drcorona@cougarnet.uh.edu",
-        "name": "Diego"
+        "name": "Diego Coronado"
     },
-    "1001": {
-        "ID": "1001",
-        "attendanceRecord": {},
-        "classSchedule": [],
-        "email": "janedoe@cougarnet.uh.edu",
-        "name": "Jane"
+    "2303694": {
+        "ID": "2303694",
+        "attendanceRecord": {
+            "11/19/2023": "ABSENT"
+        },
+        "classSchedule": {
+            "C001": "Math 2413",
+            "C002": "Biology 1302"
+        },
+        "email": "francocm@edu.com",
+        "name": "Cassandra Franco"
+    },
+    "2303695": {
+        "ID": "2303695",
+        "attendanceRecord": {
+            "11/19/2023": "ABSENT"
+        },
+        "classSchedule": {
+            "C001": "Math 2413",
+            "C002": "Biology 1302"
+        },
+        "email": "johnwick@edu.com",
+        "name": "John Wick"
+    },
+    "2303696": {
+        "ID": "2303696",
+        "attendanceRecord": {
+            "11/19/2023": "ABSENT"
+        },
+        "classSchedule": {
+            "C003": "English 1301"
+        },
+        "email": "bobfrank@edu.com",
+        "name": "Bob Frank"
+    },
+    "2303697": {
+        "ID": "2303697",
+        "attendanceRecord": {
+            "11/19/2023": "ABSENT"
+        },
+        "classSchedule": {
+            "C003": "English 1301",
+            "C004": "Computer Science 1301"
+        },
+        "email": "sallysue@edu.com",
+        "name": "Sally Sue"
+    },
+    "2303698": {
+        "ID": "2303698",
+        "attendanceRecord": {
+            "11/19/2023": "ABSENT"
+        },
+        "classSchedule": {
+            "C004": "Computer Science 1301"
+        },
+        "email": "johndoe@edu.com",
+        "name": "John Doe"
     }
 }

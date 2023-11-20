@@ -8,38 +8,55 @@ using namespace std;
 #include <chrono>
 
 #include "../../include/ClassDeclarations/student.h"
+#include "../../include/ClassDeclarations/class.h"
 #include "../../include/filemanipulation.h"
 #include "../../include/Menu.h"
 
 string currentDate();
-void studentMenu(Student &student);
-bool validationCheck(vector<Student> students, int &idx);
 
-void studentMenu(Student &student)
-{
+void studentMenu(Student& student);
+bool validationCheck(map<string, Student*> students, int& idx);
+
+// void enrollStudentToClass(Student& student);
+void enrollStudentToClass(Student& student, bool& continueLoop);
+void removeStudentFromClass(Student& student, bool& continueLoop);
+void updateSchedule(Student& student);
+
+void markAttendance(Student& student, string date, string status);
+
+extern map<string, Student*> allStudents;
+extern map<string, Class*> allClasses;
+extern map<string, Class*>::iterator classIter;
+
+
+void studentMenu(Student& student) {
     char input;
-    while (cin >> input && input != '7')
-    {
-        if (input == '1')
-        {
+    string name = student.getName();
+    while (cin >> input && input != '7') {
+        if (input == '1') {
             cout << "Showing Information For " << student.getName() << endl;
             cout << student << endl;
-            PrintMenuOption("Student Menu", "studentMenuOptions");
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
-        else if (input == '2')
-        {
-            cout << "You will now be marked present for today's date "
-                 << currentDate() << '\n';
-            student.MarkAttendance(currentDate(), "PRESENT");
-            addDataToJsonFile("../Data/students.json", student);
-            PrintMenuOption("Student Menu", "studentMenuOptions");
+        else if (input == '2') {
+            // markPresent(student);
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
-        else if (input == '3')
-        {
-            cout << "Displaying Available Classes\n";
+        else if (input == '3') {
+            updateSchedule(student);
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
-        else if (input == '7')
-        {
+        else if (input == '4') {
+            cout << "Class Schedule For " << student.getName() << endl;
+            student.printClassSchedule();
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
+        }
+        else if (input == '5') {
+            cout << "still need to implement this\n";
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
+        }
+
+        else if (input == '6') {
             cout << "Exiting Student Menu\n";
             PrintMenuOption("Main Menu", "mainMenuOptions");
             break;
@@ -47,8 +64,117 @@ void studentMenu(Student &student)
     }
 }
 
-string currentDate() // function to get the current date in the format of month/day/year thank you stack exchange
-{
+
+void markAttendance(Student& student, string date, string status) {
+    cout << "\nAttendance has been marked for " << student.getName() << " on " << date << endl;
+    student.MarkAttendance(date, status);
+    addDataToJsonFile("../Data/students.json", student);
+}
+
+
+void updateSchedule(Student& student) {
+    bool continueLoop = true;
+    while (continueLoop) {
+        char option;
+        cout << "Would you like to" << endl;
+        cout << "1. Drop a Class? " << endl;
+        cout << "2. Enroll in a Class? " << endl;
+        cout << "0. Go back to Student Menu" << endl;
+        cin >> option;
+        if (option == '0') {
+            return;
+        }
+        else if (option == '1') {
+            removeStudentFromClass((student), continueLoop);
+            continueLoop = false;
+        }
+        else if (option == '2') {
+            enrollStudentToClass((student), continueLoop);
+            continueLoop = false;
+        }
+        else {
+            cout << "Invalid Option Try again.";
+        }
+    }
+    return;
+}
+
+void removeStudentFromClass(Student& student, bool& continueLoop) {
+    while (continueLoop) {
+        cout << "\nDisplaying Your Current Classes:\n";
+        map<string, Class*> classSchedule = student.getClassSchedule();
+        if (classSchedule.size() == 0) {
+            cout << "You are not enrolled in any classes\n";
+            return;
+        }
+        for (classIter = classSchedule.begin(); classIter != classSchedule.end(); classIter++) {
+            cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
+        }
+        cout << "Enter the class ID you would like to drop or 0 to go back: ";
+        string classID;
+        cin >> classID;
+        if (classID == "0") {
+            return;
+        }
+        Class* clsPtr = findClassByID(allClasses, classID);
+        if (clsPtr == nullptr) {
+            cout << "\nInvalid Class ID\n";
+            continueLoop = true;
+        }
+        else if (!student.isEnrolledInClass(classID)) {
+            cout << "\nYou are not enrolled in this class\n";
+            continueLoop = true;
+        }
+        else {
+            student.dropClass(clsPtr);
+            clsPtr->removeStudent(&student);
+            cout << "Successfully Dropped " << clsPtr->getName() << endl;
+            addDataToJsonFile("../Data/students.json", student);
+            addDataToJsonFileFromClass("../Data/class.json", *clsPtr);
+            return;
+        }
+    }
+}
+
+
+void enrollStudentToClass(Student& student, bool& continueLoop) {
+    while (continueLoop) {
+        cout << "\nDisplaying Available Classes\n";
+        for (classIter = allClasses.begin(); classIter != allClasses.end(); classIter++) {
+            cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
+        }
+        if (allClasses.size() == 0) {
+            cout << "There are no classes available to enroll in\n";
+            return;
+        }
+        cout << "Enter the class ID you would like to enroll in or 0 to return: ";
+        string classID;
+        cin >> classID;
+        if (classID == "0") {
+            return;
+        }
+        if (allClasses.find(classID) == allClasses.end()) {
+            cout << "\nInvalid Class ID\n";
+            continueLoop = true;
+        }
+        else if (student.isEnrolledInClass(classID)) {
+
+            cout << "\nYou are already enrolled in this class\n";
+            continueLoop = true;
+        }
+        else {
+            student.enrollInClass(allClasses [classID]);
+            allClasses [classID]->addStudent(&student);
+            cout << "Successfully Enrolled in " << allClasses [classID]->getName() << endl;
+            addDataToJsonFile("../Data/students.json", student);
+            addDataToJsonFileFromClass("../Data/class.json", *allClasses [classID]);
+            return;
+        }
+    }
+}
+
+/* This function is used to get the current date and return it as a string credit: stack overflow*/
+string currentDate() {
     auto now = chrono::system_clock::now();
 
     time_t now_c = chrono::system_clock::to_time_t(now); // convert to c time
@@ -60,30 +186,30 @@ string currentDate() // function to get the current date in the format of month/
     return dateStream.str();
 }
 
-bool validationCheck(vector<Student> students, int &idx) // function to check if the student ID is valid returns idx of student if true
-{
-    while (true)
-    {
-        cout << "Enter your StudentID or 0 to go back: ";
-        string ID;
-        cin >> ID;
 
-        if (ID == "0")
-        {
-            return false; // Return false if user enters 0, indicating to go back
+/* This function is used to validate the user input for the student ID
+It will return true if the ID is valid and false if the ID is invalid
+ It will also return the index of the student in the vector*/
+bool validationCheck(map<string, Student*> students, int& idx) {
+    string ID;
+    map<string, Student*>::iterator iter;
+
+    // Loop until the user enters a valid ID or 0 to go back
+    while (true) {
+        cout << "Enter your StudentID or 0 to go back: ";
+        cin >> ID;
+        if (ID == "0") {
+            return false; // Return false if user enters 0, this will take them back to the main menu
         }
 
-        for (int i = 0; i < students.size(); i++)
-        {
-            if (students.at(i).getID() == ID)
-            {
-                idx = i;     // Set index if ID is found
-                return true; // ID is valid, return true
-            }
+        // iterate through map of students to find the student with the matching ID
+        iter = students.find(ID);
+        if (iter != students.end()) {
+            idx = stoi(ID);
+            return true; // Return true if the ID is valid
         }
 
         cout << "Invalid ID Try Again or Enter 0 to go back to the portal\n";
-        // The loop will continue, prompting the user again
     }
 }
 

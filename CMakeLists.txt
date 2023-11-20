@@ -16,8 +16,35 @@ FetchContent_MakeAvailable(json)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Find the GCC compiler
+find_program(GCC_FOUND gcc)
+
+# If GCC was found, set it as the C compiler
+if(GCC_FOUND)
+  set(CMAKE_C_COMPILER gcc)
+endif()
+
+# Find the G++ compiler
+find_program(GPP_FOUND g++)
+
+# If G++ was found, set it as the C++ compiler
+if(GPP_FOUND)
+  set(CMAKE_CXX_COMPILER g++)
+endif()
+
+find_program(CLANG_FOUND clang)
+
+# If Clang was found, set it as the C and C++ compiler
+if(CLANG_FOUND)
+  set(CMAKE_C_COMPILER clang)
+  set(CMAKE_CXX_COMPILER clang++)
+endif()
+
+
 # include directory for header files
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include) 
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/ClassDeclarations) 
+
 
 # include directory for json Data
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Data)

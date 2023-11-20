@@ -1,14 +1,14 @@
-#ifndef ASSIGNMNENT_H
-#define ASSIGNMNENT_H
+#ifndef ASSIGNMENT_H
+#define ASSIGNMENT_H
 
 #include <string>
+#include "./grades.h"
 
 using namespace std;
 
-class Assignment
+class Assignment : public Grade
 {
-public:
-    Assignment();
+    Assignment() : Grade() {};
 };
 
 #endif // !ASSIGNMENT_H
