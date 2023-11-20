@@ -99,24 +99,8 @@ whenever the program ends it will delete all the data that was created in this f
 and whenever the program starts it will load the data from the json files to create the objects again and any objects you added through the menu
 */
 
-void initClasses() { //BUG fix to json for class for exams it should look like this 
-    /*
-    {
-        "C001": {
-            "name": "Math 2413",
-            "students": ["2303693", "2303694"],
-            "assignments": {
-                "M101": {
-                    "name": "Derivatives",
-                    "grades": {
-                        "2303693": 80,
-                        "2303694": 85
-                    }
-                }
-            }
-        },
-    }
-    */
+void initClasses() {
+
     map<string, string> currentDateAttendance = { {currentDate(), "ABSENT"} }; // {date, status} gets current date in format "MM/DD/YYYY"
 
     // students

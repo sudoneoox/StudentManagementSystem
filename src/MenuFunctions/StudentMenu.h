@@ -21,6 +21,8 @@ bool validationCheck(map<string, Student*> students, int& idx);
 void enrollStudentToClass(Student& student, bool& continueLoop);
 void removeStudentFromClass(Student& student, bool& continueLoop);
 void updateSchedule(Student& student);
+void calculateClassGrade(Student& student);
+void submitAssignment(Student& student);
 
 void markAttendance(Student& student, string date, string status);
 
@@ -52,14 +54,62 @@ void studentMenu(Student& student) {
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
         else if (input == '5') {
-            cout << "still need to implement this\n";
-            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
+            calculateClassCrade(student);
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions")
         }
 
         else if (input == '6') {
-            cout << "Exiting Student Menu\n";
-            PrintMenuOption("Main Menu", "mainMenuOptions");
+            submitAssignment(student);
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
+        }
+        else if (input == '7') {
+            cout << "Exiting Program\n";
             break;
+        }
+        else {
+            cout << "Invalid Option Try again.";
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
+        }
+    }
+}
+
+
+
+void submitAssignment(Student& student) { //TODO finish this and calculate class grades
+    while (true) {
+
+
+
+    }
+}
+
+void calculateClassGrade(Student& student) {
+    while (true) {
+        cout << "\nDisplaying Your Current Classes:\n";
+        map<string, Class*> classSchedule = student.getClassSchedule();
+        if (classSchedule.size() == 0) {
+            cout << "You are not enrolled in any classes\n";
+            return;
+        }
+        for (classIter = classSchedule.begin(); classIter != classSchedule.end(); classIter++) {
+            cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
+        }
+        cout << "Enter the class ID you would like to calculate your grade for or 0 to go back: ";
+        string classID;
+        cin >> classID;
+        if (classID == "0") {
+            return;
+        }
+        Class* clsPtr = findClassByID(allClasses, classID);
+        if (clsPtr == nullptr) {
+            cout << "\nInvalid Class ID\n";
+        }
+        else if (!student.isEnrolledInClass(classID)) {
+            cout << "\nYou are not enrolled in this class\n";
+        }
+        else {
+            cout << "Your grade in " << clsPtr->getName() << " is " << clsPtr->calculateGrade(student) << endl;
+            return;
         }
     }
 }
