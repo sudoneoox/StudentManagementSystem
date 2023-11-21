@@ -139,3 +139,18 @@ map<string, Assignment*> Class::getAssignmentGrades() {
 map<string, Exam*> Class::getExamGrades() {
     return this->exams;
 }
+
+double  Class::calculateGrade(Student* student) {
+    double totalGrade = 0;
+    int totalAssignments = 0;
+    int totalExams = 0;
+    for (auto& assignment : assignments) {
+        totalGrade += assignment.second->getGrade(student->getID());
+        totalAssignments++;
+    }
+    for (auto& exam : exams) {
+        totalGrade += exam.second->getGrade(student->getID());
+        totalExams++;
+    }
+    return totalGrade / (totalAssignments + totalExams);
+}

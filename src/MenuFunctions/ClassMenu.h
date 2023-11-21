@@ -39,11 +39,11 @@ void ClassMenu(Class& c) {
         }
         else if (input == "3") {
             enterExamGrades(c);
-            cout << "needs to be implemented\n";
+            PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions")
         }
         else if (input == "4") {
             getOverallClassGPA(c);
-            cout << "needs to be implemented\n";
+            PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions")
         }
         else if (input == "5") {
             cout << "Leaving Class Menu\n";
@@ -61,7 +61,9 @@ void ClassMenu(Class& c) {
 
 void enterExamGrades(Class& c) {
 
+
 }
+
 void getOverallClassGPA(Class& c) {
 
 }

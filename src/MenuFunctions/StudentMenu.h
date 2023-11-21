@@ -24,6 +24,7 @@ void updateSchedule(Student& student);
 void calculateClassGrade(Student& student);
 void submitAssignment(Student& student);
 
+
 void markAttendance(Student& student, string date, string status);
 
 extern map<string, Student*> allStudents;
@@ -54,7 +55,7 @@ void studentMenu(Student& student) {
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
         else if (input == '5') {
-            calculateClassCrade(student);
+            calculateClassGrade(student);
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions")
         }
 
@@ -98,7 +99,7 @@ void calculateClassGrade(Student& student) {
         string classID;
         cin >> classID;
         if (classID == "0") {
-            return;
+            break;
         }
         Class* clsPtr = findClassByID(allClasses, classID);
         if (clsPtr == nullptr) {
@@ -108,10 +109,11 @@ void calculateClassGrade(Student& student) {
             cout << "\nYou are not enrolled in this class\n";
         }
         else {
-            cout << "Your grade in " << clsPtr->getName() << " is " << clsPtr->calculateGrade(student) << endl;
+            cout << "Your grade in " << clsPtr->getName() << " is " << clsPtr->calculateGrade(&student) << endl;
             return;
         }
     }
+    return;
 }
 
 

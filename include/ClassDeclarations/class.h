@@ -50,6 +50,7 @@ public:
 
     void assignGradeToStudent(Student* student, Assignment* assignment, double grade);
     void assignGradeToStudent(Student* student, Exam* exam, double grade);
+    double calculateGrade(Student* student);
 
     double getAssignmentGrade(string studentID, string assignmentID);
     map<string, Assignment*> getAssignmentGrades();
