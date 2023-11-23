@@ -4,7 +4,7 @@
 #include "./grades.h"
 
 using namespace std;
-class Exam : public Grade
+class Exam : public Grade // Exam class inherits from Grade class
 {
 public:
     Exam() : Grade() {};

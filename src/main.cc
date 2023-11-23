@@ -1,4 +1,3 @@
-#include "../include/ClassDeclarations/assignment.h"
 #include "../include/ClassDeclarations/class.h"
 #include "../include/ClassDeclarations/people.h"
 #include "../include/ClassDeclarations/student.h"
@@ -19,7 +18,7 @@
 #include <nlohmann/json.hpp>
 
 using namespace std;
-using json = nlohmann::json; // exteral library for json manipulation documentation: https://github.com/nlohmann/json
+using json = nlohmann::json; // external library for json manipulation documentation: https://github.com/nlohmann/json
 
 // global variables a bunch of functions use these and I didnt want to pass them as reference to every function it would make them 
 // unreadable and hard to follow
@@ -33,67 +32,15 @@ map<string, Class*>::iterator classIter;
 map<string, Student*>::iterator studentIter;
 map<string, Teacher*>::iterator teacherIter;
 
-void initClasses();
-void deleteInitData();
+void initClasses(); // creates initial data for the program to run
+void deleteInitData();   // deletes all the data that was created in the initClasses function
 
-
-void testClassAssignmentsExams() {
-    cout << "Testing Assignments and Exams in Classes...\n";
-
-    // Test for a specific class
-    string classID = "C001"; // Example class ID
-    if (allClasses.find(classID) != allClasses.end()) {
-        Class* cls = allClasses [classID];
-
-        // List assignments and exams in this class
-        cout << "Assignments in " << cls->getName() << ":\n";
-        for (auto& [assignmentID, assignment] : cls->getAssignments()) {
-            cout << "ID: " << assignmentID << " - Name: " << assignment->getName() << "\n";
-        }
-
-        cout << "Exams in " << cls->getName() << ":\n";
-        for (auto& [examID, exam] : cls->getExams()) {
-            cout << "ID: " << examID << " - Name: " << exam->getName() << "\n";
-        }
-
-        cout << "Grades in " << cls->getName() << ":\n";
-        for (auto& [studentID, student] : cls->getStudents()) {
-            cout << "Student: " << student->getName() << "\n";
-            for (auto& [assignmentID, grade] : student->getGradesForAssignment()) {
-                cout << "Assignment ID: " << assignmentID << " - Grade: " << grade << "\n";
-            }
-            for (auto& [examID, grade] : student->getGradesForExam()) {
-                cout << "Exam ID: " << examID << " - Grade: " << grade << "\n";
-            }
-        }
-    }
-    else {
-        cout << "Class with ID " << classID << " not found.\n";
-    }
-}
-
-void testStudentAssignmentsExams() {
-    cout << "Testing Assignments and Exams in Students...\n";
-
-    // Assuming you have some test students in allStudents map
-    for (auto& [studentID, student] : allStudents) {
-        cout << "Grades for Student " << student->getName() << ":\n";
-
-        // Check assignments grades
-        for (auto& [assignmentID, grade] : student->getGradesForAssignment()) {
-            cout << "Assignment ID: " << assignmentID << " - Grade: " << grade << "\n";
-        }
-
-        // Check exams grades
-        for (auto& [examID, grade] : student->getGradesForExam()) {
-            cout << "Exam ID: " << examID << " - Grade: " << grade << "\n";
-        }
-    }
-}
 
 int main() {
     initClasses(); // creates initial data for testing purposes jump to function for documentation
-    preloadDataJsonFile("student", "../Data/students.json"); // loads data from json files jump to function for documentation 
+
+    // loads data from json files jump to function for documentation 
+    preloadDataJsonFile("student", "../Data/students.json");
     preloadDataJsonFile("teacher", "../Data/teachers.json");
     preloadDataJsonFile("class", "../Data/class.json");
 
@@ -101,15 +48,15 @@ int main() {
 
 
     char input;
-    PrintMenuOption("Student Management System", "mainMenuOptions");
+    PrintMenuOption("Student Management System", "mainMenuOptions"); // prints the main menu options
     while (cin >> input) {
         if (input == '1') {
             int idx;
-            bool correctID = validationCheck(allStudents, idx);
+            bool correctID = validationCheck(allStudents, idx); // checks if the id is valid and returns the index of the student in the map
             if (correctID) {
                 string name = allStudents [to_string(idx)]->getName();
                 PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
-                studentMenu(*(allStudents [to_string(idx)]));
+                studentMenu(*(allStudents [to_string(idx)])); // enters the student menu with a pointer to the student object
                 PrintMenuOption("Student Management System", "mainMenuOptions");
             }
             else if (!correctID) {
@@ -161,7 +108,7 @@ void initClasses() {
     map<string, string> currentDateAttendance = { {currentDate(), "ABSENT"} }; // {date, status} gets current date in format "MM/DD/YYYY"
 
     // students
-    Student* student1 = new Student("Diego Coronado", "drcorona@cougarnet.uh.edu", "2303693");
+    Student* student1 = new Student("Diego Coronado", "drcorona@cougarnet.uh.edu", "2303693"); // name, email, id
     Student* student2 = new Student("Cassandra Franco", "francocm@edu.com", "2303694");
     Student* student3 = new Student("John Wick", "johnwick@edu.com", "2303695");
     Student* student4 = new Student("Bob Frank", "bobfrank@edu.com", "2303696");
@@ -169,7 +116,7 @@ void initClasses() {
     Student* student6 = new Student("John Doe", "johndoe@edu.com", "2303698");
 
     // teachers
-    Teacher* teacher1 = new Teacher("Carlos Rincon", "rincon@edu.com", "2000");
+    Teacher* teacher1 = new Teacher("Carlos Rincon", "rincon@edu.com", "2000"); // name, email, id
     Teacher* teacher2 = new Teacher("Melahut Almus", "melahutalmus@edu.com", "2001");
     Teacher* teacher3 = new Teacher("Holly Smith", "hsmith@edu.com", "2002");
     Teacher* teacher4 = new Teacher("Jakavitch", "jaka@edu.com", "2003");
@@ -181,12 +128,12 @@ void initClasses() {
     Class* computerScienceClass = new Class("Computer Science 1301", "C004");
 
     // Create assignments and exams for each class
-    Assignment* mathAssignment = new Assignment("Derivatives", "M101"); // name, id
+    Assignment* mathAssignment = new Assignment("Derivatives", "M101");  // name, id
     Assignment* scienceAssignment = new Assignment("Biology", "S101");
     Assignment* englishAssignment = new Assignment("Writing", "E101");
     Assignment* CSassignment = new Assignment("Data Structure", "CS101");
 
-    Exam* mathExam = new Exam("Calculus Exam", "ME101");
+    Exam* mathExam = new Exam("Calculus Exam", "ME101"); // name, id
     Exam* scienceExam = new Exam("Biology Exam", "SE101");
     Exam* englishExam = new Exam("Literature Exam", "EE101");
     Exam* CSexam = new Exam("Programming Exam", "CSE101");
@@ -197,7 +144,7 @@ void initClasses() {
     allTeachers = { {"2000", teacher1}, {"2001", teacher2}, {"2002", teacher3}, {"2003", teacher4} };
     allClasses = { {"C001", mathClass}, {"C002", scienceClass}, {"C003", englishClass}, {"C004", computerScienceClass} };
 
-    // Linking assignments and exams to classes
+    // linking assignments and exams to classes
     mathClass->addAssignment(mathAssignment);
     scienceClass->addAssignment(scienceAssignment);
     englishClass->addAssignment(englishAssignment);

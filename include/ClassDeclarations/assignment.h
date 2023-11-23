@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Assignment : public Grade
+class Assignment : public Grade // Assignment class inherits from Grade class
 {
 public:
     Assignment() : Grade() {};

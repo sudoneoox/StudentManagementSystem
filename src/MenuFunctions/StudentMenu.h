@@ -12,23 +12,22 @@ using namespace std;
 #include "../../include/filemanipulation.h"
 #include "../../include/Menu.h"
 
-string currentDate();
+string currentDate(); // this function is used to get the current date and return it as a string credit: stack overflow used only for the init function in main.cc
 
-void studentMenu(Student& student);
-bool validationCheck(map<string, Student*> students, int& idx);
+void studentMenu(Student& student); // this function is used to display the student menu and take input from the user
+bool validationCheck(map<string, Student*> students, int& idx); // this function is used to validate the user input for the student ID
 
-// void enrollStudentToClass(Student& student);
-void enrollStudentToClass(Student& student, bool& continueLoop);
-void removeStudentFromClass(Student& student, bool& continueLoop);
-void updateSchedule(Student& student);
-void calculateClassGrade(Student& student);
-void submitAssignment(Student& student);
+void enrollStudentToClass(Student& student, bool& continueLoop); // this function enrolls a student to a class
+void removeStudentFromClass(Student& student, bool& continueLoop); // this function removes a student from a class
+void updateSchedule(Student& student); // this function updates the schedule for a student
+void calculateClassGrade(Student& student); // this function calculates the grade for a student in a class
+void submitAssignment(Student& student); // this function allows a student to submit an assignment
 
 
 void markAttendance(Student& student, string date, string status);
 
-extern map<string, Student*> allStudents;
-extern map<string, Class*> allClasses;
+extern map<string, Student*> allStudents; // map of all the students in the program
+extern map<string, Class*> allClasses; // map of all the classes in the program
 extern map<string, Class*>::iterator classIter;
 
 
@@ -42,28 +41,24 @@ void studentMenu(Student& student) {
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
         else if (input == '2') {
-            // markPresent(student);
-            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
-        }
-        else if (input == '3') {
             updateSchedule(student);
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
-        else if (input == '4') {
+        else if (input == '3') {
             cout << "Class Schedule For " << student.getName() << endl;
             student.printClassSchedule();
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
-        else if (input == '5') {
+        else if (input == '4') {
             calculateClassGrade(student);
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
 
-        else if (input == '6') {
+        else if (input == '5') {
             submitAssignment(student);
             PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
-        else if (input == '7') {
+        else if (input == '6') {
             cout << "Exiting Program\n";
             break;
         }
@@ -74,13 +69,15 @@ void studentMenu(Student& student) {
     }
 }
 
-
-
+/*
+ Submits and assignment from the available assignments in that class through a class pointer and student pointer
+this allows the student to update their grade for that assignment and allows the class to update the student's grade
+*/
 void submitAssignment(Student& student) {
     while (true) {
         cout << "\nDisplaying Your Current Classes:\n";
         auto classSchedule = student.getClassSchedule();
-        if (classSchedule.empty()) {
+        if (classSchedule.empty()) { // if the student is not enrolled in any classes return 
             cout << "You are not enrolled in any classes.\n";
             return;
         }
@@ -96,7 +93,7 @@ void submitAssignment(Student& student) {
             break;
         }
 
-        auto clsPtr = findClassByID(allClasses, classID);
+        auto clsPtr = findClassByID(allClasses, classID); // find the class pointer using the classID function
         if (clsPtr == nullptr) {
             cout << "\nInvalid Class ID.\n";
             continue;
@@ -125,27 +122,32 @@ void submitAssignment(Student& student) {
             continue;
         }
 
-        cout << "Enter your grade for " << assignments [assignmentID]->getName() << ": ";
+        cout << "Enter your grade for " << assignments [assignmentID]->getName() << ": "; // get the grade from the user
         double grade;
         cin >> grade;
         string studentID = student.getID();
         // Update the grade in the class and student records
-        clsPtr->setStudentGradeForAssignment(studentID, assignmentID, grade);
-        student.setGradeForAssignment(assignmentID, grade);
+        clsPtr->setStudentGradeForAssignment(studentID, assignmentID, grade); // update the grade in the class
+        student.setGradeForAssignment(assignmentID, grade);  // update the grade in the student
 
         // Update JSON files
-        addDataToJsonFile("../Data/students.json", student);
-        addDataToJsonFileFromClass("../Data/class.json", *clsPtr);
+        addDataToJsonFile("../Data/students.json", student); // update the student json file
+        addDataToJsonFileFromClass("../Data/class.json", *clsPtr); // update the class json file
 
         cout << "Updated assignment grade.\n";
         break;
     }
+    return;
 }
 
+
+/*
+ This function is used to calculate the grade for a class using the class pointer and student pointer
+*/
 void calculateClassGrade(Student& student) {
     while (true) {
         cout << "\nDisplaying Your Current Classes:\n";
-        auto classSchedule = student.getClassSchedule();
+        auto classSchedule = student.getClassSchedule(); // get the class schedule for the student
         if (classSchedule.empty()) {
             cout << "You are not enrolled in any classes\n";
             return;
@@ -153,30 +155,37 @@ void calculateClassGrade(Student& student) {
         for (const auto& [classID, clsPtr] : classSchedule) {
             cout << classID << ": " << clsPtr->getName() << endl;
         }
-        cout << "Enter the class ID you would like to calculate your grade for or 0 to go back: ";
+        cout << "Enter the class ID you would like to calculate your grade for or 0 to go back: ";  // get the class ID from the user
         string classID;
         cin >> classID;
         if (classID == "0") {
             break;
         }
-        auto clsPtr = findClassByID(allClasses, classID);
+        auto clsPtr = findClassByID(allClasses, classID); // find the class pointer using the classID function
         if (clsPtr == nullptr) {
             cout << "\nInvalid Class ID\n";
             continue;
         }
-        double grade = clsPtr->calculateTotalGrade(student.getID());
+        double grade = clsPtr->calculateTotalGrade(student.getID()); // calculate the grade for the student in that class with a class function 
         cout << "Your grade in " << clsPtr->getName() << " is " << grade << endl;
     }
     return;
 }
 
+/*
+ This function is used to mark the attendance for a student in a class it was originally supposed to be in the student menu but it didnt
+make sense to allow a student to be a able to mark their own attendance so it was moved to the teacher menu and this is now a helper function for that
+*/
 void markAttendance(Student& student, string date, string status) {
     cout << "\nAttendance has been marked for " << student.getName() << " on " << date << endl;
     student.MarkAttendance(date, status);
     addDataToJsonFile("../Data/students.json", student);
 }
 
-
+/*
+updateSchedule is used to update the schedule for a student it allows them to drop a class or enroll in a class
+and updates the json files accordingly
+*/
 void updateSchedule(Student& student) {
     bool continueLoop = true;
     while (continueLoop) {
@@ -190,11 +199,11 @@ void updateSchedule(Student& student) {
             return;
         }
         else if (option == '1') {
-            removeStudentFromClass((student), continueLoop);
+            removeStudentFromClass((student), continueLoop); // pass the student and continue loop by reference
             continueLoop = false;
         }
         else if (option == '2') {
-            enrollStudentToClass((student), continueLoop);
+            enrollStudentToClass((student), continueLoop); // pass the student and continue loop by reference
             continueLoop = false;
         }
         else {
@@ -204,15 +213,19 @@ void updateSchedule(Student& student) {
     return;
 }
 
+/* This function is used to remove a student from a class it takes a student pointer and a continue loop by reference
+it will loop until the user enters a valid class ID or 0 to go back
+
+*/
 void removeStudentFromClass(Student& student, bool& continueLoop) {
     while (continueLoop) {
         cout << "\nDisplaying Your Current Classes:\n";
-        map<string, Class*> classSchedule = student.getClassSchedule();
+        map<string, Class*> classSchedule = student.getClassSchedule(); // get the class schedule for the student
         if (classSchedule.size() == 0) {
             cout << "You are not enrolled in any classes\n";
             return;
         }
-        for (classIter = classSchedule.begin(); classIter != classSchedule.end(); classIter++) {
+        for (classIter = classSchedule.begin(); classIter != classSchedule.end(); classIter++) { // iterate through the class schedule and print the classes
             cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
         }
         cout << "Enter the class ID you would like to drop or 0 to go back: ";
@@ -221,7 +234,7 @@ void removeStudentFromClass(Student& student, bool& continueLoop) {
         if (classID == "0") {
             return;
         }
-        Class* clsPtr = findClassByID(allClasses, classID);
+        Class* clsPtr = findClassByID(allClasses, classID); // find the class pointer using the classID function
         if (clsPtr == nullptr) {
             cout << "\nInvalid Class ID\n";
             continueLoop = true;
@@ -231,21 +244,23 @@ void removeStudentFromClass(Student& student, bool& continueLoop) {
             continueLoop = true;
         }
         else {
-            student.dropClass(clsPtr);
-            clsPtr->removeStudent(&student);
+            student.dropClass(clsPtr); // drop the class from the student
+            clsPtr->removeStudent(&student); // remove the student from the class
             cout << "Successfully Dropped " << clsPtr->getName() << endl;
-            addDataToJsonFile("../Data/students.json", student);
-            addDataToJsonFileFromClass("../Data/class.json", *clsPtr);
+            addDataToJsonFile("../Data/students.json", student); // update the student json file
+            addDataToJsonFileFromClass("../Data/class.json", *clsPtr); // update the class json file
             return;
         }
     }
 }
 
-
+/*
+used to enroll a student in a class it takes a student pointer and a continue loop by reference
+*/
 void enrollStudentToClass(Student& student, bool& continueLoop) {
     while (continueLoop) {
         cout << "\nDisplaying Available Classes\n";
-        for (classIter = allClasses.begin(); classIter != allClasses.end(); classIter++) {
+        for (classIter = allClasses.begin(); classIter != allClasses.end(); classIter++) { // iterate through the class schedule and print the classes
             cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
         }
         if (allClasses.size() == 0) {
@@ -268,17 +283,17 @@ void enrollStudentToClass(Student& student, bool& continueLoop) {
             continueLoop = true;
         }
         else {
-            student.enrollInClass(allClasses [classID]);
-            allClasses [classID]->addStudent(&student);
+            student.enrollInClass(allClasses [classID]);  // enroll student to class
+            allClasses [classID]->addStudent(&student); // add that student to the class
             cout << "Successfully Enrolled in " << allClasses [classID]->getName() << endl;
-            addDataToJsonFile("../Data/students.json", student);
-            addDataToJsonFileFromClass("../Data/class.json", *allClasses [classID]);
+            addDataToJsonFile("../Data/students.json", student); // update the student json file
+            addDataToJsonFileFromClass("../Data/class.json", *allClasses [classID]); // update the class json file
             return;
         }
     }
 }
 
-/* This function is used to get the current date and return it as a string credit: stack overflow*/
+/* This function is used to get the current date and return it as a string credit: stack overflow used only for the init function in main.cc*/
 string currentDate() {
     auto now = chrono::system_clock::now();
 

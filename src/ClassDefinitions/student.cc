@@ -3,16 +3,16 @@
 #include <cstring>
 
 using namespace std;
-
-// TODO update methods after working on ASSIGNMENT CLASS
-//  CLASS Class
+/*
+Mini code description for student methods are in student.h
+*/
 
 Student::Student() {
     this->name = "";
     this->email = "";
     this->ID = "";
-    map<string, Class*> classSchedule();
-    map<string, string> attendanceRecord();
+    map<string, Class*> classSchedule(); // classID, Class*
+    map<string, string> attendanceRecord(); // date, status
     map<string, double> assignmentGrades(); // assignmentID, grade
     map<string, double> examGrades(); // examID, grade
 
@@ -31,7 +31,7 @@ Student::Student(string name, string email, string id) {
 Student::~Student() {
     map<string, Class*>::iterator iter;
     for (iter = classSchedule.begin(); iter != classSchedule.end(); iter++) {
-        delete iter->second;
+        delete iter->second; // delete the class object
     }
 
 }
@@ -41,31 +41,27 @@ map<string, string> Student::GetAllAttendanceRecords() {
 }
 
 string Student::GetAttendanceRecordRange(string startDate, string endDate) {
-
     string attendanceRecordRange;
     bool started = false;
-
     for (const auto& record : this->attendanceRecord) {
         if (record.first == startDate) {
             started = true;
         }
-
         if (started) {
             attendanceRecordRange += record.first + ": " + record.second + "\n";
         }
-
         if (record.first == endDate) {
             break;
         }
     }
-
     if (!started) {
         // If the loop never started, then the start date was not found
         attendanceRecordRange = "No data for date range " + startDate + " to " + endDate;
     }
-
     return attendanceRecordRange;
 }
+
+
 
 void Student::printClassSchedule() {
     for (auto iter = classSchedule.begin(); iter != classSchedule.end(); iter++) {
@@ -91,23 +87,17 @@ void Student::MarkAttendance(string date, string status) {
 void Student::enrollInClass(Class* newClass) {
     classSchedule [newClass->getClassID()] = newClass;
 }
+
 void Student::enrollInClasses(map<string, Class*> newClasses) {
     for (auto iter = newClasses.begin(); iter != newClasses.end(); iter++) {
         classSchedule [iter->first] = iter->second;
     }
 }
+
 void Student::dropClass(Class* classToDrop) {
     auto iter = classSchedule.find(classToDrop->getClassID());
     if (iter != classSchedule.end()) {
         classSchedule.erase(iter);
-    }
-}
-void Student::dropClasses(vector<Class*> classesToDrop) {
-    for (auto iter = classesToDrop.begin(); iter != classesToDrop.end(); iter++) {
-        auto iter2 = classSchedule.find((*iter)->getClassID());
-        if (iter2 != classSchedule.end()) {
-            classSchedule.erase(iter2);
-        }
     }
 }
 
@@ -120,6 +110,7 @@ bool Student::isEnrolledInClass(string classID) {
         return false;
     }
 }
+
 ostream& operator<<(ostream& OUT, Student& RHS) {
     OUT << "Student Name: " << RHS.name << endl;
     OUT << "Student Email: " << RHS.email << endl;
@@ -143,15 +134,6 @@ istream& operator>>(istream& IN, Student& RHS) {
 
 map<string, Class*>& Student::getClassSchedule() {
     return classSchedule;
-}
-
-Student& Student::operator=(const Student& RHS) {
-    this->name = RHS.name;
-    this->email = RHS.email;
-    this->ID = RHS.ID;
-    this->classSchedule = RHS.classSchedule;
-    this->attendanceRecord = RHS.attendanceRecord;
-    return *this;
 }
 
 void Student::setAttendanceRecord(map<string, string> attendanceRecord) {

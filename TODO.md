@@ -1,10 +1,12 @@
-- Need to clean up Menu function code and seperate it into its own header file
+Submission (made to Moodle):
 
-- Fix add student menu function for class and pointer issue whenever you do add a student
+*Mid-term report (due on 11/14/2023). The mid-term report should include a description of how the program is (or will be) designed, including the design of the classes and their inheritance relation. Please describe the process of critical functionality (in the form of pseudo-code or step-by-step instructions). Please also provide the use cases of your program. You can refer to zyBooks 11.8 to learn how to use UML to describe your OOP design.*
 
-- turn student list into a map for class
 
-- Start doing teacher menu functions after finishing student and class menu implemention groundwork 
+*Two-page (or more if necessary) final report explaining how the program was designed (can be different from the mid-term report), what classes were used and implemented, and the instructions to operate the program (some use cases)
+*
 
-- Build up assignment class and Test class
-- 
+A link to a video clip (must be no longer than 10 minutes) showing the class design and implementation (by showing source code), and demonstrating all the required functionality listed above.
+
+
+Source code (including .h,.cpp and other necessary project files only) as a single .zip file. DO NOT include “Debug” or “Release” folders under your project.

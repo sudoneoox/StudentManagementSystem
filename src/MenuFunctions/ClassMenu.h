@@ -13,15 +13,15 @@
 using namespace std;
 
 
-void updateClassInfo(Class& c);
-void generateAttendanceReport(Class& c);
-void enterExamGrades(Class& c);
-void getOverallClassGPA(Class& c);
+void updateClassInfo(Class& c); // updates the class info
+void generateAttendanceReport(Class& c); // generates an attendance report from a start date to end date for a class
+void enterExamGrades(Class& c); // this function enters exam grades for a class depending on the exams that are set in that class
+void getOverallClassAverage(Class& c); // this function gets the overall class average for all the students in the class
 
 void ClassMenu(Class& c) {
-    string className = c.getName();
-    string teacherName = c.getTeacher()->getName();
-    PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
+    string className = c.getName(); // gets the class name
+    string teacherName = c.getTeacher()->getName(); // gets the teacher name
+    PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions"); // prints the class menu options WITH the teacher name and class name
     string input;
     while (true || cin >> input) {
         cout << "Enter 0 to go back to the teacher menu at any time\n";
@@ -42,7 +42,7 @@ void ClassMenu(Class& c) {
             PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
         }
         else if (input == "4") {
-            getOverallClassGPA(c);
+            getOverallClassAverage(c);
             PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
         }
         else if (input == "5") {
@@ -58,7 +58,7 @@ void ClassMenu(Class& c) {
     return;
 }
 
-
+// this function enters exam grades for a class depending on the exams that are set in that class
 void enterExamGrades(Class& c) {
     while (true) {
         cout << "Enter the ID of the exam you would like to enter grades for (0 to exit): ";
@@ -68,63 +68,64 @@ void enterExamGrades(Class& c) {
             return;
         }
 
-        auto exam = c.getExam(examID);
+        auto exam = c.getExam(examID); // gets the exam from the class
         if (!exam) {
             cout << "Invalid Exam ID. Please try again." << endl;
             return;
         }
 
         cout << "Entering grades for Exam: " << exam->getName() << endl;
-        for (auto& [studentID, studentPtr] : c.getStudents()) {
+        for (auto& [studentID, studentPtr] : c.getStudents()) { // iterates through the students in the class
             cout << "Enter the grade for " << studentPtr->getName() << " (ID: " << studentID << "): ";
             double grade;
             cin >> grade;
             string ID = studentPtr->getID();
-            c.setStudentGradeForExam(ID, examID, grade);
-            studentPtr->setGradeForExam(examID, grade);
-            addDataToJsonFile("../Data/students.json", *studentPtr);
+            c.setStudentGradeForExam(ID, examID, grade); // sets the grade for the student in the class
+            studentPtr->setGradeForExam(examID, grade);  // sets the grade for the student in the student class
+            addDataToJsonFile("../Data/students.json", *studentPtr); // updates the student json file
         }
 
-        addDataToJsonFileFromClass("../Data/class.json", c);
+        addDataToJsonFileFromClass("../Data/class.json", c); // updates the class json file
         cout << "Exam grades entered successfully." << endl;
         break;
     }
     return;
 }
 
-void getOverallClassGPA(Class& c) {
-    double totalGPA = 0.0;
-    int count = 0;
-    for (auto& [studentID, studentPtr] : c.getStudents()) {
-        double studentGPA = c.calculateTotalGrade(studentID);
-        if (studentGPA >= 0) {
-            totalGPA += studentGPA;
-            count++;
+// this function gets the overall class average for all the students in the class
+void getOverallClassAverage(Class& c) {
+    double totalGPA = 0.0; // total GPA of all the students in the class
+    int count = 0; // number of students in the class
+    for (auto& [studentID, studentPtr] : c.getStudents()) { // iterates through the students in the class
+        double studentGPA = c.calculateTotalGrade(studentID); // gets the total grade for the student
+        if (studentGPA >= 0) { // if the student has a grade
+            totalGPA += studentGPA; // adds the student's grade to the total GPA
+            count++; // increments the number of students in the class
         }
     }
-    double overallGPA = count > 0 ? totalGPA / count : 0.0;
-    cout << "Overall Class GPA for " << c.getName() << ": " << overallGPA << endl;
+    double overallGPA = count > 0 ? totalGPA / count : 0.0; // calculates the overall GPA for the class
+    cout << "Overall Class GPA for " << c.getName() << ": " << overallGPA << endl; // prints the overall GPA for the class
 }
 
 
 
-
+// generates an attendance report from a start date to end date for a class
 void generateAttendanceReport(Class& c) {
     cout << "Would you like to generate an attendance report for this class? (y/n)\n";
     string input;
     cin >> input;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignores the newline character
     if (input == "y" || input == "Y") {
         cout << "Enter the Start Data (MM/DD/YYYY): ";
         string startDate;
-        getline(cin, startDate);
+        getline(cin, startDate); // gets the start date
         cout << "\nEnter the End Data (MM/DD/YYYY): ";
         string endDate;
-        getline(cin, endDate);
+        getline(cin, endDate); // gets the end date
         cout << "\nAttendance Report for " << c.getName() << " from " << startDate << " to " << endDate << endl;
 
         for (auto& [studentID, studentPtr] : c.getStudents()) {
-            cout << studentPtr->getName() << "\n" << studentPtr->GetAttendanceRecordRange(startDate, endDate) << endl;
+            cout << studentPtr->getName() << "\n" << studentPtr->GetAttendanceRecordRange(startDate, endDate) << endl; // prints the attendance record for the student
         }
     }
     else {
@@ -133,20 +134,21 @@ void generateAttendanceReport(Class& c) {
     }
 }
 
+// this function updates the class info
 void updateClassInfo(Class& c) {
     cout << "Would you like to change the name of this class? (y/n)\n";
     string input;
     cin >> input;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignores the newline character
     if (input == "y" || input == "Y") {
         cout << "Enter the new name of the class: ";
         string newName;
         getline(cin, newName);
-        c.setName(newName);
-        addDataToJsonFileFromClass("../Data/class.json", c);
-        addDataToJsonFile("../Data/teachers.json", *c.getTeacher());
+        c.setName(newName); // sets the new name of the class
+        addDataToJsonFileFromClass("../Data/class.json", c); // updates the class json file
+        addDataToJsonFile("../Data/teachers.json", *c.getTeacher()); // updates the teacher json file
         for (auto s = c.getStudents().begin(); s != c.getStudents().end(); s++) {
-            addDataToJsonFile("../Data/students.json", *s->second);
+            addDataToJsonFile("../Data/students.json", *s->second); // updates the student json file for all the students that have that class
         }
     }
     else {

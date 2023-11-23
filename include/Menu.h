@@ -7,12 +7,19 @@
 #include <string>
 using namespace std;
 
+
+/*
+This function creates the ascii menu for the program
+@param name: the name of the menu
+@param menu: the menu options to be displayed
+Its used extensively throughout the program and uses iomanip to format the menu
+
+*/
 void PrintMenuOption(string name, string menu) {
     vector<string> options;
     if (menu == "studentMenuOptions") {
         options = {
             "Get Info",
-            "Mark Attendance",
             "Update Schedule",
             "View Schedule",
             "Calculate Class Grade",
@@ -34,18 +41,18 @@ void PrintMenuOption(string name, string menu) {
         options = { "Student Menu", "Teacher Menu" };
     }
 
-    int width = 53;
-    int namePadding = (width - 2 - name.length()) / 2;
-    cout << setfill('-') << setw(width) << "-" << endl; // top border
-    cout << "|" << setfill(' ') << setw(namePadding) << " " << name << setw(namePadding) << " "
-        << "|" << endl;                                // menu title
+    int width = 53; // width of the menu
+    int namePadding = (width - 2 - name.length()) / 2;   // padding for the name of the menu
+    cout << setfill('-') << setw(width) << "-" << endl;     // top border
+    cout << "|" << setfill(' ') << setw(namePadding) << " " << name << setw(namePadding) << " " << "|" << endl; // menu title
     cout << setfill('-') << setw(width) << "-" << endl; // bottom border
+
     for (int i = 0; i < options.size(); i++) {
         string optionLine = "| " + to_string(i + 1) + ". " + options.at(i);
         int optionPadding = width - 4 - options.at(i).length() - to_string(i + 1).length();
         cout << optionLine << setfill(' ') << setw(optionPadding) << " |" << endl;
     }
-    string exitOption = "| " + to_string(options.size() + 1) + ". Exit";
+    string exitOption = "| " + to_string(options.size() + 1) + ". Exit"; // adds an exit option to all the menus its number is set to the size of the options vector + 1
     int exitPadding = width - 4 - 4 - to_string(options.size() + 1).length();
     cout << exitOption << setfill(' ') << setw(exitPadding) << " |" << endl; // exit option
 

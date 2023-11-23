@@ -18,61 +18,53 @@ class Class
 private:
     string className;
     string classID;
-    Teacher* teacher;
+    Teacher* teacher; // teacher pointer
 
     map<string, Student*> studentList; // studentID, student pointer
-    map<string, Exam*>  exams; // assignmentID, studentID, grade    
+    map<string, Exam*>  exams;  // assignmentID, studentID, grade    
     map<string, Assignment*> assignments; // assignmentID, studentID, grade
 
 public:
     // constructor
     Class();
     Class(string name, string classID);
-    Class(const Class& otherClass);
 
     // destructor
     ~Class();
 
     // setters
-    void setName(string className);
-    void setClassID(string classID);
-    void setTeacher(Teacher* teacher);
-    void setStudentList(map<string, Student*> studentList);
-    void setExams(map<string, Exam*>& exams);
-    void setAssignments(map<string, Assignment*>& assignments);
+    void setName(string className);  // sets class name
+    void setClassID(string classID); // sets class ID
+    void setTeacher(Teacher* teacher); // sets teacher
+    void setStudentList(map<string, Student*> studentList); // sets student list
+    void setExams(map<string, Exam*>& exams); // sets exams
+    void setAssignments(map<string, Assignment*>& assignments); // sets assignments
 
 
-    // methods for managing students
-    void addStudent(Student* Student);
-    void removeStudent(Student* Student);
+    // methods for managing students 
+    void addStudent(Student* Student); // adds student to class
+    void removeStudent(Student* Student); // removes student from class
 
 
     // methods for managing assignments and exams
-    void addAssignment(Assignment* assignment);
-    void addExam(Exam* exam);
-    void setStudentGradeForAssignment(string& studentID, string& assignmentID, double grade);
-    void setStudentGradeForExam(string& studentID, string& examID, double grade);
-    void assignGradeToStudent(Student* student, Assignment* assignment, double grade);
-    void assignGradeToStudent(Student* student, Exam* exam, double grade);
+    void addAssignment(Assignment* assignment); // adds assignment to class
+    void addExam(Exam* exam); // adds exam to class
+    void setStudentGradeForAssignment(string& studentID, string& assignmentID, double grade); // sets grade for assignment
+    void setStudentGradeForExam(string& studentID, string& examID, double grade); // sets grade for exam
 
     // getters
     string getName();
     string getClassID();
-    Teacher* getTeacher();
-    string getID();
-    map<string, Student*> getStudents();
-    Exam* getExam(string examID);
-    Assignment* getAssignment(string assignmentID);
-    double getExamGrade(string studentID, string examID);
-    double getAssignmentGrade(string studentID, string assignmentID);
-    map<string, Exam*>& getExams();
-    map<string, Assignment*>& getAssignments();
-    double calculateTotalGrade(string studentID);
-
-
-
-
-
+    Teacher* getTeacher(); // returns teacher pointer
+    string getID(); // returns class ID used by helper functions within map class I didnt want to confuse it with classID in outside functions
+    map<string, Student*> getStudents(); // returns student list
+    Exam* getExam(string examID); // returns exam pointer
+    Assignment* getAssignment(string assignmentID); // returns assignment pointer
+    double getExamGrade(string studentID, string examID); // returns exam grade
+    double getAssignmentGrade(string studentID, string assignmentID); // returns assignment grade
+    map<string, Exam*>& getExams(); // returns exams
+    map<string, Assignment*>& getAssignments(); // returns assignments
+    double calculateTotalGrade(string studentID); // calculates total grade for student
 };
 
 #endif // !CLASS_H

@@ -1,16 +1,20 @@
 #include "../include/filemanipulation.h"
 
 // !! Serialization Section
-// serialize object to json
+// seriliaze Student Class Object into json so that it can be saved in a json format
+/*
+@param j: the json object to be serialized
+@param s: the student object to be serialized
+*/
 void to_jsonFromStudent(json& j, Student& s) {
     j = {
-        {"name", s.getName()},
-        {"email", s.getEmail()},
-        {"ID", s.getID()},
-        {"classSchedule", json::object()},
-        {"attendanceRecord", s.GetAllAttendanceRecords()},
-        {"AssignmentGrades",s.getGradesForAssignment()},
-        {"ExamGrades", s.getGradesForExam()}
+        {"name", s.getName()}, // studentName
+        {"email", s.getEmail()}, // studentEmail
+        {"ID", s.getID()}, // studentID
+        {"classSchedule", json::object()}, // {classID: className}
+        {"attendanceRecord", s.GetAllAttendanceRecords()}, // {date: status}
+        {"AssignmentGrades",s.getGradesForAssignment()}, // {assignmentID: grade}
+        {"ExamGrades", s.getGradesForExam()} // {examID: grade}
     };
     for (auto& classSchedule : s.getClassSchedule()) {
         // classSchedule.first is the classID and classSchedule.second is the class pointer format is {classID: className}
@@ -20,15 +24,15 @@ void to_jsonFromStudent(json& j, Student& s) {
 }
 
 
-
-
-// cout << j.dump(4) << "\n inside to_student json" << endl;
-
-void to_jsonFromClass(json& j, Class& c) { //FIXME tojson for assignments and exams
-    // cout << "inside to_jsonFromClass\n";
+// seriliaze Class Class Object into json so that it can be saved in a json format
+/*
+@param j: the json object to be serialized
+@param c: the class object to be serialized
+*/
+void to_jsonFromClass(json& j, Class& c) {
     j = {
-        {"name", c.getName()},
-        {"ID", c.getClassID()},
+        {"name", c.getName()}, // className
+        {"ID", c.getClassID()}, // classID
         {"students",json::object()}, // {studentID: studentName}
         {"teacher", json::object()}, // {teacherID: teacherName}
         {"assignments", json::object()}, // {assignmentID: assignmentName}
@@ -71,28 +75,37 @@ void to_jsonFromClass(json& j, Class& c) { //FIXME tojson for assignments and ex
 
 }
 
+/*
+@param j: the json object to be serialized
+@param t: the teacher object to be serialized
+serializes teacher object into json so that it can be saved in a json format
+*/
 void to_jsonFromTeacher(json& j, Teacher& t) {
     j = {
-        {"name", t.getName()},
-        {"email", t.getEmail()},
-        {"ID", t.getID()},
-        {"subjectsTaught", json::object()} };
+        {"name", t.getName()}, // teacherName
+        {"email", t.getEmail()}, // teacherEmail
+        {"ID", t.getID()}, // teacherID
+        {"subjectsTaught", json::object()} }; // {classID: className}
 
     for (auto& subject : t.GetSubjectsTaught()) {
         // subject.first is the classID and subject.second is the class pointer format is {classID: className}
         j ["subjectsTaught"][subject.first] = subject.second->getName();
     }
-
-    // cout << j.dump(4) << "\n inside to_teacher json" << endl;
 }
 
-// !! Deserialization Section
-// deserialize json to object
+/* !! Deserialization Section this is used to deserialize the json data into objects so that they can be used in the program its a way
+ to turn json data into class objects effectively
+*/
+
+/*
+@param j: the json object to be deserialized
+@param s: the student object to be deserialized
+*/
 void from_json(const json& j, Student& s) {
-    s.setName(j.at("name").get<string>());
-    s.setEmail(j.at("email").get<string>());
-    s.setID(j.at("ID").get<string>());
-    if (j.contains("classSchedule") && j ["classSchedule"].is_object()) {
+    s.setName(j.at("name").get<string>()); // studentName
+    s.setEmail(j.at("email").get<string>()); // studentEmail 
+    s.setID(j.at("ID").get<string>()); // studentID 
+    if (j.contains("classSchedule") && j ["classSchedule"].is_object()) { // {classID: className}
         map<string, Class*> classSchedule;
         for (const auto& classScheduleJson : j ["classSchedule"].items()) {
             string classID = classScheduleJson.key();
@@ -102,100 +115,104 @@ void from_json(const json& j, Student& s) {
                 classSchedule [classID] = it->second;
             }
         }
-        s.enrollInClasses(classSchedule);
+        s.enrollInClasses(classSchedule); // adds the classes to the student object
     }
     else {
         cout << "no class schedule for student " << s.getName() << endl;
     }
-    if (j.contains("attendanceRecord") && j ["attendanceRecord"].is_object()) {
+    if (j.contains("attendanceRecord") && j ["attendanceRecord"].is_object()) { // {date: status}
         map<string, string> attendanceRecord;
         for (const auto& attendanceRecordJson : j ["attendanceRecord"].items()) {
             string date = attendanceRecordJson.key();
             string status = attendanceRecordJson.value().get<string>();
             attendanceRecord [date] = status;
         }
-        s.setAttendanceRecord(attendanceRecord);
+        s.setAttendanceRecord(attendanceRecord); // adds the attendance record to the student object
     }
-    if (j.contains("AssignmentGrades")) {
+    if (j.contains("AssignmentGrades")) { // {assignmentID: grade}
         auto grades = j.at("AssignmentGrades").get<map<string, double>>();
         for (const auto& pair : grades) {
-            s.setGradeForAssignment(pair.first, pair.second);
+            s.setGradeForAssignment(pair.first, pair.second); // adds the assignment grades to the student object
         }
     }
-    if (j.contains("ExamGrades")) {
+    if (j.contains("ExamGrades")) { // {examID: grade}
         auto grades = j.at("ExamGrades").get<map<string, double>>();
         for (const auto& pair : grades) {
-            s.setGradeForExam(pair.first, pair.second);
+            s.setGradeForExam(pair.first, pair.second); // adds the exam grades to the student object
         }
     }
 }
 
+/*
+@param j: the json object to be deserialized
+@param c: the class object to be deserialized
+*/
 void from_json(const json& j, Class& c) {
-    c.setClassID(j.at("ID").get<string>());
-    c.setName(j.at("name").get<string>());
-    if (j.contains("teacher") && j ["teacher"].is_object()) {
+    c.setClassID(j.at("ID").get<string>()); // classID
+    c.setName(j.at("name").get<string>());  // className
+    if (j.contains("teacher") && j ["teacher"].is_object()) { // {teacherID: teacherName}
         string teacherID = j ["teacher"].items().begin().key();
         string teacherName = j ["teacher"].items().begin().value().get<string>();
         auto it = allTeachers.find(teacherID);
         if (it != allTeachers.end()) {
-            c.setTeacher(it->second);
+            c.setTeacher(it->second); // adds the teacher pointer stored in the map to the class object
         }
     }
     else {
         cout << "no teacher for class " << c.getName() << endl;
     }
 
-    if (j.contains("students") && j ["students"].is_object()) {
+    if (j.contains("students") && j ["students"].is_object()) { // {studentID: studentName}
         map<string, Student*> students;
         for (const auto& studentJson : j ["students"].items()) {
             string studentID = studentJson.key();
             string studentName = studentJson.value().get<string>();
             auto it = allStudents.find(studentID);
             if (it != allStudents.end()) {
-                students [studentID] = it->second;
+                students [studentID] = it->second;  // adds the student pointer stored in the map to the class object
             }
         }
-        c.setStudentList(students);
+        c.setStudentList(students); // adds the students to the class object
     }
     else {
         cout << "no students for class " << c.getName() << endl;
     }
-    if (j.contains("assignments")) {
+    if (j.contains("assignments")) { // {assignmentID: assignmentName}
         for (auto& [assignmentID, assignmentJson] : j ["assignments"].items()) {
             string assignmentName = assignmentJson.at("name").get<string>();
-            Assignment* assignment = new Assignment(assignmentName, assignmentID);
+            Assignment* assignment = new Assignment(assignmentName, assignmentID); // creates a new assignment object
 
-            if (assignmentJson.contains("grades")) {
+            if (assignmentJson.contains("grades")) { // {studentID: grade}
                 auto& gradesJson = assignmentJson ["grades"];
                 for (auto& [studentID, gradesJson] : gradesJson.items()) {
                     if (gradesJson.is_object() && gradesJson.contains(assignmentID)) {
                         double gradeatjson = gradesJson [assignmentID].get<double>();
-                        assignment->setGrade(studentID, assignmentID, gradeatjson);
+                        assignment->setGrade(studentID, assignmentID, gradeatjson); // adds the assignment grades to the assignment object
                     }
                 }
             }
-            c.addAssignment(assignment);
+            c.addAssignment(assignment); // adds the assignment object to the class object
         }
     }
     else {
         cout << "no assignments for class " << c.getName() << endl;
     }
 
-    if (j.contains("exams")) {
+    if (j.contains("exams")) { // {examID: examName}
         for (auto& [examID, examJson] : j ["exams"].items()) {
             string examName = examJson.at("name").get<string>();
-            Exam* exam = new Exam(examName, examID);
+            Exam* exam = new Exam(examName, examID); // creates a new exam object
 
             if (examJson.contains("grades")) {
                 auto& gradesJson = examJson ["grades"];
                 for (auto& [studentID, gradeJson] : gradesJson.items()) {
                     if (gradeJson.is_object() && gradeJson.contains(examID)) {
                         double gradeatjson = gradeJson [examID].get<double>();
-                        exam->setGrade(studentID, examID, gradeatjson);
+                        exam->setGrade(studentID, examID, gradeatjson); // adds the exam grades to the exam object
                     }
                 }
             }
-            c.addExam(exam);
+            c.addExam(exam); // adds the exam object to the class object
         }
     }
     else {
@@ -204,22 +221,26 @@ void from_json(const json& j, Class& c) {
 
 }
 
+/*
+@param j: the json object to be deserialized
+@param t: the teacher object to be deserialized
+*/
 void from_json(const json& j, Teacher& t) {
-    t.setName(j.at("name").get<string>());
-    t.setEmail(j.at("email").get<string>());
-    t.setID(j.at("ID").get<string>());
+    t.setName(j.at("name").get<string>()); // teacherName
+    t.setEmail(j.at("email").get<string>()); // teacherEmail
+    t.setID(j.at("ID").get<string>()); // teacherID
 
-    if (j.contains("subjectsTaught") && j ["subjectsTaught"].is_object()) {
+    if (j.contains("subjectsTaught") && j ["subjectsTaught"].is_object()) { // {classID: className}
         map<string, Class*> subjectsTaught;
         for (const auto& subjectTaughtJson : j ["subjectsTaught"].items()) {
             string classID = subjectTaughtJson.key();
             string className = subjectTaughtJson.value().get<string>();
             auto it = allClasses.find(classID);
             if (it != allClasses.end()) {
-                subjectsTaught [classID] = it->second;
+                subjectsTaught [classID] = it->second;  // adds the class pointer stored in the map to the teacher object
             }
         }
-        t.setSubjectsTaught(subjectsTaught);
+        t.setSubjectsTaught(subjectsTaught); // adds the classes to the teacher object
     }
     else {
         cout << "no subjects taught for teacher " << t.getName() << endl;
@@ -228,16 +249,18 @@ void from_json(const json& j, Teacher& t) {
 }
 
 // !!Data Preloading function whenever the program starts
-
 /*
-this function is integral for the program to work
-its used to preload data from the json files into the maps
+@param option: the option to preload data for
+@param filename: the filename to preload data from
+This function checks if the json file is empty and if it is it preloads the data from the global variables that were created in the initClasses function
+If the json file is not empty it loads the data from the json file from the previous session and creates the objects from the json file
+If the json file was empty it exits the program and asks the user to rerun the program to link all the objects to one another
 */
 void  preloadDataJsonFile(string option, string filename) {
-    bool preloadedStudent, preloadedTeacher, preloadedClass = false;
+    bool preloadedStudent, preloadedTeacher, preloadedClass = false; // checks if the data was preloaded for all the options
 
     if (option == "student") {
-        if (isJsonFileEmpty(filename)) {
+        if (isJsonFileEmpty(filename)) { // checks if the json file is empty
             cout << "Student data file is empty. Preloading Data with default values.\n";
 
             for (auto& [studentID, studentPtr] : allStudents) {
@@ -252,8 +275,8 @@ void  preloadDataJsonFile(string option, string filename) {
                 if (allStudents.find(studentID) == allStudents.end()) {
                     // Student does not exist, create a new one
                     Student* newStudent = new Student();
-                    from_json(studentJson, *newStudent);
-                    allStudents [studentID] = newStudent;
+                    from_json(studentJson, *newStudent); // creates a new student object from the json file
+                    allStudents [studentID] = newStudent; // adds the student object to the map
                 }
                 else {
                     // Student exists, update its properties
@@ -269,7 +292,7 @@ void  preloadDataJsonFile(string option, string filename) {
             for (auto& [teacherID, teacherPtr] : allTeachers) {
                 addDataToJsonFile(filename, *teacherPtr);
             }
-            allTeachers = createTeacherObjectsFromJsonFile(filename);
+            allTeachers = createTeacherObjectsFromJsonFile(filename); // creates teacher objects from the json file
             preloadedTeacher = true;
         }
         else {
@@ -279,7 +302,7 @@ void  preloadDataJsonFile(string option, string filename) {
                     // Teacher does not exist, create a new one
                     Teacher* newTeacher = new Teacher();
                     from_json(teacherJson, *newTeacher);
-                    allTeachers [teacherID] = newTeacher;
+                    allTeachers [teacherID] = newTeacher; // adds the teacher object to the map
                 }
                 else {
                     // Teacher exists, update its properties
@@ -314,18 +337,22 @@ void  preloadDataJsonFile(string option, string filename) {
             }
         }
     }
-    if (preloadedStudent && preloadedTeacher && preloadedClass) {
-        cout << "Preloaded the JSON data successfully. Please rerun the program to link all the objects to one another" << endl;
+    if (preloadedStudent && preloadedTeacher && preloadedClass) { // checks if all the data was preloaded
+        cout << "Preloaded the JSON data successfully. Please rerun the program to link all the objects to one another" << endl; // this is to make sure that all the objects are linked to one another
         exit(0);
     }
 }
-// !!File Manipulation Functions
 
 
+// !!File Manipulation/Handling Functions
 
+/*
+@param filePath: the path to the file to be created
+@param s: the student object to be added to the file
 
+This function creates a json file if it does not exist and adds the student object to the json file
 
-
+*/
 void addDataToJsonFile(const string& filePath, Student& s) {
     createJsonFile(filePath);
     json existingJsonData = loadDataFromFile(filePath);
@@ -336,6 +363,12 @@ void addDataToJsonFile(const string& filePath, Student& s) {
     saveJsonToFile(existingJsonData, filePath);
 }
 
+/*
+@param filePath: the path to the file to be created
+@param c: the class object to be added to the file
+this function creates a json file if it does not exist and adds the class object to the json file
+*/
+
 void addDataToJsonFileFromClass(const string& filePath, Class& c) {
     createJsonFile(filePath);
     json existingJsonData = loadDataFromFile(filePath);
@@ -345,6 +378,12 @@ void addDataToJsonFileFromClass(const string& filePath, Class& c) {
     saveJsonToFile(existingJsonData, filePath);
 }
 
+
+/*
+@param filePath: the path to the file to be created
+@param t: the teacher object to be added to the file
+this function creates a json file if it does not exist and adds the teacher object to the json file
+*/
 void addDataToJsonFile(const string& filePath, Teacher& t) {
     createJsonFile(filePath);
     json existingJsonData = loadDataFromFile(filePath);
@@ -354,21 +393,33 @@ void addDataToJsonFile(const string& filePath, Teacher& t) {
     saveJsonToFile(existingJsonData, filePath);
 }
 
+
+
+/*
+@param filePath: the path to the file to be created
+This function creates a json file if it does not exist
+*/
 void createJsonFile(const string& filePath) {
-    ofstream outfile(filePath, ios::out | ios::app);
+    ofstream outfile(filePath, ios::out | ios::app); // app appends to the file
     if (!outfile.is_open()) {
         cout << "Error opening file\n";
         return;
     }
-    if (outfile.tellp() == 0) {
+    if (outfile.tellp() == 0) { // checks if the file is empty
         outfile << "{}";
     }
     outfile.close();
 }
 
+
+/*
+@param data: the json object to be saved to the file
+@param filePath: the path to the file to be created
+This function saves the json object to the file
+*/
 void saveJsonToFile(const json& data, const string& filePath) {
-    ofstream outfile(filePath, ios::out | ios::trunc);
-    if (!outfile.is_open()) {
+    ofstream outfile(filePath, ios::out | ios::trunc); // trunc deletes the contents of the file
+    if (!outfile.is_open()) { // checks if the file is open
         cout << "Error opening file\n";
         return;
     }
@@ -376,14 +427,17 @@ void saveJsonToFile(const json& data, const string& filePath) {
     outfile.close();
 }
 
-
+/*
+@param filename: the path to the file to be loaded
+This function loads the json data from the file
+*/
 json loadDataFromFile(const string& filename) {
     ifstream file(filename);
     json data;
-    if (file.peek() != ifstream::traits_type::eof()) {
+    if (file.peek() != ifstream::traits_type::eof()) { // checks if the file is empty
         try {
             file >> data;
-        } catch (const json::parse_error& e) {
+        } catch (const json::parse_error& e) { // catches any parse errors
             cout << "Parse error: " << e.what() << '\n';
             return json{};
         }
@@ -392,9 +446,13 @@ json loadDataFromFile(const string& filename) {
 }
 
 // !! Other Helper Functions Section
+/*
+@param filename: the path to the file to be checked
+This function checks if the json file is empty
+*/
 bool isJsonFileEmpty(string& filename) {
     ifstream file(filename);
-    if (file.peek() == ifstream::traits_type::eof()) {
+    if (file.peek() == ifstream::traits_type::eof()) { // checks if the file is empty
         return true;
     }
     json data;
@@ -404,12 +462,18 @@ bool isJsonFileEmpty(string& filename) {
         cout << "Parse error: " << e.what() << '\n';
         return true;
     }
-    return data.empty();
+    return data.empty(); // returns true if the json file is empty
 }
 
+
+/*
+@param filename: the path to the file to be deleted
+this function uses the previous functions to create student objects out of the json file
+
+*/
 map<string, Student*> createStudentObjectsFromJsonFile(string& filename) {
-    map<string, Student*> allStudents;
-    json studentData = loadDataFromFile(filename);
+    map<string, Student*> allStudents; // {studentID: studentPtr}
+    json studentData = loadDataFromFile(filename); // loads the data from the json file
     for (auto& [id, data] : studentData.items()) {
         Student* studentPtr = new Student();
         from_json(data, *studentPtr);
@@ -419,7 +483,7 @@ map<string, Student*> createStudentObjectsFromJsonFile(string& filename) {
 }
 
 map<string, Class*> createClassObjectsFromJsonFile(string& filename) {
-    map<string, Class*> allClasses;
+    map<string, Class*> allClasses; // {classID: classPtr}
     json classData = loadDataFromFile(filename);
     for (auto& cls : classData.items()) {
         Class* clsPtr = new Class();
@@ -430,23 +494,23 @@ map<string, Class*> createClassObjectsFromJsonFile(string& filename) {
 }
 
 map<string, Teacher*> createTeacherObjectsFromJsonFile(string& filename) {
-    map<string, Teacher*> allTeachers;
+    map<string, Teacher*> allTeachers; // {teacherID: teacherPtr}
     json teacherData = loadDataFromFile(filename);
     for (auto& [id, data] : teacherData.items()) {
-        Teacher* teacherPtr = new Teacher();
+        Teacher* teacherPtr = new Teacher(); // creates a new teacher object
         from_json(data, *teacherPtr);
         allTeachers [id] = teacherPtr;
     }
     return allTeachers;
 }
-// !FINDERS
+// !FINDERS SECTION these helper functions return the pointer of the object that is being searched for since the objects are stored in maps in the form of {ID: pointer}
 Student* findStudentByID(map<string, Student*>& allStudents, string studentID) {
     for (auto& student : allStudents) {
         if (student.first == studentID) {
             return student.second;
         }
     }
-    return nullptr;
+    return nullptr; // returns nullptr if the student is not found
 }
 
 Teacher* findTeacherByID(map<string, Teacher*>& allTeachers, string teacherID) {
@@ -455,7 +519,7 @@ Teacher* findTeacherByID(map<string, Teacher*>& allTeachers, string teacherID) {
             return teacher.second;
         }
     }
-    return nullptr;
+    return nullptr; // returns nullptr if the teacher is not found
 }
 
 Class* findClassByID(map<string, Class*>& allClasses, string classID) {
@@ -464,5 +528,5 @@ Class* findClassByID(map<string, Class*>& allClasses, string classID) {
             return cls.second;
         }
     }
-    return nullptr;
+    return nullptr; // returns nullptr if the class is not found
 }

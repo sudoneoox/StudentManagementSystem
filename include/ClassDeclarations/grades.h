@@ -5,7 +5,7 @@ using namespace std;
 #include <map>
 
 
-class Grade
+class Grade // abstract class for assignment and exam
 {
 protected:
     string name;
@@ -14,16 +14,19 @@ protected:
 public:
     Grade() : name(""), ID("") {};
     Grade(string name, string ID) : name(name), ID(ID) {};
-    void setGrade(string studentID, string assignmentID, double grade) {
-        if (studentGrades.find(studentID) != studentGrades.end()) {
-            studentGrades [studentID][assignmentID] = grade;
+
+    //setters
+    void setGrade(string studentID, string assignmentID, double grade) { // sets grade for assignment
+        if (studentGrades.find(studentID) != studentGrades.end()) { // if studentID exists
+            studentGrades [studentID][assignmentID] = grade; // set grade
         }
         else {
-            studentGrades [studentID] = map<string, double>();
-            studentGrades [studentID][assignmentID] = grade;
+            studentGrades [studentID] = map<string, double>(); // create new map for studentID
+            studentGrades [studentID][assignmentID] = grade; // set grade
         }
     }
 
+    //getters
     double getGrade(string studentID, string assignmentID) {
         if (studentGrades.find(studentID) != studentGrades.end() &&
             studentGrades [studentID].find(assignmentID) != studentGrades [studentID].end()) {
@@ -31,12 +34,9 @@ public:
         }
         return -1;
     }
-
-
     string getName() {
         return name;
     }
-
     map<string, map<string, double>>& getAllGrades() {
         return studentGrades;
     }
@@ -44,8 +44,6 @@ public:
     string getID() {
         return ID;
     }
-
-
 };
 
 

@@ -21,22 +21,28 @@ private:
     map<string, Class*> subjectsTaught; // classID, class pointer
 
 public:
+    //constructors and destructors
     Teacher();
     Teacher(string name, string email, string id);
     Teacher(const Teacher& other);
-    ~Teacher();
-    map<string, Class*> GetSubjectsTaught() const;
-    void printSubjectsTaught();
-    void setSubjectsTaught(map<string, Class*> subjectsTaught);
-    void addSubject(Class* subject);
-    void UpdateSubjects(map<string, Class*> newSubjects);
-    void EnterGrade(Assignment* assignment, Student* student, double grade);
-    map<Student*, string> GenerateAttendance(string startDate, string endDate);
-    Teacher& operator=(const Teacher& RHS);
+    ~Teacher(); // destructor destroys all classes taught by teacher
 
-    friend istream& operator>>(istream& IN, Teacher& teacher);
+    //getters
+    map<string, Class*> GetSubjectsTaught() const; // returns subjects taught
 
-    friend ostream& operator<<(ostream& OUT, Teacher& teacher);
+
+    //setters
+    void setSubjectsTaught(map<string, Class*> subjectsTaught); // sets subjects taught
+    void addSubject(Class* subject); // adds singular subject to subjects taught
+
+
+    //methods
+    void printSubjectsTaught(); // prints subjects taught
+
+    //operator overloading
+    Teacher& operator=(const Teacher& RHS); // assignment operator overloading
+    friend istream& operator>>(istream& IN, Teacher& teacher); // input operator overloading
+    friend ostream& operator<<(ostream& OUT, Teacher& teacher); // output operator overloading displays subjects taught
 
 };
 
