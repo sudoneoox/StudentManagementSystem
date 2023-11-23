@@ -7,6 +7,8 @@ Class::Class() {
     this->className = "";
     this->classID = "";
     this->teacher = nullptr;
+    this->assignments = map<string, Assignment*>();
+    this->exams = map<string, Exam*>();
 }
 
 // destructor
@@ -27,6 +29,8 @@ Class::Class(string name, string classID) {
     this->className = name;
     this->classID = classID;
     this->teacher = nullptr;
+    this->assignments = map<string, Assignment*>();
+    this->exams = map<string, Exam*>();
 }
 
 Class::Class(const Class& otherClass) {}
@@ -65,92 +69,79 @@ map<string, Student*> Class::getStudents() {
 }
 
 void Class::addAssignment(Assignment* assignment) {
-    if (assignments.find(assignment->getID()) == assignments.end()) {
-        assignments.insert(pair<string, Assignment*>(assignment->getID(), assignment));
+    if (assignment) {
+        assignments [assignment->getID()] = assignment;
     }
 }
+
 void Class::addExam(Exam* exam) {
-    if (exams.find(exam->getID()) == exams.end()) {
-        exams.insert(pair<string, Exam*>(exam->getID(), exam));
+    if (exam) {
+        exams [exam->getID()] = exam;
     }
 }
 
-void Class::addAssignment(map<string, Assignment*> assignments) {
-    for (auto& assignment : assignments) {
-        if (this->assignments.find(assignment.first) == this->assignments.end()) {
-            this->assignments.insert(pair<string, Assignment*>(assignment.first, assignment.second));
-        }
-    }
-}
-
-void Class::addExam(map<string, Exam*> exams) {
-    for (auto& exam : exams) {
-        if (this->exams.find(exam.first) == this->exams.end()) {
-            this->exams.insert(pair<string, Exam*>(exam.first, exam.second));
-        }
-    }
-}
-
-void Class::assignGradeToStudent(Student* student, Assignment* assignment, double grade) {
-    if (assignments.find(assignment->getID()) != assignments.end()) {
-        assignments [assignment->getID()]->setGrade(student->getID(), grade);
-        student->setGradeForAssignment(assignment->getID(), grade);
-    }
-}
-
-void Class::assignGradeToStudent(Student* student, Exam* exam, double grade) {
-    if (exams.find(exam->getID()) != exams.end()) {
-        exams [exam->getID()]->setGrade(student->getID(), grade);
-        student->setGradeForExam(exam->getID(), grade);
-    }
-}
-
-
-void Class::setStudentGradeForAssignment(string studentID, string assignmentID, double grade) {
+void Class::setStudentGradeForAssignment(string& studentID, string& assignmentID, double grade) {
     if (assignments.find(assignmentID) != assignments.end()) {
-        assignments [assignmentID]->setGrade(studentID, grade);
+        assignments [assignmentID]->setGrade(studentID, assignmentID, grade);
     }
 }
 
-void Class::setStudentGradeForExam(string studentID, string examID, double grade) {
+void Class::setStudentGradeForExam(string& studentID, string& examID, double grade) {
     if (exams.find(examID) != exams.end()) {
-        exams [examID]->setGrade(studentID, grade);
+        exams [examID]->setGrade(studentID, examID, grade);
     }
 }
 
 double Class::getAssignmentGrade(string studentID, string assignmentID) {
     if (assignments.find(assignmentID) != assignments.end()) {
-        return assignments [assignmentID]->getGrade(studentID);
+        return assignments [assignmentID]->getGrade(studentID, assignmentID);
     }
-    return -1;
+    return -1; // Indicate grade not found
 }
 
 double Class::getExamGrade(string studentID, string examID) {
     if (exams.find(examID) != exams.end()) {
-        return exams [examID]->getGrade(studentID);
+        return exams [examID]->getGrade(studentID, examID);
     }
-    return -1;
+    return -1; // Indicate grade not found
 }
 
-map<string, Assignment*> Class::getAssignmentGrades() {
-    return this->assignments;
+Assignment* Class::getAssignment(string assignmentID) {
+    if (assignments.find(assignmentID) != assignments.end()) {
+        return assignments [assignmentID];
+    }
+    return nullptr;
 }
 
-map<string, Exam*> Class::getExamGrades() {
-    return this->exams;
+Exam* Class::getExam(string examID) {
+    if (exams.find(examID) != exams.end()) {
+        return exams [examID];
+    }
+    return nullptr;
 }
 
-double  Class::calculateGrade(Student* student) {
-    double totalGrade = 0;
-    int totalAssignments = 0;
-    int totalExams = 0;
-    for (auto& assignment : assignments) {
-        totalGrade += assignment.second->getGrade(student->getID());
-        totalAssignments++;
+map<string, Exam*>& Class::getExams() {
+    return exams;
+}
+
+map<string, Assignment*>& Class::getAssignments() {
+    return assignments;
+}
+
+double Class::calculateTotalGrade(string studentID) {
+    double totalAssignmentGrade = 0;
+    double totalExamGrade = 0;
+
+    for (auto& [id, assignment] : assignments) {
+        totalAssignmentGrade += assignment->getGrade(studentID, id);
     }
-    for (auto& exam : exams) {
-        totalGrade += exam.second->getGrade(student->getID());
-        totalExams++;
+
+    for (auto& [id, exam] : exams) {
+        totalExamGrade += exam->getGrade(studentID, id);
     }
-    return totalGrade / (totalAssignments + totalExams);
+
+    double weightOfAssignments = 0.6; // 60% weightage for assignments
+    double weightOfExams = 0.4;       // 40% weightage for exams
+
+    return (totalAssignmentGrade * weightOfAssignments + totalExamGrade * weightOfExams) / (assignments.size() * weightOfAssignments + exams.size() * weightOfExams);
 }

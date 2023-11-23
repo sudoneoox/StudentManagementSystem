@@ -3,18 +3,13 @@
         "ID": "C001",
         "assignments": {
             "M101": {
-                "grades": {
-                    "2303693": 80.0,
-                    "2303694": 85.0
-                },
+                "grades": {},
                 "name": "Derivatives"
             }
         },
         "exams": {
             "ME101": {
-                "grades": {
-                    "2303693": 75.0
-                },
+                "grades": {},
                 "name": "Calculus Exam"
             }
         },
@@ -32,18 +27,13 @@
         "ID": "C002",
         "assignments": {
             "S101": {
-                "grades": {
-                    "2303695": 90.0,
-                    "2303696": 88.0
-                },
+                "grades": {},
                 "name": "Biology"
             }
         },
         "exams": {
             "SE101": {
-                "grades": {
-                    "2303694": 85.0
-                },
+                "grades": {},
                 "name": "Biology Exam"
             }
         },
@@ -61,18 +51,13 @@
         "ID": "C003",
         "assignments": {
             "E101": {
-                "grades": {
-                    "2303697": 92.0,
-                    "2303698": 87.0
-                },
+                "grades": {},
                 "name": "Writing"
             }
         },
         "exams": {
             "EE101": {
-                "grades": {
-                    "2303695": 90.0
-                },
+                "grades": {},
                 "name": "Literature Exam"
             }
         },
@@ -89,18 +74,13 @@
         "ID": "C004",
         "assignments": {
             "CS101": {
-                "grades": {
-                    "2303693": 75.0,
-                    "2303694": 80.0
-                },
+                "grades": {},
                 "name": "Data Structure"
             }
         },
         "exams": {
             "CSE101": {
-                "grades": {
-                    "2303696": 95.0
-                },
+                "grades": {},
                 "name": "Programming Exam"
             }
         },

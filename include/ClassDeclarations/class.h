@@ -27,43 +27,50 @@ private:
 public:
     // constructor
     Class();
-
+    Class(string name, string classID);
+    Class(const Class& otherClass);
 
     // destructor
     ~Class();
 
-    Class(string name, string classID);
-    Class(const Class& otherClass);
+    // setters
     void setName(string className);
     void setClassID(string classID);
     void setTeacher(Teacher* teacher);
     void setStudentList(map<string, Student*> studentList);
+    void setExams(map<string, Exam*>& exams);
+    void setAssignments(map<string, Assignment*>& assignments);
+
+
+    // methods for managing students
     void addStudent(Student* Student);
     void removeStudent(Student* Student);
 
-    void addAssignment(Assignment* assignment);
-    void addAssignment(map<string, Assignment*> assignments);
-    void addExam(map<string, Exam*> exams);
-    void addExam(Exam* exam);
-    void setStudentGradeForAssignment(string studentID, string assignmentID, double grade);
-    void setStudentGradeForExam(string studentID, string examID, double grade);
 
+    // methods for managing assignments and exams
+    void addAssignment(Assignment* assignment);
+    void addExam(Exam* exam);
+    void setStudentGradeForAssignment(string& studentID, string& assignmentID, double grade);
+    void setStudentGradeForExam(string& studentID, string& examID, double grade);
     void assignGradeToStudent(Student* student, Assignment* assignment, double grade);
     void assignGradeToStudent(Student* student, Exam* exam, double grade);
-    double calculateGrade(Student* student);
 
-    double getAssignmentGrade(string studentID, string assignmentID);
-    map<string, Assignment*> getAssignmentGrades();
-    map<string, Exam*> getExamGrades();
-    double getExamGrade(string studentID, string examID);
-
-
-
+    // getters
     string getName();
     string getClassID();
     Teacher* getTeacher();
     string getID();
     map<string, Student*> getStudents();
+    Exam* getExam(string examID);
+    Assignment* getAssignment(string assignmentID);
+    double getExamGrade(string studentID, string examID);
+    double getAssignmentGrade(string studentID, string assignmentID);
+    map<string, Exam*>& getExams();
+    map<string, Assignment*>& getAssignments();
+    double calculateTotalGrade(string studentID);
+
+
+
 
 
 };

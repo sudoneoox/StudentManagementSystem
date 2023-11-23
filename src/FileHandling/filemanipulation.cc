@@ -43,27 +43,27 @@ void to_jsonFromClass(json& j, Class& c) { //FIXME tojson for assignments and ex
         j ["students"][student.first] = student.second->getName();
     }
 
-    for (auto& assignment : c.getAssignmentGrades()) {
+    for (auto& assignment : c.getAssignments()) {
         auto& assignmentPtr = assignment.second;
         json assignmentJson = {
             {"name", assignmentPtr->getName()},
             {"grades", json::object()}
         };
 
-        for (auto& grade : assignmentPtr->getGrades()) {
+        for (auto& grade : assignmentPtr->getAllGrades()) {
             assignmentJson ["grades"][grade.first] = grade.second; // {studentID: grade}
         }
 
         j ["assignments"][assignmentPtr->getID()] = assignmentJson;
     }
 
-    for (auto& exam : c.getExamGrades()) {
+    for (auto& exam : c.getExams()) {
         auto& examPtr = exam.second;
         json examJson = {
             {"name", examPtr->getName()},
             {"grades", json::object()} // {studentID: grade}
         };
-        for (auto& grade : examPtr->getGrades()) {
+        for (auto& grade : examPtr->getAllGrades()) {
             examJson ["grades"][grade.first] = grade.second; // {studentID: grade}
         }
         j ["exams"][examPtr->getID()] = examJson; // {examID: examJson}
@@ -116,14 +116,14 @@ void from_json(const json& j, Student& s) {
         }
         s.setAttendanceRecord(attendanceRecord);
     }
-    if (j.contains("assignmentGrades")) {
-        auto grades = j.at("assignmentGrades").get<map<string, int>>();
+    if (j.contains("AssignmentGrades")) {
+        auto grades = j.at("AssignmentGrades").get<map<string, double>>();
         for (const auto& pair : grades) {
             s.setGradeForAssignment(pair.first, pair.second);
         }
     }
-    if (j.contains("examGrades")) {
-        auto grades = j.at("examGrades").get<map<string, int>>();
+    if (j.contains("ExamGrades")) {
+        auto grades = j.at("ExamGrades").get<map<string, double>>();
         for (const auto& pair : grades) {
             s.setGradeForExam(pair.first, pair.second);
         }
@@ -133,7 +133,6 @@ void from_json(const json& j, Student& s) {
 void from_json(const json& j, Class& c) {
     c.setClassID(j.at("ID").get<string>());
     c.setName(j.at("name").get<string>());
-    cout << endl << c.getName() << " class pointer: " << &c << endl;
     if (j.contains("teacher") && j ["teacher"].is_object()) {
         string teacherID = j ["teacher"].items().begin().key();
         string teacherName = j ["teacher"].items().begin().value().get<string>();
@@ -161,44 +160,43 @@ void from_json(const json& j, Class& c) {
     else {
         cout << "no students for class " << c.getName() << endl;
     }
+    if (j.contains("assignments")) {
+        for (auto& [assignmentID, assignmentJson] : j ["assignments"].items()) {
+            string assignmentName = assignmentJson.at("name").get<string>();
+            Assignment* assignment = new Assignment(assignmentName, assignmentID);
 
-    if (j.contains("assignments") && j ["assignments"].is_object()) {
-        map<string, Assignment*> assignments;
-        for (const auto& assignmentJson : j ["assignments"].items()) {
-            string assignmentID = assignmentJson.key();
-            string assignmentName = assignmentJson.value().at("name").get<string>();
-            Assignment* assignmentPtr = new Assignment(assignmentName, assignmentID);
-            if (assignmentJson.value().contains("grades") && assignmentJson.value() ["grades"].is_object()) {
-                for (const auto& gradeJson : assignmentJson.value() ["grades"].items()) {
-                    string studentID = gradeJson.key();
-                    double grade = gradeJson.value().get<double>();
-                    assignmentPtr->setGrade(studentID, grade);
+            if (assignmentJson.contains("grades")) {
+                auto& gradesJson = assignmentJson ["grades"];
+                for (auto& [studentID, gradesJson] : gradesJson.items()) {
+                    if (gradesJson.is_object() && gradesJson.contains(assignmentID)) {
+                        double gradeatjson = gradesJson [assignmentID].get<double>();
+                        assignment->setGrade(studentID, assignmentID, gradeatjson);
+                    }
                 }
             }
-            assignments [assignmentID] = assignmentPtr;
+            c.addAssignment(assignment);
         }
-        c.addAssignment(assignments);
     }
     else {
         cout << "no assignments for class " << c.getName() << endl;
     }
 
-    if (j.contains("exams") && j ["exams"].is_object()) {
-        map<string, Exam*> exams;
-        for (const auto& examJson : j ["exams"].items()) {
-            string examID = examJson.key();
-            string examName = examJson.value().at("name").get<string>();
-            Exam* examPtr = new Exam(examName, examID);
-            if (examJson.value().contains("grades") && examJson.value() ["grades"].is_object()) {
-                for (const auto& gradeJson : examJson.value() ["grades"].items()) {
-                    string studentID = gradeJson.key();
-                    double grade = gradeJson.value().get<double>();
-                    examPtr->setGrade(studentID, grade);
+    if (j.contains("exams")) {
+        for (auto& [examID, examJson] : j ["exams"].items()) {
+            string examName = examJson.at("name").get<string>();
+            Exam* exam = new Exam(examName, examID);
+
+            if (examJson.contains("grades")) {
+                auto& gradesJson = examJson ["grades"];
+                for (auto& [studentID, gradeJson] : gradesJson.items()) {
+                    if (gradeJson.is_object() && gradeJson.contains(examID)) {
+                        double gradeatjson = gradeJson [examID].get<double>();
+                        exam->setGrade(studentID, examID, gradeatjson);
+                    }
                 }
             }
-            exams [examID] = examPtr;
+            c.addExam(exam);
         }
-        c.addExam(exams);
     }
     else {
         cout << "no exams for class " << c.getName() << endl;
@@ -218,8 +216,6 @@ void from_json(const json& j, Teacher& t) {
             string className = subjectTaughtJson.value().get<string>();
             auto it = allClasses.find(classID);
             if (it != allClasses.end()) {
-                cout << endl << "in it->second: " << it->second;
-                cout << endl << "in it->second->getName(): " << it->second->getName();
                 subjectsTaught [classID] = it->second;
             }
         }
@@ -238,6 +234,8 @@ this function is integral for the program to work
 its used to preload data from the json files into the maps
 */
 void  preloadDataJsonFile(string option, string filename) {
+    bool preloadedStudent, preloadedTeacher, preloadedClass = false;
+
     if (option == "student") {
         if (isJsonFileEmpty(filename)) {
             cout << "Student data file is empty. Preloading Data with default values.\n";
@@ -246,6 +244,7 @@ void  preloadDataJsonFile(string option, string filename) {
                 addDataToJsonFile(filename, *studentPtr);
             }
             allStudents = createStudentObjectsFromJsonFile(filename);
+            preloadedStudent = true;
         }
         else {
             json studentData = loadDataFromFile(filename);
@@ -271,6 +270,7 @@ void  preloadDataJsonFile(string option, string filename) {
                 addDataToJsonFile(filename, *teacherPtr);
             }
             allTeachers = createTeacherObjectsFromJsonFile(filename);
+            preloadedTeacher = true;
         }
         else {
             json teacherData = loadDataFromFile(filename);
@@ -296,6 +296,7 @@ void  preloadDataJsonFile(string option, string filename) {
                 addDataToJsonFileFromClass(filename, *classPtr);
             }
             allClasses = createClassObjectsFromJsonFile(filename);
+            preloadedClass = true;
         }
         else {
             json classData = loadDataFromFile(filename);
@@ -312,6 +313,10 @@ void  preloadDataJsonFile(string option, string filename) {
                 }
             }
         }
+    }
+    if (preloadedStudent && preloadedTeacher && preloadedClass) {
+        cout << "Preloaded the JSON data successfully. Please rerun the program to link all the objects to one another" << endl;
+        exit(0);
     }
 }
 // !!File Manipulation Functions
@@ -435,7 +440,7 @@ map<string, Teacher*> createTeacherObjectsFromJsonFile(string& filename) {
     return allTeachers;
 }
 // !FINDERS
-Student* findStudentByID(map<string, Student*>, string studentID) {
+Student* findStudentByID(map<string, Student*>& allStudents, string studentID) {
     for (auto& student : allStudents) {
         if (student.first == studentID) {
             return student.second;
@@ -443,6 +448,7 @@ Student* findStudentByID(map<string, Student*>, string studentID) {
     }
     return nullptr;
 }
+
 Teacher* findTeacherByID(map<string, Teacher*>& allTeachers, string teacherID) {
     for (auto& teacher : allTeachers) {
         if (teacher.first == teacherID) {

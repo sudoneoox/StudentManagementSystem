@@ -37,11 +37,68 @@ void initClasses();
 void deleteInitData();
 
 
+void testClassAssignmentsExams() {
+    cout << "Testing Assignments and Exams in Classes...\n";
+
+    // Test for a specific class
+    string classID = "C001"; // Example class ID
+    if (allClasses.find(classID) != allClasses.end()) {
+        Class* cls = allClasses [classID];
+
+        // List assignments and exams in this class
+        cout << "Assignments in " << cls->getName() << ":\n";
+        for (auto& [assignmentID, assignment] : cls->getAssignments()) {
+            cout << "ID: " << assignmentID << " - Name: " << assignment->getName() << "\n";
+        }
+
+        cout << "Exams in " << cls->getName() << ":\n";
+        for (auto& [examID, exam] : cls->getExams()) {
+            cout << "ID: " << examID << " - Name: " << exam->getName() << "\n";
+        }
+
+        cout << "Grades in " << cls->getName() << ":\n";
+        for (auto& [studentID, student] : cls->getStudents()) {
+            cout << "Student: " << student->getName() << "\n";
+            for (auto& [assignmentID, grade] : student->getGradesForAssignment()) {
+                cout << "Assignment ID: " << assignmentID << " - Grade: " << grade << "\n";
+            }
+            for (auto& [examID, grade] : student->getGradesForExam()) {
+                cout << "Exam ID: " << examID << " - Grade: " << grade << "\n";
+            }
+        }
+    }
+    else {
+        cout << "Class with ID " << classID << " not found.\n";
+    }
+}
+
+void testStudentAssignmentsExams() {
+    cout << "Testing Assignments and Exams in Students...\n";
+
+    // Assuming you have some test students in allStudents map
+    for (auto& [studentID, student] : allStudents) {
+        cout << "Grades for Student " << student->getName() << ":\n";
+
+        // Check assignments grades
+        for (auto& [assignmentID, grade] : student->getGradesForAssignment()) {
+            cout << "Assignment ID: " << assignmentID << " - Grade: " << grade << "\n";
+        }
+
+        // Check exams grades
+        for (auto& [examID, grade] : student->getGradesForExam()) {
+            cout << "Exam ID: " << examID << " - Grade: " << grade << "\n";
+        }
+    }
+}
+
 int main() {
     initClasses(); // creates initial data for testing purposes jump to function for documentation
     preloadDataJsonFile("student", "../Data/students.json"); // loads data from json files jump to function for documentation 
     preloadDataJsonFile("teacher", "../Data/teachers.json");
     preloadDataJsonFile("class", "../Data/class.json");
+
+
+
 
     char input;
     PrintMenuOption("Student Management System", "mainMenuOptions");
@@ -134,6 +191,12 @@ void initClasses() {
     Exam* englishExam = new Exam("Literature Exam", "EE101");
     Exam* CSexam = new Exam("Programming Exam", "CSE101");
 
+
+    // Add all students and teacher and class ID, and pointers to their global maps holding all their data;
+    allStudents = { {"2303693", student1}, {"2303694", student2}, {"2303695", student3}, {"2303696", student4}, {"2303697", student5}, {"2303698", student6} };
+    allTeachers = { {"2000", teacher1}, {"2001", teacher2}, {"2002", teacher3}, {"2003", teacher4} };
+    allClasses = { {"C001", mathClass}, {"C002", scienceClass}, {"C003", englishClass}, {"C004", computerScienceClass} };
+
     // Linking assignments and exams to classes
     mathClass->addAssignment(mathAssignment);
     scienceClass->addAssignment(scienceAssignment);
@@ -145,32 +208,13 @@ void initClasses() {
     englishClass->addExam(englishExam);
     computerScienceClass->addExam(CSexam);
 
-    //TODO implement student->setGrade?
-    // Assign grades to students in each class for assignments and exams
-    mathClass->assignGradeToStudent(student1, mathAssignment, 80); // student, assignment, grade
-    mathClass->assignGradeToStudent(student2, mathAssignment, 85);
 
-    scienceClass->assignGradeToStudent(student3, scienceAssignment, 90);
-    scienceClass->assignGradeToStudent(student4, scienceAssignment, 88);
 
-    englishClass->assignGradeToStudent(student5, englishAssignment, 92);
-    englishClass->assignGradeToStudent(student6, englishAssignment, 87);
-
-    computerScienceClass->assignGradeToStudent(student1, CSassignment, 75);
-    computerScienceClass->assignGradeToStudent(student2, CSassignment, 80);
-
-    mathClass->assignGradeToStudent(student1, mathExam, 75); // student, exam, grade
-    scienceClass->assignGradeToStudent(student2, scienceExam, 85);
-    englishClass->assignGradeToStudent(student3, englishExam, 90);
-    computerScienceClass->assignGradeToStudent(student4, CSexam, 95);
 
     //setting the attendance of the current students to absent this is just to preload the json data
-    student1->setAttendanceRecord(currentDateAttendance);
-    student2->setAttendanceRecord(currentDateAttendance);
-    student3->setAttendanceRecord(currentDateAttendance);
-    student4->setAttendanceRecord(currentDateAttendance);
-    student5->setAttendanceRecord(currentDateAttendance);
-    student6->setAttendanceRecord(currentDateAttendance);
+    for (auto& student : allStudents) {
+        student.second->setAttendanceRecord(currentDateAttendance);
+    }
 
     // setting the classes to their respective teacher to link them together addsubject takes the pointer to the class
     teacher1->addSubject(mathClass);
@@ -178,10 +222,6 @@ void initClasses() {
     teacher3->addSubject(englishClass);
     teacher4->addSubject(computerScienceClass);
 
-    // Add all students and teacher and class ID, and pointers to their global maps holding all their data;
-    allStudents = { {"2303693", student1}, {"2303694", student2}, {"2303695", student3}, {"2303696", student4}, {"2303697", student5}, {"2303698", student6} };
-    allTeachers = { {"2000", teacher1}, {"2001", teacher2}, {"2002", teacher3}, {"2003", teacher4} };
-    allClasses = { {"C001", mathClass}, {"C002", scienceClass}, {"C003", englishClass}, {"C004", computerScienceClass} };
 
     // Add teacher to class and add students to class
     allClasses ["C001"]->setTeacher(allTeachers ["2000"]);

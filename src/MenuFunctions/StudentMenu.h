@@ -56,7 +56,7 @@ void studentMenu(Student& student) {
         }
         else if (input == '5') {
             calculateClassGrade(student);
-            PrintMenuOption("Student Menu | " + name, "studentMenuOptions")
+            PrintMenuOption("Student Menu | " + name, "studentMenuOptions");
         }
 
         else if (input == '6') {
@@ -76,24 +76,82 @@ void studentMenu(Student& student) {
 
 
 
-void submitAssignment(Student& student) { //TODO finish this and calculate class grades
+void submitAssignment(Student& student) {
     while (true) {
+        cout << "\nDisplaying Your Current Classes:\n";
+        auto classSchedule = student.getClassSchedule();
+        if (classSchedule.empty()) {
+            cout << "You are not enrolled in any classes.\n";
+            return;
+        }
 
+        for (const auto& [classID, clsPtr] : classSchedule) {
+            cout << classID << ": " << clsPtr->getName() << endl;
+        }
 
+        cout << "Enter the class ID you would like to update an assignment grade for, or 0 to go back: ";
+        string classID;
+        cin >> classID;
+        if (classID == "0") {
+            break;
+        }
 
+        auto clsPtr = findClassByID(allClasses, classID);
+        if (clsPtr == nullptr) {
+            cout << "\nInvalid Class ID.\n";
+            continue;
+        }
+
+        auto assignments = clsPtr->getAssignments();
+        if (assignments.empty()) {
+            cout << "There are no assignments for this class.\n";
+            continue;
+        }
+
+        cout << "Displaying Assignments for " << clsPtr->getName() << ":\n";
+        for (const auto& [assignmentID, assignmentPtr] : assignments) {
+            cout << assignmentID << ": " << assignmentPtr->getName() << endl;
+        }
+
+        cout << "Enter the assignment ID you would like to update your grade for, or 0 to go back: ";
+        string assignmentID;
+        cin >> assignmentID;
+        if (assignmentID == "0") {
+            continue;
+        }
+
+        if (assignments.find(assignmentID) == assignments.end()) {
+            cout << "\nInvalid Assignment ID.\n";
+            continue;
+        }
+
+        cout << "Enter your grade for " << assignments [assignmentID]->getName() << ": ";
+        double grade;
+        cin >> grade;
+        string studentID = student.getID();
+        // Update the grade in the class and student records
+        clsPtr->setStudentGradeForAssignment(studentID, assignmentID, grade);
+        student.setGradeForAssignment(assignmentID, grade);
+
+        // Update JSON files
+        addDataToJsonFile("../Data/students.json", student);
+        addDataToJsonFileFromClass("../Data/class.json", *clsPtr);
+
+        cout << "Updated assignment grade.\n";
+        break;
     }
 }
 
 void calculateClassGrade(Student& student) {
     while (true) {
         cout << "\nDisplaying Your Current Classes:\n";
-        map<string, Class*> classSchedule = student.getClassSchedule();
-        if (classSchedule.size() == 0) {
+        auto classSchedule = student.getClassSchedule();
+        if (classSchedule.empty()) {
             cout << "You are not enrolled in any classes\n";
             return;
         }
-        for (classIter = classSchedule.begin(); classIter != classSchedule.end(); classIter++) {
-            cout << classIter->second->getID() << ": " << classIter->second->getName() << endl;
+        for (const auto& [classID, clsPtr] : classSchedule) {
+            cout << classID << ": " << clsPtr->getName() << endl;
         }
         cout << "Enter the class ID you would like to calculate your grade for or 0 to go back: ";
         string classID;
@@ -101,21 +159,16 @@ void calculateClassGrade(Student& student) {
         if (classID == "0") {
             break;
         }
-        Class* clsPtr = findClassByID(allClasses, classID);
+        auto clsPtr = findClassByID(allClasses, classID);
         if (clsPtr == nullptr) {
             cout << "\nInvalid Class ID\n";
+            continue;
         }
-        else if (!student.isEnrolledInClass(classID)) {
-            cout << "\nYou are not enrolled in this class\n";
-        }
-        else {
-            cout << "Your grade in " << clsPtr->getName() << " is " << clsPtr->calculateGrade(&student) << endl;
-            return;
-        }
+        double grade = clsPtr->calculateTotalGrade(student.getID());
+        cout << "Your grade in " << clsPtr->getName() << " is " << grade << endl;
     }
     return;
 }
-
 
 void markAttendance(Student& student, string date, string status) {
     cout << "\nAttendance has been marked for " << student.getName() << " on " << date << endl;

@@ -1,15 +1,10 @@
 {
     "2303693": {
-        "AssignmentGrades": {
-            "CS101": 75.0,
-            "M101": 80.0
-        },
-        "ExamGrades": {
-            "ME101": 75.0
-        },
+        "AssignmentGrades": {},
+        "ExamGrades": {},
         "ID": "2303693",
         "attendanceRecord": {
-            "11/20/2023": "ABSENT"
+            "11/23/2023": "ABSENT"
         },
         "classSchedule": {
             "C001": "Math 2413",
@@ -19,16 +14,11 @@
         "name": "Diego Coronado"
     },
     "2303694": {
-        "AssignmentGrades": {
-            "CS101": 80.0,
-            "M101": 85.0
-        },
-        "ExamGrades": {
-            "SE101": 85.0
-        },
+        "AssignmentGrades": {},
+        "ExamGrades": {},
         "ID": "2303694",
         "attendanceRecord": {
-            "11/20/2023": "ABSENT"
+            "11/23/2023": "ABSENT"
         },
         "classSchedule": {
             "C001": "Math 2413",
@@ -38,15 +28,11 @@
         "name": "Cassandra Franco"
     },
     "2303695": {
-        "AssignmentGrades": {
-            "S101": 90.0
-        },
-        "ExamGrades": {
-            "EE101": 90.0
-        },
+        "AssignmentGrades": {},
+        "ExamGrades": {},
         "ID": "2303695",
         "attendanceRecord": {
-            "11/20/2023": "ABSENT"
+            "11/23/2023": "ABSENT"
         },
         "classSchedule": {
             "C001": "Math 2413",
@@ -56,15 +42,11 @@
         "name": "John Wick"
     },
     "2303696": {
-        "AssignmentGrades": {
-            "S101": 88.0
-        },
-        "ExamGrades": {
-            "CSE101": 95.0
-        },
+        "AssignmentGrades": {},
+        "ExamGrades": {},
         "ID": "2303696",
         "attendanceRecord": {
-            "11/20/2023": "ABSENT"
+            "11/23/2023": "ABSENT"
         },
         "classSchedule": {
             "C003": "English 1301"
@@ -73,13 +55,11 @@
         "name": "Bob Frank"
     },
     "2303697": {
-        "AssignmentGrades": {
-            "E101": 92.0
-        },
+        "AssignmentGrades": {},
         "ExamGrades": {},
         "ID": "2303697",
         "attendanceRecord": {
-            "11/20/2023": "ABSENT"
+            "11/23/2023": "ABSENT"
         },
         "classSchedule": {
             "C003": "English 1301",
@@ -89,13 +69,11 @@
         "name": "Sally Sue"
     },
     "2303698": {
-        "AssignmentGrades": {
-            "E101": 87.0
-        },
+        "AssignmentGrades": {},
         "ExamGrades": {},
         "ID": "2303698",
         "attendanceRecord": {
-            "11/20/2023": "ABSENT"
+            "11/23/2023": "ABSENT"
         },
         "classSchedule": {
             "C004": "Computer Science 1301"

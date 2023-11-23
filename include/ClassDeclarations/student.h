@@ -45,9 +45,11 @@ public:
     void printClassSchedule();
 
     double getGradeForAssignment(string classID, string assignmentID);
+    double getGradeForExam(string classID, string examID);
+
     map<string, double> getGradesForAssignment();
     map<string, double> getGradesForExam();
-    double getGradeForExam(string classID, string examID);
+
     void setGradeForAssignment(string assignmentID, double grade);
     void setGradeForExam(string examID, double grade);
 
