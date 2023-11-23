@@ -15,7 +15,7 @@ subject schedule, etc.
 
 Follow these steps to build the project:
 
-1. Save (`CTRL + S`) `CMakeLists.txt`. This should create a build folder. If it doesn't, perform the following steps in the terminal:
+1. Save (`CTRL + S`) `CMakeLists.txt`. This should create a build folder. If it doesn't, follow these steps in the terminal:
 
     ```bash
     mkdir build
