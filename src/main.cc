@@ -78,6 +78,7 @@ int main() {
         }
         else if (input == '3') {
             cout << "Exiting Program\n";
+            break;
         }
 
         else {
@@ -105,7 +106,7 @@ and whenever the program starts it will load the data from the json files to cre
 
 void initClasses() {
 
-    map<string, string> currentDateAttendance = { {currentDate(), "ABSENT"} }; // {date, status} gets current date in format "MM/DD/YYYY"
+    map<string, string> currentDateAttendance = { {currentDate(), "ABSENT"} }; // {date, status} gets current date in format "MM/DD/YYYY" and sets the status to absent
 
     // students
     Student* student1 = new Student("Diego Coronado", "drcorona@cougarnet.uh.edu", "2303693"); // name, email, id
@@ -116,10 +117,10 @@ void initClasses() {
     Student* student6 = new Student("John Doe", "johndoe@edu.com", "2303698");
 
     // teachers
-    Teacher* teacher1 = new Teacher("Carlos Rincon", "rincon@edu.com", "2000"); // name, email, id
-    Teacher* teacher2 = new Teacher("Melahut Almus", "melahutalmus@edu.com", "2001");
+    Teacher* teacher1 = new Teacher("Melahut Almus", "melahutalmus@edu.com", "2000"); // name, email, id
+    Teacher* teacher2 = new Teacher("Jakavitch Troy", "jvitch@edu.com", "2001");
     Teacher* teacher3 = new Teacher("Holly Smith", "hsmith@edu.com", "2002");
-    Teacher* teacher4 = new Teacher("Jakavitch", "jaka@edu.com", "2003");
+    Teacher* teacher4 = new Teacher("Carlos Rincon", "rincon@edu.com", "2003");
 
     // classes
     Class* mathClass = new Class("Math 2413", "C001"); // name, id
@@ -129,9 +130,17 @@ void initClasses() {
 
     // Create assignments and exams for each class
     Assignment* mathAssignment = new Assignment("Derivatives", "M101");  // name, id
+    Assignment* mathAssignment2 = new Assignment("Integrals", "M102");
+    Assignment* mathAssignment3 = new Assignment("Limits", "M103");
     Assignment* scienceAssignment = new Assignment("Biology", "S101");
+    Assignment* scienceAssignment2 = new Assignment("Plant Biology", "S102");
+    Assignment* scienceAssignment3 = new Assignment("Animal Biology", "S103");
     Assignment* englishAssignment = new Assignment("Writing", "E101");
+    Assignment* englishAssignment2 = new Assignment("Reading", "E102");
+    Assignment* englishAssignment3 = new Assignment("Grammar", "E103");
     Assignment* CSassignment = new Assignment("Data Structure", "CS101");
+    Assignment* CSassignment2 = new Assignment("Algorithms", "CS102");
+    Assignment* CSassignment3 = new Assignment("OOP", "CS103");
 
     Exam* mathExam = new Exam("Calculus Exam", "ME101"); // name, id
     Exam* scienceExam = new Exam("Biology Exam", "SE101");
@@ -146,9 +155,17 @@ void initClasses() {
 
     // linking assignments and exams to classes
     mathClass->addAssignment(mathAssignment);
+    mathClass->addAssignment(mathAssignment2);
+    mathClass->addAssignment(mathAssignment3);
     scienceClass->addAssignment(scienceAssignment);
+    scienceClass->addAssignment(scienceAssignment2);
+    scienceClass->addAssignment(scienceAssignment3);
     englishClass->addAssignment(englishAssignment);
+    englishClass->addAssignment(englishAssignment2);
+    englishClass->addAssignment(englishAssignment3);
     computerScienceClass->addAssignment(CSassignment);
+    computerScienceClass->addAssignment(CSassignment2);
+    computerScienceClass->addAssignment(CSassignment3);
 
     mathClass->addExam(mathExam);
     scienceClass->addExam(scienceExam);

@@ -35,7 +35,7 @@ void PrintMenuOption(string name, string menu) {
         };
     }
     else if (menu == "classMenuOptions") {
-        options = { "Update Class Info", "Get Attendance Report", "Enter Exam Grades", "Get Overall Class GPA" };
+        options = { "Update Class Info", "Get Attendance Report", "Enter Exam Grades", "Get Overall Class Grade", "Add Assignment / Exam" };
     }
     else if (menu == "mainMenuOptions") {
         options = { "Student Menu", "Teacher Menu" };

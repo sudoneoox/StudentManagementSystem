@@ -17,6 +17,10 @@ void updateClassInfo(Class& c); // updates the class info
 void generateAttendanceReport(Class& c); // generates an attendance report from a start date to end date for a class
 void enterExamGrades(Class& c); // this function enters exam grades for a class depending on the exams that are set in that class
 void getOverallClassAverage(Class& c); // this function gets the overall class average for all the students in the class
+void addAssesment(Class& c);
+void addExam(Class& c);
+void addAssignment(Class& c);
+
 
 void ClassMenu(Class& c) {
     string className = c.getName(); // gets the class name
@@ -46,6 +50,10 @@ void ClassMenu(Class& c) {
             PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
         }
         else if (input == "5") {
+            addAssesment(c);
+            PrintMenuOption("Class Menu | " + teacherName + " | " + className, "classMenuOptions");
+        }
+        else if (input == "6") {
             cout << "Leaving Class Menu\n";
             break;
         }
@@ -58,10 +66,96 @@ void ClassMenu(Class& c) {
     return;
 }
 
+
+void addAssesment(Class& c) {
+    while (true) {
+        cout << "Would you like to add an assignment or an exam (0 to exit)? (a/e) \n";
+        string input;
+        cin >> input;
+        if (input == "a" || input == "A" || input == "assignment" || input == "Assignment") {
+            addAssignment(c);
+            break;
+        }
+        else if (input == "e" || input == "E" || input == "exam" || input == "Exam") {
+            addExam(c);
+            break;
+        }
+        else if (input == "0") {
+            return;
+        }
+        else {
+            cout << "Invalid Input\n";
+        }
+    }
+    return;
+}
+
+void addExam(Class& c) {
+    Exam* exam = new Exam();
+    while (true) {
+        cout << "Enter the name of the exam (0 to exit): ";
+        if (cin.peek() == '\n') cin.ignore(); // ignores the newline character if it exists
+        string name;
+        getline(cin, name);
+        if (name == "0") {
+            delete exam; // deletes the exam pointer if the user wants to exit
+            return;
+        }
+        cout << "Enter the ID of the new Exam (0 to exit): ";
+        if (cin.peek() == '\n') cin.ignore(); // ignores the newline character if it exists
+        string ID;
+        getline(cin, ID);
+        if (ID == "0") {
+            delete exam; // deletes the exam pointer if the user wants to exit
+            return;
+        }
+        exam->setName(name);
+        exam->setID(ID);
+        c.addExam(exam);
+        addDataToJsonFileFromClass("../Data/class.json", c); // updates the class json file
+        cout << "Exam added successfully\n";
+        return;
+    }
+    return;
+}
+
+void addAssignment(Class& c) {
+    Assignment* assignment = new Assignment();
+    while (true) {
+        cout << "Enter the name of the assignment (0 to exit): ";
+        if (cin.peek() == '\n') cin.ignore(); // ignores the newline character if it exists
+        string name;
+        getline(cin, name);
+        if (name == "0") {
+            delete assignment; // deletes the assignment pointer if the user wants to exit
+            return;
+        }
+        cout << "Enter the ID of the new assignment (0 to exit): ";
+        string ID;
+        if (cin.peek() == '\n') cin.ignore(); // ignores the newline character if it exists
+        getline(cin, ID);
+        if (ID == "0") {
+            delete assignment; // deletes the assignment pointer if the user wants to exit
+            return;
+        }
+        assignment->setName(name);
+        assignment->setID(ID);
+        c.addAssignment(assignment);
+        addDataToJsonFileFromClass("../Data/class.json", c); // updates the class json file
+        cout << "Assignment added successfully\n";
+        break;
+    }
+    return;
+}
+
+
 // this function enters exam grades for a class depending on the exams that are set in that class
 void enterExamGrades(Class& c) {
     while (true) {
         cout << "Enter the ID of the exam you would like to enter grades for (0 to exit): ";
+        for (auto& [examID, examPtr] : c.getExams()) { // iterates through the exams in the class
+            cout << endl << examID << ": " << examPtr->getName() << endl; // prints the exam ID and name
+        }
         string examID;
         cin >> examID;
         if (examID == "0") {

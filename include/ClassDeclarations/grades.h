@@ -44,6 +44,12 @@ public:
     string getID() {
         return ID;
     }
+    void setID(string ID) {
+        this->ID = ID;
+    }
+    void setName(string name) {
+        this->name = name;
+    }
 };
 
 

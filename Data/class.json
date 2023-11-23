@@ -5,6 +5,14 @@
             "M101": {
                 "grades": {},
                 "name": "Derivatives"
+            },
+            "M102": {
+                "grades": {},
+                "name": "Integrals"
+            },
+            "M103": {
+                "grades": {},
+                "name": "Limits"
             }
         },
         "exams": {
@@ -20,7 +28,7 @@
             "2303695": "John Wick"
         },
         "teacher": {
-            "2000": "Carlos Rincon"
+            "2000": "Melahut Almus"
         }
     },
     "C002": {
@@ -29,6 +37,14 @@
             "S101": {
                 "grades": {},
                 "name": "Biology"
+            },
+            "S102": {
+                "grades": {},
+                "name": "Plant Biology"
+            },
+            "S103": {
+                "grades": {},
+                "name": "Animal Biology"
             }
         },
         "exams": {
@@ -44,7 +60,7 @@
             "2303695": "John Wick"
         },
         "teacher": {
-            "2001": "Melahut Almus"
+            "2001": "Jakavitch Troy"
         }
     },
     "C003": {
@@ -53,6 +69,14 @@
             "E101": {
                 "grades": {},
                 "name": "Writing"
+            },
+            "E102": {
+                "grades": {},
+                "name": "Reading"
+            },
+            "E103": {
+                "grades": {},
+                "name": "Grammar"
             }
         },
         "exams": {
@@ -76,6 +100,14 @@
             "CS101": {
                 "grades": {},
                 "name": "Data Structure"
+            },
+            "CS102": {
+                "grades": {},
+                "name": "Algorithms"
+            },
+            "CS103": {
+                "grades": {},
+                "name": "OOP"
             }
         },
         "exams": {
@@ -90,7 +122,7 @@
             "2303698": "John Doe"
         },
         "teacher": {
-            "2003": "Jakavitch"
+            "2003": "Carlos Rincon"
         }
     }
 }

@@ -2,13 +2,11 @@
 # Ignore compiled binary files
 *.exe
 
-
-
 # Ignore build output
 /build
 /bin
 .vscode/
 /docs
-./TODO.md
+TODO.md
 
 

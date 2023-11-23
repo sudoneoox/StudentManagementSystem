@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
 project(StudentManagementSystem)
 
-# Include FetchContent for downloading dependencies
+# Include FetchContent for downloading dependencies json library for json manipulation
 include(FetchContent)
 FetchContent_Declare(
   json
   GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG v3.10.5  # Specify the version you need
+  GIT_TAG v3.10.5  
 )
 FetchContent_MakeAvailable(json)
 
@@ -19,13 +19,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Find the GCC compiler
 find_program(GCC_FOUND gcc)
 
+
+# Find the G++ compiler
+find_program(GPP_FOUND g++)
+
+
 # If GCC was found, set it as the C compiler
 if(GCC_FOUND)
   set(CMAKE_C_COMPILER gcc)
 endif()
-
-# Find the G++ compiler
-find_program(GPP_FOUND g++)
 
 # If G++ was found, set it as the C++ compiler
 if(GPP_FOUND)
@@ -43,13 +45,12 @@ endif()
 
 # include directory for header files
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include) 
-# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/ClassDeclarations) 
 
 
 # include directory for json Data
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Data)
 
-# Add all your source files 
+# all the source files
 file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/ClassDefinitions/*.cc  
 ${CMAKE_CURRENT_SOURCE_DIR}/src/FileHandling/*.cc
 # ${CMAKE_CURRENT_SOURCE_DIR}/src/MenuFunctions/*.cc
@@ -58,15 +59,13 @@ ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cc
 
 # define the executable target
 add_executable(StudentManagementSystem ${SOURCES})
-# add_executable(StudentManagementSystem main.cc class.cc assignment.cc people.cc student.cc teacher.cc filemanipulation.cc)
 
-
-#specify the output directory for the executables (in the bin folder)
+# output directory path for .exe file /bin
 set_target_properties(StudentManagementSystem PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 )
 
-# Link the json library
+# link the json library
 target_link_libraries(StudentManagementSystem PRIVATE nlohmann_json::nlohmann_json)
 
 
