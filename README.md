@@ -62,13 +62,13 @@ Accessing a Teacher Menu provides entry to the Class Menus that the teacher is a
 Encountering compiler-related errors during the build process is a common issue, especially when multiple C++ compilers are installed on the system. This can lead to conflicts in the build process. Below are the steps to resolve that conflict.
 
 Step 1: Clear CMake Cache
-Navigate to the build directory in your terminal and execute the following command to remove the CMake cache:
+- Navigate to the build directory in your terminal and execute the following command to remove the CMake cache:
 
 ```bash
 rm .\CmakeCache.txt
 ```
 Step 2: Reconfigure CMake
-Return to your CMakeLists.txt file and save it. This action triggers the reconfiguration of your project's compiler settings.
+- Return to your CMakeLists.txt file and save it. This action triggers the reconfiguration of your project's compiler settings.
 
 Step 3: Rebuild the Project
  ```bash
