@@ -55,5 +55,6 @@ Accessing a Teacher Menu provides entry to the Class Menus that the teacher is a
 - `2003` - Carlos's Teacher Menu (Access to Computer Science 1301 Class Menu)
 
 ### Admin Menu
-- `admin` or `Admin` gives you access to the admin menu where your able to add new students or classes to the json file and global maps
-- You can enroll a student into a class in their respective menu so I didn't have to implement that here
+- `admin` or `Admin` - Access to admin Menu
+- Gives you the ability to add new students or classes into the global maps and json files
+- 
