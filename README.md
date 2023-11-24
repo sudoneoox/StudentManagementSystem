@@ -1,6 +1,4 @@
 # Student Management System
-
-## Description
 A comprehensive system for managing student and teacher data in an educational setting. This system allows for tracking student attendance, assignments, and grades, as well as teacher's 
 subject schedule, etc.
 
