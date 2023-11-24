@@ -56,5 +56,5 @@ Accessing a Teacher Menu provides entry to the Class Menus that the teacher is a
 
 ### Admin Menu
 - `admin` or `Admin` - Access to admin Menu
-Gives you the ability to add new students or classes into the global maps and json files
+-  Gives you the ability to add new students or classes into the global maps and json files
   
