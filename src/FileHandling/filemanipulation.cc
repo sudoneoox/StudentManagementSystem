@@ -48,6 +48,7 @@ void to_jsonFromClass(json& j, Class& c) {
     }
 
     for (auto& assignment : c.getAssignments()) {
+        // assignment.first is the assignmentID and assignment.second is the assignment pointer format is {assignmentID: assignmentName}
         auto& assignmentPtr = assignment.second;
         json assignmentJson = {
             {"name", assignmentPtr->getName()},
@@ -108,6 +109,7 @@ void from_json(const json& j, Student& s) {
     if (j.contains("classSchedule") && j ["classSchedule"].is_object()) { // {classID: className}
         map<string, Class*> classSchedule;
         for (const auto& classScheduleJson : j ["classSchedule"].items()) {
+            // classScheduleJson.first is the classID and classScheduleJson.second is the class pointer format is {classID: className}
             string classID = classScheduleJson.key();
             string className = classScheduleJson.value().get<string>();
             auto it = allClasses.find(classID);
@@ -123,19 +125,20 @@ void from_json(const json& j, Student& s) {
     if (j.contains("attendanceRecord") && j ["attendanceRecord"].is_object()) { // {date: status}
         map<string, string> attendanceRecord;
         for (const auto& attendanceRecordJson : j ["attendanceRecord"].items()) {
+            // attendanceRecordJson.first is the date and attendanceRecordJson.second is the status format is {date: status}
             string date = attendanceRecordJson.key();
             string status = attendanceRecordJson.value().get<string>();
             attendanceRecord [date] = status;
         }
         s.setAttendanceRecord(attendanceRecord); // adds the attendance record to the student object
     }
-    if (j.contains("AssignmentGrades")) { // {assignmentID: grade}
+    if (j.contains("AssignmentGrades")) { // if the json object contains the assignment grades
         auto grades = j.at("AssignmentGrades").get<map<string, double>>();
         for (const auto& pair : grades) {
             s.setGradeForAssignment(pair.first, pair.second); // adds the assignment grades to the student object
         }
     }
-    if (j.contains("ExamGrades")) { // {examID: grade}
+    if (j.contains("ExamGrades")) {  // if the json object contains the exam grades
         auto grades = j.at("ExamGrades").get<map<string, double>>();
         for (const auto& pair : grades) {
             s.setGradeForExam(pair.first, pair.second); // adds the exam grades to the student object
@@ -146,6 +149,7 @@ void from_json(const json& j, Student& s) {
 /*
 @param j: the json object to be deserialized
 @param c: the class object to be deserialized
+creates a class object from the json file
 */
 void from_json(const json& j, Class& c) {
     c.setClassID(j.at("ID").get<string>()); // classID
@@ -224,6 +228,7 @@ void from_json(const json& j, Class& c) {
 /*
 @param j: the json object to be deserialized
 @param t: the teacher object to be deserialized
+creates a teacher object from the json file
 */
 void from_json(const json& j, Teacher& t) {
     t.setName(j.at("name").get<string>()); // teacherName
@@ -250,7 +255,7 @@ void from_json(const json& j, Teacher& t) {
 
 // !!Data Preloading function whenever the program starts
 /*
-@param option: the option to preload data for
+@param option: the option to preload data for (student, teacher, class)
 @param filename: the filename to preload data from
 This function checks if the json file is empty and if it is it preloads the data from the global variables that were created in the initClasses function
 If the json file is not empty it loads the data from the json file from the previous session and creates the objects from the json file

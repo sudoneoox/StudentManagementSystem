@@ -18,7 +18,7 @@ Follow these steps to build the project:
 1. Save (`CTRL + S`) `CMakeLists.txt`. This should create a build folder. If it doesn't, follow these steps in the terminal:
 
     ```bash
-    mkdir build
+    mkdir build #only if the build directory doesn't exist
     cd build
     cmake ..
     cmake --build .
@@ -57,4 +57,23 @@ Accessing a Teacher Menu provides entry to the Class Menus that the teacher is a
 ### Admin Menu
 - `admin` or `Admin` - Access to admin Menu
 -  Gives you the ability to add new students or classes into the global maps and json files
-  
+
+### Troubleshooting
+Encountering compiler-related errors during the build process is a common issue, especially when multiple C++ compilers are installed on the system. This can lead to conflicts in the build process. Below are the steps to resolve that conflict.
+
+Step 1: Clear CMake Cache
+Navigate to the build directory in your terminal and execute the following command to remove the CMake cache:
+
+```bash
+rm .\CmakeCache.txt
+```
+Step 2: Reconfigure CMake
+Return to your CMakeLists.txt file and save it. This action triggers the reconfiguration of your project's compiler settings.
+
+Step 3: Rebuild the Project
+ ```bash
+    mkdir build #only if the build directory doesn't already exist
+    cd build
+    cmake ..
+    cmake --build .
+```
