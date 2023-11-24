@@ -38,7 +38,10 @@ void PrintMenuOption(string name, string menu) {
         options = { "Update Class Info", "Get Attendance Report", "Enter Exam Grades", "Get Overall Class Grade", "Add Assignment / Exam" };
     }
     else if (menu == "mainMenuOptions") {
-        options = { "Student Menu", "Teacher Menu" };
+        options = { "Student Menu", "Teacher Menu", "Admin Menu" };
+    }
+    else if (menu == "adminMenuOptions") {
+        options = { "Add Student", "Add Class" };
     }
 
     int width = 53; // width of the menu

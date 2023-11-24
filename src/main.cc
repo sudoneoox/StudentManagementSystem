@@ -8,6 +8,7 @@
 #include "./MenuFunctions/StudentMenu.h"
 #include "./MenuFunctions/TeacherMenu.h"
 #include "./MenuFunctions/ClassMenu.h"
+#include "./MenuFunctions/AdminMenu.h"
 
 #include <iostream>
 #include <fstream>
@@ -47,10 +48,10 @@ int main() {
 
 
 
-    char input;
+    string input;
     PrintMenuOption("Student Management System", "mainMenuOptions"); // prints the main menu options
     while (cin >> input) {
-        if (input == '1') {
+        if (input == "1") {
             int idx;
             bool correctID = validationCheck(allStudents, idx); // checks if the id is valid and returns the index of the student in the map
             if (correctID) {
@@ -63,7 +64,7 @@ int main() {
                 PrintMenuOption("Student Management System", "mainMenuOptions");
             }
         }
-        else if (input == '2') {
+        else if (input == "2") {
             int idx;
             bool correctID = validationCheck(allTeachers, idx);
             if (correctID) {
@@ -76,11 +77,21 @@ int main() {
                 PrintMenuOption("Student Management System", "mainMenuOptions");
             }
         }
-        else if (input == '3') {
+        else if (input == "3") {
+            bool access = adminValidationCheck();
+            if (access) {
+                PrintMenuOption("Admin Menu", "adminMenuOptions");
+                AdminMenu();
+                PrintMenuOption("Student Management System", "mainMenuOptions");
+            }
+            else if (!access) {
+                PrintMenuOption("Student Management System", "mainMenuOptions");
+            }
+        }
+        else if (input == "4") {
             cout << "Exiting Program\n";
             break;
         }
-
         else {
             cout << "Invalid option Please Try Again\n ";
             PrintMenuOption("Student Management System", "mainMenuOptions");

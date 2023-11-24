@@ -53,7 +53,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Data)
 # all the source files
 file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/ClassDefinitions/*.cc  
 ${CMAKE_CURRENT_SOURCE_DIR}/src/FileHandling/*.cc
-# ${CMAKE_CURRENT_SOURCE_DIR}/src/MenuFunctions/*.cc
+${CMAKE_CURRENT_SOURCE_DIR}/src/MenuFunctions/*.cc
 ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cc
 )
 
