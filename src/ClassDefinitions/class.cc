@@ -12,7 +12,7 @@ Mini method descriptions for class methods are in class.h
 Class::Class() {
     this->className = "";
     this->classID = "";
-    this->teacher = nullptr;
+    this->teacher = new Teacher;
     this->assignments = map<string, Assignment*>();
     this->exams = map<string, Exam*>();
 }
@@ -34,7 +34,7 @@ Class::~Class() {
 Class::Class(string name, string classID) {
     this->className = name;
     this->classID = classID;
-    this->teacher = nullptr;
+    this->teacher = new Teacher;
     this->assignments = map<string, Assignment*>();
     this->exams = map<string, Exam*>();
 }
@@ -144,6 +144,7 @@ map<string, Assignment*>& Class::getAssignments() {
     return assignments;
 }
 
+
 double Class::calculateTotalGrade(string studentID) {
     double totalAssignmentGrade = 0;
     double totalExamGrade = 0;
@@ -158,6 +159,7 @@ double Class::calculateTotalGrade(string studentID) {
 
     double weightOfAssignments = 0.6; // 60% weightage for assignments
     double weightOfExams = 0.4;       // 40% weightage for exams
-
-    return (totalAssignmentGrade * weightOfAssignments + totalExamGrade * weightOfExams) / (assignments.size() * weightOfAssignments + exams.size() * weightOfExams); // returns the total grade
+    // returns the total grade based on the total assignments/exams size their weight and the score the student received;
+    return (totalAssignmentGrade * weightOfAssignments + totalExamGrade * weightOfExams) / (assignments.size() * weightOfAssignments + exams.size() * weightOfExams);
 }
+

@@ -11,10 +11,10 @@ Student::Student() {
     this->name = "";
     this->email = "";
     this->ID = "";
-    map<string, Class*> classSchedule(); // classID, Class*
-    map<string, string> attendanceRecord(); // date, status
-    map<string, double> assignmentGrades(); // assignmentID, grade
-    map<string, double> examGrades(); // examID, grade
+    map<string, Class*> classSchedule; // classID, Class*
+    map<string, string> attendanceRecord; // date, status
+    map<string, double> assignmentGrades; // assignmentID, grade
+    map<string, double> examGrades; // examID, grade
 
 }
 
@@ -22,10 +22,10 @@ Student::Student(string name, string email, string id) {
     this->name = name;
     this->email = email;
     this->ID = id;
-    map<string, Class*> classSchedule();
-    map<string, string> attendanceRecord();
-    map<string, double> assignmentGrades();
-    map<string, double> examGrades();
+    map<string, Class*> classSchedule;
+    map<string, string> attendanceRecord;
+    map<string, double> assignmentGrades;
+    map<string, double> examGrades;
 }
 
 Student::~Student() {
