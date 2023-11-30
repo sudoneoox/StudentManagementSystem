@@ -1,0 +1,128 @@
+{
+    "C001": {
+        "ID": "C001",
+        "assignments": {
+            "M101": {
+                "grades": {},
+                "name": "Derivatives"
+            },
+            "M102": {
+                "grades": {},
+                "name": "Integrals"
+            },
+            "M103": {
+                "grades": {},
+                "name": "Limits"
+            }
+        },
+        "exams": {
+            "ME101": {
+                "grades": {},
+                "name": "Calculus Exam"
+            }
+        },
+        "name": "Math 2413",
+        "students": {
+            "2303693": "Diego Coronado",
+            "2303694": "Cassandra Franco",
+            "2303695": "John Wick"
+        },
+        "teacher": {
+            "2000": "Melahut Almus"
+        }
+    },
+    "C002": {
+        "ID": "C002",
+        "assignments": {
+            "S101": {
+                "grades": {},
+                "name": "Biology"
+            },
+            "S102": {
+                "grades": {},
+                "name": "Plant Biology"
+            },
+            "S103": {
+                "grades": {},
+                "name": "Animal Biology"
+            }
+        },
+        "exams": {
+            "SE101": {
+                "grades": {},
+                "name": "Biology Exam"
+            }
+        },
+        "name": "Biology 1302",
+        "students": {
+            "2303693": "Diego Coronado",
+            "2303694": "Cassandra Franco",
+            "2303695": "John Wick"
+        },
+        "teacher": {
+            "2001": "Jakavitch Troy"
+        }
+    },
+    "C003": {
+        "ID": "C003",
+        "assignments": {
+            "E101": {
+                "grades": {},
+                "name": "Writing"
+            },
+            "E102": {
+                "grades": {},
+                "name": "Reading"
+            },
+            "E103": {
+                "grades": {},
+                "name": "Grammar"
+            }
+        },
+        "exams": {
+            "EE101": {
+                "grades": {},
+                "name": "Literature Exam"
+            }
+        },
+        "name": "English 1301",
+        "students": {
+            "2303696": "Bob Frank",
+            "2303697": "Sally Sue"
+        },
+        "teacher": {
+            "2002": "Holly Smith"
+        }
+    },
+    "C004": {
+        "ID": "C004",
+        "assignments": {
+            "CS101": {
+                "grades": {},
+                "name": "Data Structure"
+            },
+            "CS102": {
+                "grades": {},
+                "name": "Algorithms"
+            },
+            "CS103": {
+                "grades": {},
+                "name": "OOP"
+            }
+        },
+        "exams": {
+            "CSE101": {
+                "grades": {},
+                "name": "Programming Exam"
+            }
+        },
+        "name": "Computer Science 1301",
+        "students": {
+            "2303697": "Sally Sue",
+            "2303698": "John Doe"
+        },
+        "teacher": {
+            "2003": "Carlos Rincon"
+        }
+    }
+}

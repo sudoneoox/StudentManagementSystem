@@ -62,7 +62,7 @@ add_executable(StudentManagementSystem ${SOURCES})
 
 # output directory path for .exe file /bin
 set_target_properties(StudentManagementSystem PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin 
 )
 
 # link the json library

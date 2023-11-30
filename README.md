@@ -8,9 +8,11 @@ subject schedule, etc.
 - **CMake** (version 3.14 or higher)
 - A C++ compiler (e.g., **GCC**)
 
-## Building The Project
+## Building The Project Im using Ninja as my project manager you might have to configure that in your cmake -G
 
-Follow these steps to build the project:
+Follow these steps to build the project: 
+I am also including the .exe in the zip folder but if your testing it in a mac there's compatibility issues so your going to have to build it.
+Or if you run into issues running the .exe build it
 
 1. Save (`CTRL + S`) `CMakeLists.txt`. This should create a build folder. If it doesn't, follow these steps in the terminal:
 
@@ -56,7 +58,7 @@ Accessing a Teacher Menu provides entry to the Class Menus that the teacher is a
 -  Gives you the ability to add new students or classes into the global maps and json files
 
 ### Troubleshooting
-Encountering compiler-related errors during the build process is a common issue, especially when multiple C++ compilers are installed on the system. This can lead to conflicts in the build process. Below are the steps to resolve that conflict.
+Encountering compiler-related errors during the build process is a issue, especially when multiple C++ compilers are installed on the system. This can lead to conflicts in the build process. Below are the steps to fix that error.
 
 Step 1: Clear CMake Cache
 - Navigate to the build directory in your terminal and execute the following command to remove the CMake cache:
@@ -65,7 +67,7 @@ Step 1: Clear CMake Cache
 rm .\CmakeCache.txt
 ```
 Step 2: Reconfigure CMake
-- Return to your CMakeLists.txt file and save it. This action triggers the reconfiguration of your project's compiler settings.
+- Return to your CMakeLists.txt file and save it. This retriggers the reconfiguration of the compiler settings.
 
 Step 3: Rebuild the Project
  ```bash

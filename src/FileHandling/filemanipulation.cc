@@ -262,7 +262,6 @@ If the json file is not empty it loads the data from the json file from the prev
 If the json file was empty it exits the program and asks the user to rerun the program to link all the objects to one another
 */
 void  preloadDataJsonFile(string option, string filename) {
-    bool preloadedStudent, preloadedTeacher, preloadedClass = false; // checks if the data was preloaded for all the options
 
     if (option == "student") {
         if (isJsonFileEmpty(filename)) { // checks if the json file is empty
@@ -272,7 +271,6 @@ void  preloadDataJsonFile(string option, string filename) {
                 addDataToJsonFile(filename, *studentPtr);
             }
             allStudents = createStudentObjectsFromJsonFile(filename);
-            preloadedStudent = true;
         }
         else {
             json studentData = loadDataFromFile(filename);
@@ -298,7 +296,6 @@ void  preloadDataJsonFile(string option, string filename) {
                 addDataToJsonFile(filename, *teacherPtr);
             }
             allTeachers = createTeacherObjectsFromJsonFile(filename); // creates teacher objects from the json file
-            preloadedTeacher = true;
         }
         else {
             json teacherData = loadDataFromFile(filename);
@@ -324,7 +321,6 @@ void  preloadDataJsonFile(string option, string filename) {
                 addDataToJsonFileFromClass(filename, *classPtr);
             }
             allClasses = createClassObjectsFromJsonFile(filename);
-            preloadedClass = true;
         }
         else {
             json classData = loadDataFromFile(filename);
@@ -341,10 +337,6 @@ void  preloadDataJsonFile(string option, string filename) {
                 }
             }
         }
-    }
-    if (preloadedStudent && preloadedTeacher && preloadedClass) { // checks if all the data was preloaded
-        cout << "Preloaded the JSON data successfully. Please rerun the program to link all the objects to one another" << endl; // this is to make sure that all the objects are linked to one another
-        exit(0);
     }
 }
 
